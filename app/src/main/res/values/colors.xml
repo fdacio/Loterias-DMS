@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#3F51B5</color>
+    <color name="colorLoteria">#ef7d00</color>
+    <color name="colorMegasena">#229551</color>
+    <color name="colorQuina">#290b89</color>
+    <color name="colorLotofacil">#7c0b89</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorGray">#CCCCCC</color>
+    <color name="colorWhite">#FFFFFF</color>
+
+</resources>

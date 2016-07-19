@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Loterias-DMS</string>
+    <string name="menu_dezenas_mais_sorteadas">As Mais Sorteadas</string>
+    <string name="menu_sorteios">Sorteios</string>
+    <string name="menu_processar_arquivo">Processar Arquivo</string>
+    <string name="menu_confira_seu_jogo">Confira Seu Jogo</string>
+    <string name="subtitle_dezenas_mais_sorteadas">Dezenas Mais Sorteadas</string>
+    <string name="title_dezenas_mais_sorteadas">Dezenas Mais Sorteadas</string>
+    <string name="title_sorteios">Sorteios</string>
+    <string name="title_concuros">Conscuros</string>
+    <string name="title_processar_arquivo">Processar Arquivo</string>
+    <string name="label_gerar_jogos">Gerar Jogos</string>
+    <string name="label_qtde_dezenas">Qtde.Dezenas</string>
+    <string name="error_processar_arquivo">Erro ao processar arquivo</string>
+    <string name="error_conexao">Verifique sua conexão!</string>
+    <string name="msg_aguarde">Aguarde...</string>
+    <string name="title_submenu">Menu</string>
+    <string name="action_exit">SAIR</string>
+    <string name="nao_ha_dados">NÃO HÁ DADOS</string>
+    <string name="title_activity_menu_secundario">Menu</string>
+    <string name="mega_sena">MEGA-SENA</string>
+    <string name="quina">QUINA</string>
+    <string name="lotofacil">LOTAFÁCIL</string>
+    <string name="label_instrucoes">Instruções</string>
+    <string name="label_configuracoes">Configurações</string>
+    <string name="msg_sair_app">Sair da Aplicação?</string>
+
+    <string name="title_file_dialog">Arquivo/Diretorio</string>
+    <string name="location">Localização</string>
+    <string name="file_name">Nome do Arquivo</string>
+    <string name="no_data">Não há dados</string>
+    <string name="fd_cant_read_folder">Não pode ler</string>
+    <string name="btn_ok">OK</string>
+    <string name="btn_cancel">Cancelar</string>
+    <string name="folder">pasta_arquivo</string>
+    <string name="title_save_file">Salvar Arquivo</string>
+    <string name="title_open_file">Abrir Arquivo</string>
+    <string name="title_select_directory">Selecionar Pasta</string>
+    <string name="msg_erro_name_file">Informe o nome do arquivo</string>
+
+</resources>
