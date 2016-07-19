@@ -25,6 +25,7 @@
     <string name="label_configuracoes">Configurações</string>
     <string name="msg_sair_app">Sair da Aplicação?</string>
     <string name="label_qtde_dezenas_por_jogo">Qtde. de dezenas por jogo:</string>
+    <string name="label_qtde_dezenas_selecionadas">dezenas selecionadas</string>
     <string name="title_file_dialog">Arquivo/Diretorio</string>
     <string name="location">Localização</string>
     <string name="file_name">Nome do Arquivo</string>
@@ -41,29 +42,27 @@
     <string name="title_activity_sorteio_list">Sorteios</string>
     <string name="title_activity_processar_arquivo">Processar Arquivo</string>
     <string name="title_activity_confira_seu_jogo">Confira Seu Jogo</string>
+    <string name="zero">0 dezenas selecionadas</string>
 
     <string-array name="array_qtde_dezenas_por_jogo_megasena">
-        <item>Selecione...</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
+        <item>6 dezenas por jogo</item>
+        <item>7 dezenas por jogo</item>
+        <item>8 dezenas por jogo</item>
+        <item>9 dezenas por jogo</item>
+        <item>10 dezenas por jogo</item>
     </string-array>
 
     <string-array name="array_qtde_dezenas_por_jogo_lotofacil">
-        <item>Selecione...</item>
-        <item>15</item>
+        <item>15 dezenas por jogo</item>
     </string-array>
 
     <string-array name="array_qtde_dezenas_por_jogo_quina">
-        <item>Selecione...</item>
-        <item>5</item>
-        <item>6</item>
-        <item>7</item>
-        <item>8</item>
-        <item>9</item>
-        <item>10</item>
+        <item>5 dezenas por jogo</item>
+        <item>6 dezenas por jogo</item>
+        <item>7 dezenas por jogo</item>
+        <item>8 dezenas por jogo</item>
+        <item>9 dezenas por jogo</item>
+        <item>10 dezenas por jogo</item>
     </string-array>
 
 </resources>

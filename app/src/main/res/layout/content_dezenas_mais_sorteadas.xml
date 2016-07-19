@@ -41,24 +41,27 @@
         android:layout_alignParentBottom="true">
 
         <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/label_qtde_dezenas_por_jogo"
-            android:layout_alignBottom="@+id/spinnerQtdeDezenas"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="22dp" />
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/zero"
+            android:id="@+id/textViewQtdeSelecionada"
+            android:layout_alignParentTop="true"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:gravity="right" />
 
         <Spinner
             android:id="@+id/spinnerQtdeDezenas"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/textView"
-            android:layout_toRightOf="@+id/textView" />
+            android:layout_alignParentTop="false"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textViewQtdeSelecionada" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnGerarJogos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_gerar_jogos"

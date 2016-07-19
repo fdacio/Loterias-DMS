@@ -29,11 +29,8 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
         StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this,layout);
         styleTypeSorteio.setStyleHeader(typeSorteio);
 
-
-
         ListView listViewDezenasMaisSorteadas = (ListView) findViewById(R.id.listViewDezenasMaisSorteadas);
         listViewDezenasMaisSorteadas.setEmptyView((TextView) findViewById(R.id.emptyElement));
-
 
         Spinner spinnerQtdeDezenasPorJogo = (Spinner) findViewById(R.id.spinnerQtdeDezenas);
         ArrayAdapter<CharSequence> adapter;
