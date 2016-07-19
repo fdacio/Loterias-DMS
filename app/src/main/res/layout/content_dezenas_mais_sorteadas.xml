@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.com.daciosoftware.loteriasdms.DezenasMaisSorteadasActivity"
+    tools:showIn="@layout/activity_dezenas_mais_sorteadas">
+
+    <include layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel"/>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewDezenasMaisSorteadas"
+        android:layout_marginTop="10dp"
+        android:headerDividersEnabled="true"
+        android:layout_below="@+id/linearLayouLogoLabel"
+        android:layout_above="@+id/relativeLayoutGerarJogos"/>
+
+    <TextView
+        android:id="@+id/emptyElement"
+        android:text="@string/no_data"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/listViewDezenasMaisSorteadas"
+        android:textSize="25sp"
+        android:textAlignment="center"
+        android:gravity="center_vertical|center_horizontal"/>
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutGerarJogos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_qtde_dezenas_por_jogo"
+            android:layout_alignBottom="@+id/spinnerQtdeDezenas"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="22dp" />
+
+        <Spinner
+            android:id="@+id/spinnerQtdeDezenas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/textView"
+            android:layout_toRightOf="@+id/textView" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_gerar_jogos"
+            android:layout_below="@+id/spinnerQtdeDezenas"
+            android:layout_centerHorizontal="true" />
+
+
+    </RelativeLayout>
+
+</RelativeLayout>

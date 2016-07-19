@@ -1,5 +1,6 @@
 package br.com.daciosoftware.loteriasdms;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,8 @@ import br.com.daciosoftware.loteriasdms.util.Constantes;
 public class MenuSecundarioActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
 
+    private TypeSorteio typeSorteio;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -22,7 +25,7 @@ public class MenuSecundarioActivity extends AppCompatActivity implements Adapter
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        TypeSorteio typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
+        typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
 
         String[] menuMain = {
                 getResources().getString(R.string.menu_dezenas_mais_sorteadas),
@@ -52,6 +55,24 @@ public class MenuSecundarioActivity extends AppCompatActivity implements Adapter
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = null;
+        switch (position){
+            case 0:
+                intent = new Intent(MenuSecundarioActivity.this, DezenasMaisSorteadasActivity.class);
+                break;
+            case 1:
+                intent = new Intent(MenuSecundarioActivity.this, SorteioListActivity.class);
+                break;
+            case 2:
+                intent = new Intent(MenuSecundarioActivity.this, ProcessarArquivoActivity.class);
+                break;
+            case 3:
+                intent = new Intent(MenuSecundarioActivity.this, ConfiraSeuJogoActivity.class);
+                break;
+        }
+
+        intent.putExtra(Constantes.TYPE_SORTEIO,typeSorteio);
+        startActivity(intent);
 
     }
 }
