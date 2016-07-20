@@ -9,7 +9,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import br.com.daciosoftware.loteriasdms.confiraseujogo.ConfiraSeuJogoActivity;
+import br.com.daciosoftware.loteriasdms.dezemasmaissorteadas.DezenasMaisSorteadasActivity;
 import br.com.daciosoftware.loteriasdms.menuadapter.MenuSecundarioAdapter;
+import br.com.daciosoftware.loteriasdms.processaarquivo.ProcessaArquivoActivity;
+import br.com.daciosoftware.loteriasdms.sorteio.SorteioListActivity;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 
 public class MenuSecundarioActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
@@ -64,7 +68,7 @@ public class MenuSecundarioActivity extends AppCompatActivity implements Adapter
                 intent = new Intent(MenuSecundarioActivity.this, SorteioListActivity.class);
                 break;
             case 2:
-                intent = new Intent(MenuSecundarioActivity.this, ProcessarArquivoActivity.class);
+                intent = new Intent(MenuSecundarioActivity.this, ProcessaArquivoActivity.class);
                 break;
             case 3:
                 intent = new Intent(MenuSecundarioActivity.this, ConfiraSeuJogoActivity.class);

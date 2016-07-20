@@ -1,6 +1,8 @@
 package br.com.daciosoftware.loteriasdms;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -129,4 +131,17 @@ public class StyleTypeSorteio {
         }
 
     }
+
+    public void setStyleFloatingActionButton(TypeSorteio typeSorteio) {
+        FloatingActionButton fab = (FloatingActionButton) layoutActivity.findViewById(R.id.fab);
+        FloatingActionButton fabAdd = (FloatingActionButton) layoutActivity.findViewById(R.id.fabAdd);
+        if (fab != null){
+            fab.setBackgroundTintList(ColorStateList.valueOf(getColor(typeSorteio)));
+        }
+        if (fabAdd != null){
+            fabAdd.setBackgroundTintList(ColorStateList.valueOf(getColor(typeSorteio)));
+        }
+
+    }
+
 }

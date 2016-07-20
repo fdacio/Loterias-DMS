@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.daciosoftware.loteriasdms.ConfiraSeuJogoActivity"
+    tools:context=".confiraseujogo.ConfiraSeuJogoActivity"
     tools:showIn="@layout/activity_confira_seu_jogo">
 
     <include layout="@layout/header_type_sorteio"

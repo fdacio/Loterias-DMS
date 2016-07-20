@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".LoteriasDMSActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar">
@@ -34,21 +34,25 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".DezenasMaisSorteadasActivity"
+            android:name=".dezemasmaissorteadas.DezenasMaisSorteadasActivity"
             android:label="@string/title_activity_dezenas_mais_sorteadas"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".SorteioListActivity"
+            android:name=".sorteio.SorteioListActivity"
             android:label="@string/title_activity_sorteio_list"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ProcessarArquivoActivity"
+            android:name=".processaarquivo.ProcessaArquivoActivity"
             android:label="@string/title_activity_processar_arquivo"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ConfiraSeuJogoActivity"
+            android:name=".confiraseujogo.ConfiraSeuJogoActivity"
             android:label="@string/title_activity_confira_seu_jogo"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".dezemasmaissorteadas.GeraJogosActivity"
+            android:label="@string/title_activity_gera_jogos"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

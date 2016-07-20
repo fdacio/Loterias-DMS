@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.daciosoftware.loteriasdms.DezenasMaisSorteadasActivity"
+    tools:context=".dezemasmaissorteadas.DezenasMaisSorteadasActivity"
     tools:showIn="@layout/activity_dezenas_mais_sorteadas">
 
     <include layout="@layout/header_type_sorteio"
@@ -19,56 +19,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listViewDezenasMaisSorteadas"
-        android:layout_marginTop="10dp"
         android:headerDividersEnabled="true"
-        android:layout_below="@+id/linearLayouLogoLabel"
-        android:layout_above="@+id/relativeLayoutGerarJogos"/>
+        android:layout_below="@+id/linearLayouLogoLabel"/>
 
     <TextView
         android:id="@+id/emptyElement"
-        android:text="@string/no_data"
+        android:text="@string/nao_ha_dados"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/listViewDezenasMaisSorteadas"
         android:textSize="25sp"
         android:textAlignment="center"
         android:gravity="center_vertical|center_horizontal"/>
 
-    <RelativeLayout
-        android:id="@+id/relativeLayoutGerarJogos"
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/zero"
+        android:id="@+id/textViewQtdeSelecionada"
+        android:textColor="@color/colorPrimary"
+        android:textStyle="bold"
+        android:gravity="right"
+        android:layout_above="@+id/btnGerarJogos"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/zero"
-            android:id="@+id/textViewQtdeSelecionada"
-            android:layout_alignParentTop="true"
-            android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:gravity="right" />
-
-        <Spinner
-            android:id="@+id/spinnerQtdeDezenas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentTop="false"
-            android:layout_alignParentLeft="false"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/textViewQtdeSelecionada" />
-
-        <Button
-            android:id="@+id/btnGerarJogos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/label_gerar_jogos"
-            android:layout_below="@+id/spinnerQtdeDezenas"
-            android:layout_centerHorizontal="true" />
-
-
-    </RelativeLayout>
+    <Button
+        android:id="@+id/btnGerarJogos"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/label_gerar_jogos"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"/>
 
 </RelativeLayout>

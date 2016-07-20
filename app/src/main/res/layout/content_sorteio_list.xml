@@ -9,10 +9,26 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="br.com.daciosoftware.loteriasdms.SorteioListActivity"
+    tools:context=".sorteio.SorteioListActivity"
     tools:showIn="@layout/activity_sorteio_list">
 
     <include layout="@layout/header_type_sorteio"
         android:id="@+id/linearLayouLogoLabel"/>
+
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/listViewSorteio"
+        android:layout_below="@+id/linearLayouLogoLabel"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/nao_ha_dados"
+        android:id="@+id/emptyElement"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

@@ -17,15 +17,27 @@
     <string name="title_submenu">Menu</string>
     <string name="action_exit">SAIR</string>
     <string name="nao_ha_dados">NÃO HÁ DADOS</string>
+    <string name="nao_ha_jogos">JOGOS</string>
     <string name="title_activity_menu_secundario">Menu</string>
     <string name="mega_sena">MEGA-SENA</string>
     <string name="quina">QUINA</string>
-    <string name="lotofacil">LOTAFÁCIL</string>
+    <string name="lotofacil">LOTOFÁCIL</string>
     <string name="label_instrucoes">Instruções</string>
     <string name="label_configuracoes">Configurações</string>
     <string name="msg_sair_app">Sair da Aplicação?</string>
     <string name="label_qtde_dezenas_por_jogo">Qtde. de dezenas por jogo:</string>
     <string name="label_qtde_dezenas_selecionadas">dezenas selecionadas</string>
+    <string name="label_dezenas_selecionadas">Dezenas selecionadas</string>
+    <string name="label_numero_concurso">Concurso:</string>
+    <string name="label_numero">Número</string>
+    <string name="label_data">Data:</string>
+    <string name="label_data_zero">00/00/0000</string>
+    <string name="label_local">Local:</string>
+    <string name="label_cidade_ganhador">Cidade do Ganhador</string>
+    <string name="label_00">00</string>
+
+
+
     <string name="title_file_dialog">Arquivo/Diretorio</string>
     <string name="location">Localização</string>
     <string name="file_name">Nome do Arquivo</string>
@@ -44,25 +56,34 @@
     <string name="title_activity_confira_seu_jogo">Confira Seu Jogo</string>
     <string name="zero">0 dezenas selecionadas</string>
 
+
     <string-array name="array_qtde_dezenas_por_jogo_megasena">
         <item>6 dezenas por jogo</item>
         <item>7 dezenas por jogo</item>
         <item>8 dezenas por jogo</item>
         <item>9 dezenas por jogo</item>
         <item>10 dezenas por jogo</item>
+        <item>11 dezenas por jogo</item>
+        <item>12 dezenas por jogo</item>
+        <item>13 dezenas por jogo</item>
+        <item>14 dezenas por jogo</item>
+        <item>15 dezenas por jogo</item>
+
     </string-array>
 
     <string-array name="array_qtde_dezenas_por_jogo_lotofacil">
         <item>15 dezenas por jogo</item>
+        <item>16 dezenas por jogo</item>
+        <item>17 dezenas por jogo</item>
+        <item>18 dezenas por jogo</item>
     </string-array>
 
     <string-array name="array_qtde_dezenas_por_jogo_quina">
         <item>5 dezenas por jogo</item>
         <item>6 dezenas por jogo</item>
         <item>7 dezenas por jogo</item>
-        <item>8 dezenas por jogo</item>
-        <item>9 dezenas por jogo</item>
-        <item>10 dezenas por jogo</item>
     </string-array>
+
+    <string name="title_activity_gera_jogos">Gera Jogos</string>
 
 </resources>

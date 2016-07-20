@@ -7,18 +7,32 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.Calendar;
+
+import br.com.daciosoftware.loteriasdms.dao.Lotofacil;
+import br.com.daciosoftware.loteriasdms.dao.LotofacilContract;
+import br.com.daciosoftware.loteriasdms.dao.LotofacilDAO;
+import br.com.daciosoftware.loteriasdms.dao.Megasena;
+import br.com.daciosoftware.loteriasdms.dao.MegasenaContract;
+import br.com.daciosoftware.loteriasdms.dao.MegasenaDAO;
+import br.com.daciosoftware.loteriasdms.dao.Quina;
+import br.com.daciosoftware.loteriasdms.dao.QuinaContract;
+import br.com.daciosoftware.loteriasdms.dao.QuinaDAO;
+import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.db.Database;
 import br.com.daciosoftware.loteriasdms.menuadapter.LoteriasDMSAdapter;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
+import br.com.daciosoftware.loteriasdms.util.DateUtil;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 
-public class LoteriasDMSActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
 
     @Override
@@ -44,7 +58,79 @@ public class LoteriasDMSActivity extends AppCompatActivity implements AdapterVie
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               //Rotina de leitura de soteio da pagina web da caixa.
+                MegasenaDAO megasenaDAO = new MegasenaDAO(getApplicationContext(), new MegasenaContract());
+                for(Sorteio megasena1 : megasenaDAO.listAll()){
+                    megasenaDAO.delete(megasena1);
+                }
+                Megasena megasena = new Megasena();
+                megasena.setNumero(1);
+                Calendar data = Calendar.getInstance();
+                data.set(2001,Calendar.MARCH,21);
+                megasena.setData(data);
+                megasena.setLocal("Parnaiba");
+                megasena.setD1(10);
+                megasena.setD2(15);
+                megasena.setD3(30);
+                megasena.setD4(35);
+                megasena.setD5(36);
+                megasena.setD6(44);
+                megasenaDAO.save(megasena);
+                for(Sorteio megasena1 : megasenaDAO.listAll()){
+                    Log.i(Constantes.CATEGORIA, megasena1.toString());
+                }
+
+                LotofacilDAO lotofacilDAO = new LotofacilDAO(getApplicationContext(), new LotofacilContract());
+                for(Sorteio lotofacil1 : lotofacilDAO.listAll()){
+                    lotofacilDAO.delete(lotofacil1);
+                }
+                Lotofacil lotofacil = new Lotofacil();
+                lotofacil.setNumero(1);
+                Calendar data2 = Calendar.getInstance();
+                data2.set(2013, Calendar.APRIL,30);
+                lotofacil.setData(data2);
+                lotofacil.setLocal("Parnaiba");
+                lotofacil.setD1(10);
+                lotofacil.setD2(15);
+                lotofacil.setD3(30);
+                lotofacil.setD4(35);
+                lotofacil.setD5(36);
+                lotofacil.setD6(44);
+                lotofacil.setD7(1);
+                lotofacil.setD8(10);
+                lotofacil.setD9(13);
+                lotofacil.setD10(19);
+                lotofacil.setD11(33);
+                lotofacil.setD12(17);
+                lotofacil.setD13(16);
+                lotofacil.setD14(8);
+                lotofacil.setD15(33);
+
+                lotofacilDAO.save(lotofacil);
+                for(Sorteio lotofacil1 : lotofacilDAO.listAll()){
+                    Log.i(Constantes.CATEGORIA, lotofacil1.toString());
+                }
+
+
+                QuinaDAO quinaDAO = new QuinaDAO(getApplicationContext(), new QuinaContract());
+                for(Sorteio quina1 : quinaDAO.listAll()){
+                    quinaDAO.delete(quina1);
+                }
+                Quina quina = new Quina();
+                quina.setNumero(1);
+                String dataBr = "21/08/2001";
+                quina.setData(DateUtil.dateBrToCalendar(dataBr));
+                quina.setLocal("Parnaiba");
+                quina.setD1(10);
+                quina.setD2(15);
+                quina.setD3(30);
+                quina.setD4(35);
+                quina.setD5(80);
+
+                quinaDAO.save(quina);
+                for(Sorteio quina1 : quinaDAO.listAll()){
+                    Log.i(Constantes.CATEGORIA, quina1.toString());
+                }
+
             }
         });
     }
@@ -88,7 +174,7 @@ public class LoteriasDMSActivity extends AppCompatActivity implements AdapterVie
             default: typeSorteio=TypeSorteio.MEGASENA;
         }
 
-        Intent intent = new Intent(LoteriasDMSActivity.this, MenuSecundarioActivity.class);
+        Intent intent = new Intent(MainActivity.this, MenuSecundarioActivity.class);
         intent.putExtra(Constantes.TYPE_SORTEIO,typeSorteio);
         startActivity(intent);
 

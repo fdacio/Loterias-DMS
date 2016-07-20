@@ -7,5 +7,6 @@ public abstract class Constantes {
     public static final String CATEGORIA = "Loterias";
     public static final String TYPE_DIALOG = "TYPE_DIALOG";
     public static final String TYPE_SORTEIO = "TYPE_SORTEIO";
+    public static final String DEZENAS_SELECIONADAS = "DEZENAS_SELECIONADAS";
 
 }
