@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -44,7 +45,7 @@ public class SorteioListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sorteio_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
+        if (toolbar != null) {
             setSupportActionBar(toolbar);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
@@ -52,7 +53,7 @@ public class SorteioListActivity extends AppCompatActivity {
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
 
         View layout = findViewById(R.id.layout_sorteio_list);
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this,layout);
+        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this, layout);
         styleTypeSorteio.setStyleHeader(typeSorteio);
 
         listViewSorteio = (ListView) findViewById(R.id.listViewSorteio);
@@ -62,48 +63,58 @@ public class SorteioListActivity extends AppCompatActivity {
 
         styleTypeSorteio.setStyleFloatingActionButton(typeSorteio);
         FloatingActionButton fabAdd = (FloatingActionButton) findViewById(R.id.fabAdd);
-        if(fabAdd != null) {
+        if (fabAdd != null) {
             fabAdd.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    Intent intent = new Intent(SorteioListActivity.this, SorteioEditActivity.class);
+                    intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
+                    startActivityForResult(intent, Constantes.INSERT_UPDATE);
                 }
             });
         }
     }
 
 
-    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio){
+    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio) {
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
-        if(sorteioDAO != null) {
+        if (sorteioDAO != null) {
             listSorteio = sorteioDAO.listAll();
         }
-        return new SorteioListAdapter(this, listSorteio,typeSorteio);
+        return new SorteioListAdapter(this, listSorteio, typeSorteio);
     }
 
 
-    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio, int numero){
+    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio, int numero) {
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
-        if(sorteioDAO != null) {
-            listSorteio.add(sorteioDAO.findByNumber(numero));
+        if (sorteioDAO != null) {
+            List<Sorteio> list = new ArrayList<>();
+            list.add(sorteioDAO.findByNumber(numero));
+            return new SorteioListAdapter(this, list, typeSorteio);
+        } else {
+            return null;
         }
-        return new SorteioListAdapter(this, listSorteio,typeSorteio);
+
     }
 
-    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio, Calendar date){
+    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio, Calendar date) {
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
-        if(sorteioDAO != null) {
-            listSorteio.add(sorteioDAO.findByDate(date));
+        if (sorteioDAO != null) {
+            List<Sorteio> list = new ArrayList<>();
+            list.add(sorteioDAO.findByDate(date));
+            return new SorteioListAdapter(this, list, typeSorteio);
+        } else {
+            return null;
         }
-        return new SorteioListAdapter(this, listSorteio,typeSorteio);
+
     }
 
-    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio, Calendar date1, Calendar date2){
+    private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio, Calendar date1, Calendar date2) {
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
-        if(sorteioDAO != null) {
+        if (sorteioDAO != null) {
             listSorteio = sorteioDAO.findByBetweenDate(date1, date2);
         }
-        return new SorteioListAdapter(this, listSorteio,typeSorteio);
+        return new SorteioListAdapter(this, listSorteio, typeSorteio);
     }
 
     @Override
@@ -128,22 +139,22 @@ public class SorteioListActivity extends AppCompatActivity {
                 @Override
                 public boolean onQueryTextSubmit(String searchFor) {
                     SorteioListAdapter sorteioListAdapter = null;
-                    try{
+                    try {
                         int numero = Integer.parseInt(searchFor);
                         sorteioListAdapter = getSorteioListAdapter(typeSorteio, numero);
-                    }catch (NumberFormatException nfe){
+                    } catch (NumberFormatException nfe) {
                         nfe.printStackTrace();
                     }
 
-                    try{
-                        Calendar date = DateUtil.dateUSToCalendar(searchFor);
+                    try {
+                        Calendar date = DateUtil.dateBrToCalendar(searchFor);
                         sorteioListAdapter = getSorteioListAdapter(typeSorteio, date);
-                    }catch (ParseException pe){
+                    } catch (ParseException pe) {
                         pe.printStackTrace();
                     }
 
-                    if(sorteioListAdapter != null) {
-                       listViewSorteio.setAdapter(sorteioListAdapter);
+                    if (sorteioListAdapter != null) {
+                        listViewSorteio.setAdapter(sorteioListAdapter);
                     }
 
                     return true;
@@ -184,7 +195,7 @@ public class SorteioListActivity extends AppCompatActivity {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Sorteio sorteio = listSorteio.get((int)info.id);
+        Sorteio sorteio = listSorteio.get((int) info.id);
         switch (item.getItemId()) {
             case R.id.edit:
                 editSorteio(sorteio);
@@ -198,46 +209,48 @@ public class SorteioListActivity extends AppCompatActivity {
     }
 
 
-    private void editSorteio(Sorteio sorteio){
+    private void editSorteio(Sorteio sorteio) {
         Intent intent = new Intent(SorteioListActivity.this, SorteioEditActivity.class);
         intent.putExtra(Constantes.ID_INSERT_UPDATE, sorteio.getId());
-        intent.putExtra(Constantes.TYPE_SORTEIO,typeSorteio);
+        intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
         startActivityForResult(intent, Constantes.INSERT_UPDATE);
 
     }
 
-    private void deleteSorteio(Sorteio sorteio){
+    private void deleteSorteio(Sorteio sorteio) {
         DialogBox dialogBox = new DialogBox(this,
                 DialogBox.DialogBoxType.QUESTION,
                 getResources().getString(R.string.msg_delete_registro),
-                getResources().getString(R.string.label_numero_concurso)+sorteio.getNumero(),
+                getResources().getString(R.string.label_numero_concurso) + sorteio.getNumero(),
                 new OnClickYesDialog(sorteio),
                 new OnClickNoDialog());
         dialogBox.show();
 
     }
 
-    private class OnClickYesDialog implements DialogInterface.OnClickListener{
+    private class OnClickYesDialog implements DialogInterface.OnClickListener {
         private Sorteio sorteio;
-        public OnClickYesDialog(Sorteio sorteio){
+
+        public OnClickYesDialog(Sorteio sorteio) {
             this.sorteio = sorteio;
         }
+
         @Override
         public void onClick(DialogInterface dialog, int which) {
             try {
                 SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
-                if(sorteioDAO != null) {
+                if (sorteioDAO != null) {
                     sorteioDAO.delete(sorteio);
                 }
                 listViewSorteio.setAdapter(getSorteioListAdapter(typeSorteio));
-            }catch (SQLiteException e){
-                new DialogBox(SorteioListActivity.this, DialogBox.DialogBoxType.INFORMATION,"Error",e.getMessage()).show();
+            } catch (SQLiteException e) {
+                new DialogBox(SorteioListActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", e.getMessage()).show();
             }
 
         }
     }
 
-    private class OnClickNoDialog implements DialogInterface.OnClickListener{
+    private class OnClickNoDialog implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
@@ -246,9 +259,9 @@ public class SorteioListActivity extends AppCompatActivity {
 
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent){
-        super.onActivityResult(requestCode,resultCode,intent);
-        if(requestCode == Constantes.INSERT_UPDATE && resultCode == RESULT_OK){
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == Constantes.INSERT_UPDATE && resultCode == RESULT_OK) {
             listViewSorteio.setAdapter(getSorteioListAdapter(typeSorteio));
         }
     }

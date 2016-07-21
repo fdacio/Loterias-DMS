@@ -7,6 +7,7 @@ import br.com.daciosoftware.loteriasdms.util.DateUtil;
  */
 public class Megasena extends Sorteio{
 
+
     @Override
     public String toString(){
         return "Megasena: Id:"+getId()+" Número:" +getNumero()+ " Data:" + DateUtil.calendarToDateBr(getData())+ " Ultina dezena: "+getD6();

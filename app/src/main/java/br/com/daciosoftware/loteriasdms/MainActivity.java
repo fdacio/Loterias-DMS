@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.text.ParseException;
 import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.dao.Lotofacil;
@@ -38,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_loterias_dms);
+        setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         if(toolbar != null) {
             toolbar.setLogo(R.mipmap.ic_launcher);
@@ -81,8 +82,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     megasena.setD6(44);
                     megasenaDAO.save(megasena);
                     megasena.setNumero(2);
+                    Calendar data2 = Calendar.getInstance();
+                    data2.set(2002,Calendar.DECEMBER,10);
+                    megasena.setData(data2);
                     megasenaDAO.save(megasena);
                     megasena.setNumero(3);
+                    Calendar data3 = Calendar.getInstance();
+                    data2.set(2002,Calendar.DECEMBER,10);
+                    megasena.setData(data3);
+
                     megasenaDAO.save(megasena);
                     for (Sorteio megasena1 : megasenaDAO.listAll()) {
                         Log.i(Constantes.CATEGORIA, megasena1.toString());
@@ -94,9 +102,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     }
                     Lotofacil lotofacil = new Lotofacil();
                     lotofacil.setNumero(1);
-                    Calendar data2 = Calendar.getInstance();
-                    data2.set(2013, Calendar.APRIL, 30);
-                    lotofacil.setData(data2);
+                    Calendar data22 = Calendar.getInstance();
+                    data22.set(2013, Calendar.APRIL, 30);
+                    lotofacil.setData(data22);
                     lotofacil.setLocal("Parnaiba");
                     lotofacil.setD1(10);
                     lotofacil.setD2(15);
@@ -132,7 +140,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     Quina quina = new Quina();
                     quina.setNumero(1);
                     String dataBr = "21/08/2001";
-                    quina.setData(DateUtil.dateBrToCalendar(dataBr));
+                    try {
+                        quina.setData(DateUtil.dateBrToCalendar(dataBr));
+                    } catch (ParseException e) {
+
+                    }
                     quina.setLocal("Parnaiba");
                     quina.setD1(10);
                     quina.setD2(15);

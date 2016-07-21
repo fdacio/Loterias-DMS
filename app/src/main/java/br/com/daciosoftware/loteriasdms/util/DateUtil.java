@@ -14,40 +14,29 @@ public class DateUtil {
 
     private DateUtil(){}
 
-
-    public static Calendar dateBrToCalendar(String data) {
-        SimpleDateFormat sdf  = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        try {
-            Date date = sdf.parse(data);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            return calendar;
-        }catch (ParseException pe){
-            pe.printStackTrace();
-            return null;
-        }
+    public static Calendar dateBrToCalendar(String data) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
+        Date date = sdf.parse(data);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
     }
 
     public static Calendar dateUSToCalendar(String data) throws ParseException {
-        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
-        try {
-            Date date = sdf.parse(data);
-            Calendar calendar = Calendar.getInstance();
-            calendar.setTime(date);
-            return calendar;
-        }catch (ParseException pe){
-            pe.printStackTrace();
-            return null;
-        }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+        Date date = sdf.parse(data);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
     }
 
-    public static String calendarToDateBr(Calendar data){
-        SimpleDateFormat sdf  = new SimpleDateFormat("dd/MM/yyyy",Locale.getDefault());
+    public static String calendarToDateBr(Calendar data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return sdf.format(data.getTime());
     }
 
-    public static String calendarToDateUS(Calendar data){
-        SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+    public static String calendarToDateUS(Calendar data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
         return sdf.format(data.getTime());
     }
 

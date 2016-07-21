@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".sorteio.SorteioListActivity"
-    android:id="@+id/layout_sorteio_list">
+    tools:context="br.com.daciosoftware.loteriasdms.sorteio.SorteioEditActivity"
+    android:id="@+id/layout_activity_sorteio_quina_edit">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,16 +22,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_sorteio_list" />
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp"
-        android:background="@color/colorAccent" />
-
+    <include layout="@layout/content_sorteio_quina_edit" />
 
 </android.support.design.widget.CoordinatorLayout>

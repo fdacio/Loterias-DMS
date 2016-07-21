@@ -9,17 +9,11 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".MainActivity"
-    tools:showIn="@layout/activity_main">
+    tools:context="br.com.daciosoftware.loteriasdms.sorteio.SorteioEditActivity"
+    tools:showIn="@layout/activity_sorteio_megasena_edit">
+
+    <include layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel"/>
 
 
-    <ListView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/listViewMenuMain"
-        android:headerDividersEnabled="false"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"/>
-
- </RelativeLayout>
+</RelativeLayout>

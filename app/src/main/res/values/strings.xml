@@ -65,6 +65,7 @@
     <string name="title_activity_processar_arquivo">Processar Arquivo</string>
     <string name="title_activity_confira_seu_jogo">Confira Seu Jogo</string>
     <string name="zero">0 dezenas selecionadas</string>
+    <string name="msg_validade_form">Informe os campos abaixo</string>
 
 
     <string-array name="array_qtde_dezenas_por_jogo_megasena">
@@ -95,6 +96,6 @@
     </string-array>
 
     <string name="title_activity_gera_jogos">Gera Jogos</string>
-    <string name="title_activity_sorteio_edit">SorteioEditActivity</string>
+    <string name="title_activity_sorteio_edit">Editar Sorteio</string>
 
 </resources>
