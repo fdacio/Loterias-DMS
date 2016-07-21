@@ -2,6 +2,8 @@ package br.com.daciosoftware.loteriasdms;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Color;
+import android.support.annotation.ColorRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -43,6 +45,19 @@ public class StyleTypeSorteio {
                 return R.color.colorQuina;
             default:
                 return R.color.colorPrimary;
+        }
+    }
+
+    private int getColorRgb(TypeSorteio typeSorteio) {
+        switch (typeSorteio) {
+            case MEGASENA:
+                return Color.rgb(34,149,81);
+            case LOTOFACIL:
+                return Color.rgb(124,11,137);
+            case QUINA:
+                return Color.rgb(41,11,137);
+            default:
+                return Color.rgb(63,81,181);
         }
     }
 
@@ -136,10 +151,10 @@ public class StyleTypeSorteio {
         FloatingActionButton fab = (FloatingActionButton) layoutActivity.findViewById(R.id.fab);
         FloatingActionButton fabAdd = (FloatingActionButton) layoutActivity.findViewById(R.id.fabAdd);
         if (fab != null){
-            fab.setBackgroundTintList(ColorStateList.valueOf(getColor(typeSorteio)));
+            fab.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
         if (fabAdd != null){
-            fabAdd.setBackgroundTintList(ColorStateList.valueOf(getColor(typeSorteio)));
+            fabAdd.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
 
     }

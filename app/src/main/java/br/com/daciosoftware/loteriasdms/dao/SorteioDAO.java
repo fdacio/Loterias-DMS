@@ -6,18 +6,15 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
-import android.util.Log;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Locale;
 
+import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.db.Database;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
 import br.com.daciosoftware.loteriasdms.db.InterfaceDAO;
-import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DateUtil;
 
 /**
@@ -26,7 +23,7 @@ import br.com.daciosoftware.loteriasdms.util.DateUtil;
 public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     private SQLiteDatabase db;
-
+    private Context context;
     private InterfaceContractDatabase contract;
 
     private String tableName;
@@ -35,14 +32,28 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     private String[] saveColumns;
 
 
-    public SorteioDAO(Context context, InterfaceContractDatabase contract) {
-         this.contract = contract;
+    protected SorteioDAO(Context context, InterfaceContractDatabase contract) {
+        this.context = context;
+        this.contract = contract;
         this.db = Database.getDatabase(context);
         setVariabelsContract();
     }
 
 
-    public abstract Sorteio getInstancia();
+    public abstract Sorteio getInstanciaEntity();
+
+    public static SorteioDAO getDAO(Context context, TypeSorteio typeSorteio){
+        switch (typeSorteio){
+            case MEGASENA: return new MegasenaDAO(context,new MegasenaContract());
+
+            case LOTOFACIL: return new LotofacilDAO(context,new LotofacilContract());
+
+            case QUINA: return new QuinaDAO(context,new QuinaContract());
+
+            default: return null;
+        }
+
+    }
 
     public void setVariabelsContract() {
         this.tableName = contract.getTableName();
@@ -59,6 +70,16 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
                 null,
                 null,
                 null);
+    }
+
+    public Cursor getCursor(String where, String[] whereArgs, String orderBy) {
+        return  db.query(this.tableName,
+                this.allColumns,
+                where,
+                whereArgs,
+                null,
+                null,
+                orderBy);
     }
 
     @Override
@@ -91,7 +112,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
             values.put(saveColumns[18], sorteio.getD15());
         }
 
-
         return db.insertOrThrow(this.tableName, "", values);
     }
 
@@ -107,7 +127,8 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     public List<Sorteio> listAll() {
         List<Sorteio> list = new ArrayList<>();
         try {
-            Cursor cursor = getCursor(null, null);
+            String orderBy = allColumns[1] + " desc";
+            Cursor cursor = getCursor(null, null, orderBy );
             if (cursor.moveToFirst()) {
                 do {
                     Sorteio sorteio = getEntity(cursor);
@@ -137,13 +158,53 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     @Override
     public Sorteio findByNumber(Integer number) {
-        return null;
+        String where = this.allColumns[1] + "=?";
+        String[] whereArgs = new String[]{String.valueOf(number)};
+        Cursor cursor = getCursor(where, whereArgs);
+        if (cursor.moveToFirst()) {
+            return getEntity(cursor);
+
+        } else {
+            return null;
+        }
     }
 
     @Override
     public Sorteio findByDate(Calendar date) {
-        return null;
+        String where = this.allColumns[2] + "=?";
+        String[] whereArgs = new String[]{DateUtil.calendarToDateUS(date)};
+        Cursor cursor = getCursor(where, whereArgs);
+        if (cursor.moveToFirst()) {
+            return getEntity(cursor);
+
+        } else {
+            return null;
+        }
+
+
     }
+
+    public List<Sorteio> findByBetweenDate(Calendar date1, Calendar date2) {
+        List<Sorteio> list = new ArrayList<>();
+        try {
+            String where = this.allColumns[2] + " between ? and ?";
+            String[] whereArgs = new String[]{DateUtil.calendarToDateUS(date1),DateUtil.calendarToDateUS(date2)};
+            String orderBy = allColumns[1] + " desc";
+            Cursor cursor = getCursor(where, whereArgs, orderBy );
+            if (cursor.moveToFirst()) {
+                do {
+                    Sorteio sorteio = getEntity(cursor);
+                    list.add(sorteio);
+                } while (cursor.moveToNext());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException();
+
+        }
+        return list;
+
+    }
+
 
     @Override
     public List<Sorteio> findByDezenas(int... dezenas) {
@@ -153,7 +214,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     @Override
     public Sorteio getEntity(Cursor c) {
         if (c.getCount() > 0) {
-            Sorteio sorteio = getInstancia();
+            Sorteio sorteio = getInstanciaEntity();
             sorteio.setId(c.getInt(0));
             sorteio.setNumero(c.getInt(1));
             sorteio.setData(DateUtil.dateUSToCalendar(c.getString(2)));

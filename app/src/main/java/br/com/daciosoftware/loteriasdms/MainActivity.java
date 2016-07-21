@@ -40,10 +40,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_loterias_dms);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setLogo(R.mipmap.ic_launcher);
-        toolbar.setTitle(getResources().getString(R.string.app_name));
-        toolbar.setSubtitle(getResources().getString(R.string.subtitle_dezenas_mais_sorteadas));
-        setSupportActionBar(toolbar);
+        if(toolbar != null) {
+            toolbar.setLogo(R.mipmap.ic_launcher);
+            toolbar.setTitle(getResources().getString(R.string.app_name));
+            toolbar.setSubtitle(getResources().getString(R.string.subtitle_dezenas_mais_sorteadas));
+            setSupportActionBar(toolbar);
+        }
 
         String[] menuMain = {
                 getResources().getString(R.string.mega_sena),
@@ -51,88 +53,106 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 getResources().getString(R.string.quina)};
 
         ListView listViewMenuMain = (ListView) findViewById(R.id.listViewMenuMain);
-        listViewMenuMain.setAdapter(new LoteriasDMSAdapter(getApplicationContext(),menuMain));
-        listViewMenuMain.setOnItemClickListener(this);
+        if(listViewMenuMain != null) {
+            listViewMenuMain.setAdapter(new LoteriasDMSAdapter(getApplicationContext(), menuMain));
+            listViewMenuMain.setOnItemClickListener(this);
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MegasenaDAO megasenaDAO = new MegasenaDAO(getApplicationContext(), new MegasenaContract());
-                for(Sorteio megasena1 : megasenaDAO.listAll()){
-                    megasenaDAO.delete(megasena1);
-                }
-                Megasena megasena = new Megasena();
-                megasena.setNumero(1);
-                Calendar data = Calendar.getInstance();
-                data.set(2001,Calendar.MARCH,21);
-                megasena.setData(data);
-                megasena.setLocal("Parnaiba");
-                megasena.setD1(10);
-                megasena.setD2(15);
-                megasena.setD3(30);
-                megasena.setD4(35);
-                megasena.setD5(36);
-                megasena.setD6(44);
-                megasenaDAO.save(megasena);
-                for(Sorteio megasena1 : megasenaDAO.listAll()){
-                    Log.i(Constantes.CATEGORIA, megasena1.toString());
-                }
+        if(fab != null) {
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    MegasenaDAO megasenaDAO = new MegasenaDAO(getApplicationContext(), new MegasenaContract());
+                    for (Sorteio megasena1 : megasenaDAO.listAll()) {
+                        megasenaDAO.delete(megasena1);
+                    }
+                    Megasena megasena = new Megasena();
+                    megasena.setNumero(1);
+                    Calendar data = Calendar.getInstance();
+                    data.set(2001, Calendar.MARCH, 21);
+                    megasena.setData(data);
+                    megasena.setLocal("Parnaiba");
+                    megasena.setD1(10);
+                    megasena.setD2(15);
+                    megasena.setD3(30);
+                    megasena.setD4(35);
+                    megasena.setD5(36);
+                    megasena.setD6(44);
+                    megasenaDAO.save(megasena);
+                    megasena.setNumero(2);
+                    megasenaDAO.save(megasena);
+                    megasena.setNumero(3);
+                    megasenaDAO.save(megasena);
+                    for (Sorteio megasena1 : megasenaDAO.listAll()) {
+                        Log.i(Constantes.CATEGORIA, megasena1.toString());
+                    }
 
-                LotofacilDAO lotofacilDAO = new LotofacilDAO(getApplicationContext(), new LotofacilContract());
-                for(Sorteio lotofacil1 : lotofacilDAO.listAll()){
-                    lotofacilDAO.delete(lotofacil1);
+                    LotofacilDAO lotofacilDAO = new LotofacilDAO(getApplicationContext(), new LotofacilContract());
+                    for (Sorteio lotofacil1 : lotofacilDAO.listAll()) {
+                        lotofacilDAO.delete(lotofacil1);
+                    }
+                    Lotofacil lotofacil = new Lotofacil();
+                    lotofacil.setNumero(1);
+                    Calendar data2 = Calendar.getInstance();
+                    data2.set(2013, Calendar.APRIL, 30);
+                    lotofacil.setData(data2);
+                    lotofacil.setLocal("Parnaiba");
+                    lotofacil.setD1(10);
+                    lotofacil.setD2(15);
+                    lotofacil.setD3(30);
+                    lotofacil.setD4(35);
+                    lotofacil.setD5(36);
+                    lotofacil.setD6(44);
+                    lotofacil.setD7(1);
+                    lotofacil.setD8(10);
+                    lotofacil.setD9(13);
+                    lotofacil.setD10(19);
+                    lotofacil.setD11(33);
+                    lotofacil.setD12(17);
+                    lotofacil.setD13(16);
+                    lotofacil.setD14(8);
+                    lotofacil.setD15(33);
+
+                    lotofacilDAO.save(lotofacil);
+                    lotofacil.setNumero(2);
+                    lotofacilDAO.save(lotofacil);
+                    lotofacil.setNumero(3);
+                    lotofacilDAO.save(lotofacil);
+
+                    for (Sorteio lotofacil1 : lotofacilDAO.listAll()) {
+                        Log.i(Constantes.CATEGORIA, lotofacil1.toString());
+                    }
+
+
+                    QuinaDAO quinaDAO = new QuinaDAO(getApplicationContext(), new QuinaContract());
+                    for (Sorteio quina1 : quinaDAO.listAll()) {
+                        quinaDAO.delete(quina1);
+                    }
+                    Quina quina = new Quina();
+                    quina.setNumero(1);
+                    String dataBr = "21/08/2001";
+                    quina.setData(DateUtil.dateBrToCalendar(dataBr));
+                    quina.setLocal("Parnaiba");
+                    quina.setD1(10);
+                    quina.setD2(15);
+                    quina.setD3(30);
+                    quina.setD4(35);
+                    quina.setD5(80);
+
+                    quinaDAO.save(quina);
+                    quina.setNumero(2);
+                    quinaDAO.save(quina);
+                    quina.setNumero(3);
+                    quinaDAO.save(quina);
+
+                    for (Sorteio quina1 : quinaDAO.listAll()) {
+                        Log.i(Constantes.CATEGORIA, quina1.toString());
+                    }
+
                 }
-                Lotofacil lotofacil = new Lotofacil();
-                lotofacil.setNumero(1);
-                Calendar data2 = Calendar.getInstance();
-                data2.set(2013, Calendar.APRIL,30);
-                lotofacil.setData(data2);
-                lotofacil.setLocal("Parnaiba");
-                lotofacil.setD1(10);
-                lotofacil.setD2(15);
-                lotofacil.setD3(30);
-                lotofacil.setD4(35);
-                lotofacil.setD5(36);
-                lotofacil.setD6(44);
-                lotofacil.setD7(1);
-                lotofacil.setD8(10);
-                lotofacil.setD9(13);
-                lotofacil.setD10(19);
-                lotofacil.setD11(33);
-                lotofacil.setD12(17);
-                lotofacil.setD13(16);
-                lotofacil.setD14(8);
-                lotofacil.setD15(33);
-
-                lotofacilDAO.save(lotofacil);
-                for(Sorteio lotofacil1 : lotofacilDAO.listAll()){
-                    Log.i(Constantes.CATEGORIA, lotofacil1.toString());
-                }
-
-
-                QuinaDAO quinaDAO = new QuinaDAO(getApplicationContext(), new QuinaContract());
-                for(Sorteio quina1 : quinaDAO.listAll()){
-                    quinaDAO.delete(quina1);
-                }
-                Quina quina = new Quina();
-                quina.setNumero(1);
-                String dataBr = "21/08/2001";
-                quina.setData(DateUtil.dateBrToCalendar(dataBr));
-                quina.setLocal("Parnaiba");
-                quina.setD1(10);
-                quina.setD2(15);
-                quina.setD3(30);
-                quina.setD4(35);
-                quina.setD5(80);
-
-                quinaDAO.save(quina);
-                for(Sorteio quina1 : quinaDAO.listAll()){
-                    Log.i(Constantes.CATEGORIA, quina1.toString());
-                }
-
-            }
-        });
+            });
+        }
     }
 
     @Override
@@ -193,6 +213,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
                         activity.finish();
                     }
                 },

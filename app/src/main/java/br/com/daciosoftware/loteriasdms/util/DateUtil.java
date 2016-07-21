@@ -28,7 +28,7 @@ public class DateUtil {
         }
     }
 
-    public static Calendar dateUSToCalendar(String data) {
+    public static Calendar dateUSToCalendar(String data) throws ParseException {
         SimpleDateFormat sdf  = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
         try {
             Date date = sdf.parse(data);

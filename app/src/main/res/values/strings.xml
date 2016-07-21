@@ -35,6 +35,16 @@
     <string name="label_local">Local:</string>
     <string name="label_cidade_ganhador">Cidade do Ganhador</string>
     <string name="label_00">00</string>
+    <string name="msg_delete_registro">Excluir o registro?</string>
+    <string name="salvar">Salvar</string>
+    <string name="cancelar">Cancelar</string>
+    <string name="excluir">Excluir</string>
+    <string name="alterar">Alterar</string>
+    <string name="pesquisar">Pesquisar</string>
+    <string name="pesquisarV11">PesquisarV11</string>
+    <string name="search_hint">Pesquisar</string>
+    <string name="desfazer">Desfazer</string>
+    <string name="recarregar">Recarregar</string>
 
 
 
@@ -85,5 +95,6 @@
     </string-array>
 
     <string name="title_activity_gera_jogos">Gera Jogos</string>
+    <string name="title_activity_sorteio_edit">SorteioEditActivity</string>
 
 </resources>

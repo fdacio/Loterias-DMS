@@ -14,7 +14,7 @@ public class QuinaDAO extends SorteioDAO {
     }
 
     @Override
-    public Quina getInstancia() {
+    public Quina getInstanciaEntity() {
         return new Quina();
     }
 }

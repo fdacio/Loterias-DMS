@@ -14,7 +14,7 @@ public class LotofacilDAO extends SorteioDAO {
     }
 
     @Override
-    public Lotofacil getInstancia() {
+    public Lotofacil getInstanciaEntity() {
         return new Lotofacil();
     }
 }

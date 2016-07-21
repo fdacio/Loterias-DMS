@@ -15,7 +15,7 @@ public class MegasenaDAO extends SorteioDAO {
     }
 
     @Override
-    public Megasena getInstancia() {
+    public Megasena getInstanciaEntity() {
         return new Megasena();
     }
 }

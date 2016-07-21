@@ -41,19 +41,28 @@
         <activity
             android:name=".sorteio.SorteioListActivity"
             android:label="@string/title_activity_sorteio_list"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".processaarquivo.ProcessaArquivoActivity"
             android:label="@string/title_activity_processar_arquivo"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".confiraseujogo.ConfiraSeuJogoActivity"
             android:label="@string/title_activity_confira_seu_jogo"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".dezemasmaissorteadas.GeraJogosActivity"
             android:label="@string/title_activity_gera_jogos"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".sorteio.SorteioEditActivity"
+            android:label="@string/title_activity_sorteio_edit"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
