@@ -131,14 +131,18 @@ public class SorteioListActivity extends AppCompatActivity {
         } else {
             searchView = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(searchItem);
         }
-        searchView.setSubmitButtonEnabled(true);
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        //searchView.setSubmitButtonEnabled(true);
+        //searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
 
         if (searchView != null) {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String searchFor) {
                     SorteioListAdapter sorteioListAdapter = null;
+
+                    /*
+                    Pesquisa pelo numero do concurso
+                     */
                     try {
                         int numero = Integer.parseInt(searchFor);
                         sorteioListAdapter = getSorteioListAdapter(typeSorteio, numero);
@@ -146,6 +150,9 @@ public class SorteioListActivity extends AppCompatActivity {
                         nfe.printStackTrace();
                     }
 
+                    /*
+                    Pesquisa pela data do concurso
+                     */
                     try {
                         Calendar date = DateUtil.dateBrToCalendar(searchFor);
                         sorteioListAdapter = getSorteioListAdapter(typeSorteio, date);
@@ -214,7 +221,6 @@ public class SorteioListActivity extends AppCompatActivity {
         intent.putExtra(Constantes.ID_INSERT_UPDATE, sorteio.getId());
         intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
         startActivityForResult(intent, Constantes.INSERT_UPDATE);
-
     }
 
     private void deleteSorteio(Sorteio sorteio) {
@@ -225,16 +231,13 @@ public class SorteioListActivity extends AppCompatActivity {
                 new OnClickYesDialog(sorteio),
                 new OnClickNoDialog());
         dialogBox.show();
-
     }
 
     private class OnClickYesDialog implements DialogInterface.OnClickListener {
         private Sorteio sorteio;
-
         public OnClickYesDialog(Sorteio sorteio) {
             this.sorteio = sorteio;
         }
-
         @Override
         public void onClick(DialogInterface dialog, int which) {
             try {
@@ -246,7 +249,6 @@ public class SorteioListActivity extends AppCompatActivity {
             } catch (SQLiteException e) {
                 new DialogBox(SorteioListActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", e.getMessage()).show();
             }
-
         }
     }
 
@@ -257,7 +259,6 @@ public class SorteioListActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -265,6 +266,4 @@ public class SorteioListActivity extends AppCompatActivity {
             listViewSorteio.setAdapter(getSorteioListAdapter(typeSorteio));
         }
     }
-
-
 }

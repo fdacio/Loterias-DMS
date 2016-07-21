@@ -48,10 +48,7 @@ public class DialogDate {
 
             Dialog datePickerDialog = new DatePickerDialog(textView.getContext(), new OnDateSetSorteioListener(), ano, mes, dia);
             datePickerDialog.show();
-
         }
-
-
     }
 
     private class OnDateSetSorteioListener implements DatePickerDialog.OnDateSetListener {

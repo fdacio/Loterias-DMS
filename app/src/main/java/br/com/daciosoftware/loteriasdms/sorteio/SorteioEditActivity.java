@@ -199,39 +199,31 @@ public class SorteioEditActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    private class OnDateSetSorteioListener implements DatePickerDialog.OnDateSetListener {
-        private Button button;
-
-        public OnDateSetSorteioListener(Button button) {
-            this.button = button;
-        }
-
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            button.setText(dayOfMonth + "/" + (monthOfYear + 1) + "/" + year);
-        }
-    }
-
-    private void showDatePickerDialog(Button button) {
-        if (button != null) {
-            Calendar dateOfButton = Calendar.getInstance();
-            try {
-                dateOfButton = DateUtil.dateBrToCalendar(button.getText().toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            int dia = dateOfButton.get(Calendar.DAY_OF_MONTH);
-            int mes = dateOfButton.get(Calendar.MONTH);
-            int ano = dateOfButton.get(Calendar.YEAR);
-            Dialog datePickerDialog = new DatePickerDialog(this, new OnDateSetSorteioListener(button), ano, mes, dia);
-            datePickerDialog.show();
-        }
-    }
-    */
 
     private boolean validateForm() {
-        return true;
+        String numero = editTextNumero.getText().toString();
+        String local = editTextLocal.getText().toString();
+
+        if(numero.equals("")){
+            fieldsValidate.add("Número");
+        }
+
+        if(local.equals("")){
+            fieldsValidate.add("Local");
+        }
+
+        for (int i = 0; i < listaEditDezenas.size(); i++) {
+            EditText edtDezena = listaEditDezenas.get(i);
+            if(edtDezena.getText().toString().equals("")){
+                fieldsValidate.add("Dezena "+(i+1));
+            }
+        }
+
+        if(fieldsValidate.size() > 0){
+            return false;
+        }else {
+            return true;
+        }
     }
 
     @Override
