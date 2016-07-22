@@ -12,6 +12,8 @@
     <string name="label_gerar_jogos">Gerar Jogos</string>
     <string name="label_qtde_dezenas">Qtde.Dezenas</string>
     <string name="error_processar_arquivo">Erro ao processar arquivo</string>
+    <string name="error_arquivo_invalido">Arquivo inválido</string>
+    <string name="error_informe_arquivo">Informe o arquivo com todos os resultado!</string>
     <string name="error_conexao">Verifique sua conexão!</string>
     <string name="msg_aguarde">Aguarde...</string>
     <string name="title_submenu">Menu</string>
@@ -45,7 +47,6 @@
     <string name="search_hint">Pesquisar</string>
     <string name="desfazer">Desfazer</string>
     <string name="recarregar">Recarregar</string>
-
 
 
     <string name="title_file_dialog">Arquivo/Diretorio</string>
@@ -97,5 +98,12 @@
 
     <string name="title_activity_gera_jogos">Gera Jogos</string>
     <string name="title_activity_sorteio_edit">Editar Sorteio</string>
+    <string name="label_processar_arquivo">Processar Arquivo</string>
+    <string name="label_baixar_arquivo">Baixar Arquivo</string>
+    <string name="title_activity_configuracoes">Configurações</string>
+    <string name="label_url_arquivo_resultados">URL do Arquivo de Resultados</string>
+    <string name="label_url_resultados">URL dos Resultados</string>
+
+    <string name="msg_salvar_configuracoes">Deseja salvar as configurações?</string>
 
 </resources>

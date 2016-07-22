@@ -13,10 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.util.Calendar;
 
+import br.com.daciosoftware.loteriasdms.configuracoes.ConfiguracoesActivity;
 import br.com.daciosoftware.loteriasdms.dao.Lotofacil;
 import br.com.daciosoftware.loteriasdms.dao.LotofacilContract;
 import br.com.daciosoftware.loteriasdms.dao.LotofacilDAO;
@@ -33,7 +35,7 @@ import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DateUtil;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
 
     @Override
@@ -41,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if(toolbar != null) {
+        if (toolbar != null) {
             toolbar.setLogo(R.mipmap.ic_launcher);
             toolbar.setTitle(getResources().getString(R.string.app_name));
             toolbar.setSubtitle(getResources().getString(R.string.subtitle_dezenas_mais_sorteadas));
@@ -54,13 +56,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 getResources().getString(R.string.quina)};
 
         ListView listViewMenuMain = (ListView) findViewById(R.id.listViewMenuMain);
-        if(listViewMenuMain != null) {
+        if (listViewMenuMain != null) {
             listViewMenuMain.setAdapter(new LoteriasDMSAdapter(getApplicationContext(), menuMain));
             listViewMenuMain.setOnItemClickListener(this);
         }
 
+        TextView textViewConfig = (TextView) findViewById(R.id.textViewConfig);
+        textViewConfig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, ConfiguracoesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if(fab != null) {
+        if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -83,12 +94,12 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     megasenaDAO.save(megasena);
                     megasena.setNumero(2);
                     Calendar data2 = Calendar.getInstance();
-                    data2.set(2002,Calendar.DECEMBER,10);
+                    data2.set(2002, Calendar.DECEMBER, 10);
                     megasena.setData(data2);
                     megasenaDAO.save(megasena);
                     megasena.setNumero(3);
                     Calendar data3 = Calendar.getInstance();
-                    data2.set(2002,Calendar.DECEMBER,10);
+                    data2.set(2002, Calendar.DECEMBER, 10);
                     megasena.setData(data3);
 
                     megasenaDAO.save(megasena);
@@ -193,21 +204,22 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         TypeSorteio typeSorteio;
-        switch (position){
+        switch (position) {
             case 0:
-                typeSorteio=TypeSorteio.MEGASENA;
+                typeSorteio = TypeSorteio.MEGASENA;
                 break;
             case 1:
-                typeSorteio=TypeSorteio.LOTOFACIL;
+                typeSorteio = TypeSorteio.LOTOFACIL;
                 break;
             case 2:
-                typeSorteio=TypeSorteio.QUINA;
+                typeSorteio = TypeSorteio.QUINA;
                 break;
-            default: typeSorteio=TypeSorteio.MEGASENA;
+            default:
+                typeSorteio = TypeSorteio.MEGASENA;
         }
 
         Intent intent = new Intent(MainActivity.this, MenuSecundarioActivity.class);
-        intent.putExtra(Constantes.TYPE_SORTEIO,typeSorteio);
+        intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
         startActivity(intent);
 
     }

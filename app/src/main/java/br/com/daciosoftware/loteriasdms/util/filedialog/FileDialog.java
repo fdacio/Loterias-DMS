@@ -1,3 +1,4 @@
+
 package br.com.daciosoftware.loteriasdms.util.filedialog;
 
 import android.app.Activity;
@@ -16,21 +17,23 @@ public class FileDialog {
     public enum FileDialogType implements Serializable{
         OPEN_FILE, SAVE_FILE, SELECT_DIR
     }
-    private static final int FILE_DIALOG = 1;
+    public static final int FILE_DIALOG = 1;
+    public static final String RESULT_PATH = "RESULT_PATH";
 
     private Context context;
     private FileDialogType fileDialogType;
     private String fileName;
+    private String[] formaterFilter;
 
     public FileDialog(Context context, FileDialogType fileDialogType){
         this.context = context;
         this.fileDialogType = fileDialogType;
     }
 
-    public void open(){
+    public void show(){
         Intent intent = new Intent(this.context, FilesListActivity.class);
         Activity activity =  (Activity)(this.context);
-        intent.putExtra("START_PATH",Environment.getExternalStorageDirectory().getPath());
+
 
         if(this.fileDialogType == FileDialogType.OPEN_FILE){
             intent.putExtra("CAN_SELECT_DIR", false);
@@ -44,6 +47,10 @@ public class FileDialog {
         }
 
         intent.putExtra("TYPE_DIALOG",this.fileDialogType);
+        intent.putExtra("START_PATH",Environment.getExternalStorageDirectory().getPath());
+        if(this.formaterFilter != null){
+            intent.putExtra("FORMAT_FILTER",this.formaterFilter);
+        }
 
         activity.startActivityForResult(intent,FILE_DIALOG);
     }
@@ -55,5 +62,9 @@ public class FileDialog {
 
     public String getFileName() {
         return fileName;
+    }
+
+    public void setFormaterFilter(String[] formaterFilter){
+        this.formaterFilter = formaterFilter;
     }
 }

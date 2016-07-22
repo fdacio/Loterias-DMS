@@ -30,8 +30,9 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
     public static final String TYPE_DIALOG = "TYPE_DIALOG";
     public static final String FILE_NAME = "FILE_NAME";
     public static final String START_PATH = "START_PATH";
-    public static final String RESULT_PATH = "RESULT_PATH";
+
     public static final String CAN_SELECT_DIR = "CAN_SELECT_DIR";
+    public static final String FORMAT_FILTER = "FORMAT_FILTER";
     private static final String ITEM_KEY = "key";
     private static final String ITEM_IMAGE = "image";
     private static final String ROOT = "/";
@@ -49,7 +50,7 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
     private boolean canSelectDir = false;
     private File selectedFile;
     private HashMap<String, Integer> lastPositions = new HashMap<>();
-    private String[] formatFilter = null;
+    private String[] formatFilter ;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +81,7 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
                             return;
                         }
                     }
-                    getIntent().putExtra(RESULT_PATH, selectedFile.getPath()+"/"+nameFile);
+                    getIntent().putExtra(FileDialog.RESULT_PATH, selectedFile.getPath()+"/"+nameFile);
                     setResult(RESULT_OK, getIntent());
                     finish();
                 }
@@ -114,6 +115,10 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
 
         canSelectDir = getIntent().getBooleanExtra(CAN_SELECT_DIR, false);
 
+        if(getIntent().getStringArrayExtra(FORMAT_FILTER) != null) {
+            formatFilter = getIntent().getStringArrayExtra(FORMAT_FILTER);
+        }
+
         String startPath = getIntent().getStringExtra(START_PATH);
         startPath = startPath != null ? startPath : ROOT;
         if (canSelectDir) {
@@ -121,6 +126,8 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
             btnOK.setEnabled(true);
         }
         getDir(startPath);
+
+
 
     }
 
