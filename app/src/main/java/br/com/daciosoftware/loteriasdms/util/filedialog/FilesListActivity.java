@@ -1,11 +1,14 @@
 package br.com.daciosoftware.loteriasdms.util.filedialog;
 
+import android.content.ContentResolver;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,15 +30,6 @@ import br.com.daciosoftware.loteriasdms.R;
  * Created by Dácio Braga on 05/07/2016.
  */
 public class FilesListActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-    public static final String TYPE_DIALOG = "TYPE_DIALOG";
-    public static final String FILE_NAME = "FILE_NAME";
-    public static final String START_PATH = "START_PATH";
-
-    public static final String CAN_SELECT_DIR = "CAN_SELECT_DIR";
-    public static final String FORMAT_FILTER = "FORMAT_FILTER";
-    private static final String ITEM_KEY = "key";
-    private static final String ITEM_IMAGE = "image";
-    private static final String ROOT = "/";
 
     private List<String> path = null;
     private TextView myPath;
@@ -46,11 +40,12 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
     private InputMethodManager inputManager;
     private FileDialog.FileDialogType fileDialogType;
     private String parentPath;
-    private String currentPath = ROOT;
+    private String currentPath = FileDialog.ROOT;
     private boolean canSelectDir = false;
     private File selectedFile;
     private HashMap<String, Integer> lastPositions = new HashMap<>();
-    private String[] formatFilter ;
+    private String[] formatFilter;
+    private String fileName;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,41 +59,15 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
         listViewFiles = (ListView) findViewById(R.id.listViewFiles);
         listViewFiles.setOnItemClickListener(this);
         listViewFiles.setEmptyView(findViewById(R.id.textViewEmpty));
-
         editTextFileName = (EditText) findViewById(R.id.editTextFileName);
-        editTextFileName.setText(getIntent().getStringExtra(FILE_NAME));
-
         btnOK = (Button) findViewById(R.id.btnOK);
         btnOK.setEnabled(false);
-        btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String nameFile = editTextFileName.getText().toString();
-                if (selectedFile != null) {
-                    if(!(fileDialogType == FileDialog.FileDialogType.SELECT_DIR)) {
-                        if (nameFile.equals("")) {
-                            Toast.makeText(FilesListActivity.this, getResources().getString(R.string.msg_erro_name_file), Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                    }
-                    getIntent().putExtra(FileDialog.RESULT_PATH, selectedFile.getPath()+"/"+nameFile);
-                    setResult(RESULT_OK, getIntent());
-                    finish();
-                }
-            }
-        });
-
+        btnOK.setOnClickListener(new OnClikListenerButtonOK());
         Button btnCancel = (Button) findViewById(R.id.btnCancel);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED, getIntent());
-                finish();
-            }
-        });
+        btnCancel.setOnClickListener(new OnClickListenerButtonCancel());
 
 
-        fileDialogType = (FileDialog.FileDialogType) getIntent().getSerializableExtra(TYPE_DIALOG);
+        fileDialogType = (FileDialog.FileDialogType) getIntent().getSerializableExtra(FileDialog.TYPE_DIALOG);
         if (fileDialogType == FileDialog.FileDialogType.OPEN_FILE) {
             toolbar.setTitle(getResources().getString(R.string.title_open_file));
         } else if (fileDialogType == FileDialog.FileDialogType.SAVE_FILE) {
@@ -108,26 +77,27 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
             LinearLayout linearLayoutFileName = (LinearLayout) findViewById(R.id.linearLayoutNameFile);
             linearLayoutFileName.setVisibility(View.INVISIBLE);
         }
-
         setSupportActionBar(toolbar);
+
 
         inputManager = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
 
-        canSelectDir = getIntent().getBooleanExtra(CAN_SELECT_DIR, false);
+        canSelectDir = getIntent().getBooleanExtra(FileDialog.CAN_SELECT_DIR, false);
+        fileName = getIntent().getStringExtra(FileDialog.FILE_NAME);
+        formatFilter = getIntent().getStringArrayExtra(FileDialog.FORMAT_FILTER);
 
-        if(getIntent().getStringArrayExtra(FORMAT_FILTER) != null) {
-            formatFilter = getIntent().getStringArrayExtra(FORMAT_FILTER);
+
+        if (fileName != null) {
+            editTextFileName.setText(fileName);
         }
 
-        String startPath = getIntent().getStringExtra(START_PATH);
-        startPath = startPath != null ? startPath : ROOT;
+        String startPath = getIntent().getStringExtra(FileDialog.START_PATH);
+        startPath = startPath != null ? startPath : FileDialog.ROOT;
         if (canSelectDir) {
             selectedFile = new File(startPath);
             btnOK.setEnabled(true);
         }
         getDir(startPath);
-
-
 
     }
 
@@ -144,7 +114,6 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
-
     /**
      * Monta a estrutura de arquivos e diretorios filhos do diretorio fornecido.
      *
@@ -160,17 +129,17 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
         File f = new File(currentPath);
         File[] files = f.listFiles();
         if (files == null) {
-            currentPath = ROOT;
+            currentPath = FileDialog.ROOT;
             f = new File(currentPath);
             files = f.listFiles();
         }
         myPath.setText(currentPath);
 
-        if (!currentPath.equals(ROOT)) {
+        if (!currentPath.equals(FileDialog.ROOT)) {
 
-            item.add(ROOT);
-            addItem(ROOT, R.drawable.folder);
-            path.add(ROOT);
+            item.add(FileDialog.ROOT);
+            addItem(FileDialog.ROOT, R.drawable.folder);
+            path.add(FileDialog.ROOT);
 
             item.add("../");
             addItem("../", R.drawable.folder);
@@ -195,10 +164,19 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
                 if (formatFilter != null) {
                     boolean contains = false;
                     for (int i = 0; i < formatFilter.length - 1; i++) {
-                        final String formatLwr = formatFilter[i].toLowerCase();
-                        if (fileNameLwr.endsWith(formatLwr)) {
-                            contains = true;
-                            break;
+                        String mimeType = getMimeType(file);
+                        if (mimeType != null) {
+                            //Log.i(Constantes.CATEGORIA, "Mime Filter:" + formatFilter[i].toLowerCase() + " = Mine File:" + mimeType);
+                            if (mimeType.toLowerCase().contains(formatFilter[i].toLowerCase())) {
+                                contains = true;
+                                break;
+                            }
+                        } else {
+                            final String formatLwr = formatFilter[i].toLowerCase();
+                            if (fileNameLwr.endsWith(formatLwr)) {
+                                contains = true;
+                                break;
+                            }
                         }
                     }
                     if (contains) {
@@ -219,7 +197,7 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
 
         SimpleAdapter fileList = new SimpleAdapter(this, mList,
                 R.layout.row_file_dialog,
-                new String[]{ITEM_KEY, ITEM_IMAGE}, new int[]{
+                new String[]{FileDialog.ITEM_KEY, FileDialog.ITEM_IMAGE}, new int[]{
                 R.id.fdrowtext, R.id.imagefolder});
 
         for (String dir : dirsMap.tailMap("").values()) {
@@ -236,19 +214,38 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
 
     }
 
+    private String getMimeType(File file) {
+        Uri uri = Uri.fromFile(file);
+        String mimeType = null;
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            ContentResolver cr = this.getContentResolver();
+            mimeType = cr.getType(uri);
+        } else {
+            String fileExtension = MimeTypeMap.getFileExtensionFromUrl(uri
+                    .toString());
+            mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
+                    fileExtension.toLowerCase());
+        }
+        return mimeType;
+    }
+
     private void addItem(String fileName, int imageId) {
         HashMap<String, Object> item = new HashMap<>();
-        item.put(ITEM_KEY, fileName);
-        item.put(ITEM_IMAGE, imageId);
+        item.put(FileDialog.ITEM_KEY, fileName);
+        item.put(FileDialog.ITEM_IMAGE, imageId);
         mList.add(item);
     }
 
+    private void setSelectVisible(View v) {
+        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+        btnOK.setEnabled(false);
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if ((keyCode == KeyEvent.KEYCODE_BACK)) {
             btnOK.setEnabled(false);
-            if (!currentPath.equals(ROOT)) {
+            if (!currentPath.equals(FileDialog.ROOT)) {
                 getDir(parentPath);
             } else {
                 return super.onKeyDown(keyCode, event);
@@ -260,11 +257,6 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
         }
     }
 
-
-    private void setSelectVisible(View v) {
-        inputManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-        btnOK.setEnabled(false);
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
@@ -278,7 +270,7 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
             if (file.canRead()) {
                 lastPositions.put(currentPath, position);
                 getDir(path.get(position));
-                if(canSelectDir){
+                if (canSelectDir) {
                     selectedFile = file;
                     v.setSelected(true);
                     btnOK.setEnabled(true);
@@ -294,4 +286,38 @@ public class FilesListActivity extends AppCompatActivity implements AdapterView.
             btnOK.setEnabled(true);
         }
     }
+
+    private class OnClikListenerButtonOK implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            String nameFile = editTextFileName.getText().toString();
+            if (selectedFile != null) {
+                if (fileDialogType == FileDialog.FileDialogType.SELECT_DIR) {
+                    getIntent().putExtra(FileDialog.RESULT_PATH, selectedFile.getPath());
+                } else if (fileDialogType == FileDialog.FileDialogType.SAVE_FILE) {
+                    if (nameFile.equals("")) {
+                        Toast.makeText(FilesListActivity.this, getResources().getString(R.string.msg_erro_name_file), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    getIntent().putExtra(FileDialog.RESULT_PATH, selectedFile.getPath() + "/" + nameFile);
+                } else if (fileDialogType == FileDialog.FileDialogType.OPEN_FILE) {
+                    getIntent().putExtra(FileDialog.RESULT_PATH, selectedFile.getPath());
+                }
+
+                setResult(RESULT_OK, getIntent());
+                finish();
+            }
+        }
+    }
+
+    private class OnClickListenerButtonCancel implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            setResult(RESULT_CANCELED, getIntent());
+            finish();
+        }
+    }
+
 }

@@ -50,7 +50,7 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:text="@string/label_url_arquivo_resultados"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </TableRow>
 
             <TableRow
@@ -62,7 +62,9 @@
                     android:layout_column="0"
                     android:layout_span="3"
                     android:inputType="text"
-                    android:maxLines="1" />
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:scrollHorizontally="true"/>
             </TableRow>
 
             <TableRow
@@ -74,7 +76,7 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:text="@string/label_url_resultados"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </TableRow>
 
             <TableRow
@@ -85,7 +87,9 @@
                     android:id="@+id/editTextUrlResultadoMegasena"
                     android:layout_column="0"
                     android:layout_span="2"
-                    android:maxLines="1" />
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:scrollHorizontally="true"/>
             </TableRow>
 
             <TableRow
@@ -115,7 +119,7 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:text="@string/label_url_arquivo_resultados"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </TableRow>
 
             <TableRow
@@ -126,7 +130,9 @@
                     android:id="@+id/editTextUrlArquivoResultadoLotofacil"
                     android:layout_column="0"
                     android:layout_span="3"
-                    android:maxLines="1" />
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:scrollHorizontally="true"/>
             </TableRow>
 
             <TableRow
@@ -138,7 +144,7 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:text="@string/label_url_resultados"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </TableRow>
 
             <TableRow
@@ -149,7 +155,9 @@
                     android:id="@+id/editTextUrlResultadoLotofacil"
                     android:layout_column="0"
                     android:layout_span="2"
-                    android:maxLines="1" />
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:scrollHorizontally="true"/>
             </TableRow>
 
 
@@ -181,7 +189,7 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:text="@string/label_url_arquivo_resultados"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </TableRow>
 
             <TableRow
@@ -192,7 +200,9 @@
                     android:id="@+id/editTextUrlArquivoResultadoQuina"
                     android:layout_column="0"
                     android:layout_span="3"
-                    android:maxLines="1" />
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:scrollHorizontally="true"/>
             </TableRow>
 
             <TableRow
@@ -204,7 +214,7 @@
                     android:layout_column="0"
                     android:layout_span="2"
                     android:text="@string/label_url_resultados"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
             </TableRow>
 
             <TableRow
@@ -215,7 +225,9 @@
                     android:id="@+id/editTextUrlResultadoQuina"
                     android:layout_column="0"
                     android:layout_span="2"
-                    android:maxLines="1" />
+                    android:singleLine="true"
+                    android:lines="1"
+                    android:scrollHorizontally="true"/>
             </TableRow>
 
         </TableLayout>

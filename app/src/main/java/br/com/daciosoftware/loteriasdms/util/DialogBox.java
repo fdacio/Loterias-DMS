@@ -28,7 +28,13 @@ public class DialogBox {
     private Context context;
     private boolean finishActivity = false;
 
-
+    /**
+     *
+     * @param context - Contexto da App
+     * @param dialogBoxType INFORMATION ou QUESTION
+     * @param title Titulo do diálogo
+     * @param message Mensagem do fiálogo
+     */
     public DialogBox(Context context, DialogBoxType dialogBoxType, String title, String message) {
         this.context = context;
         dialogBox = new AlertDialog.Builder(context);
@@ -48,6 +54,15 @@ public class DialogBox {
         }
     }
 
+    /**
+     *
+     * @param context
+     * @param dialogBoxType
+     * @param title
+     * @param message
+     * @param onClickListenerYES
+     * @param onClickListenerNO
+     */
     public DialogBox(Context context, DialogBoxType dialogBoxType, String title, String message, DialogInterface.OnClickListener onClickListenerYES, DialogInterface.OnClickListener onClickListenerNO ) {
         this(context, dialogBoxType, title, message);
         dialogBox.setPositiveButton(TEXTO_BUTTON_YES, onClickListenerYES);
@@ -55,6 +70,14 @@ public class DialogBox {
 
     }
 
+    /**
+     *
+     * @param context
+     * @param dialogBoxType
+     * @param title
+     * @param message
+     * @param finishActivity
+     */
     public DialogBox(Context context, DialogBoxType dialogBoxType, String title, String message, boolean finishActivity ) {
         this(context, dialogBoxType, title, message);
         this.finishActivity = finishActivity;

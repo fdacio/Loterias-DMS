@@ -201,6 +201,7 @@ public class SorteioEditActivity extends AppCompatActivity {
 
 
     private boolean validateForm() {
+        fieldsValidate = new ArrayList<>();
         String numero = editTextNumero.getText().toString();
         String local = editTextLocal.getText().toString();
 

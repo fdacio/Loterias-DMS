@@ -13,7 +13,7 @@
     <string name="label_qtde_dezenas">Qtde.Dezenas</string>
     <string name="error_processar_arquivo">Erro ao processar arquivo</string>
     <string name="error_arquivo_invalido">Arquivo inválido</string>
-    <string name="error_informe_arquivo">Informe o arquivo com todos os resultado!</string>
+    <string name="error_informe_arquivo">Informe o arquivo HTML com todos os resultados!</string>
     <string name="error_conexao">Verifique sua conexão!</string>
     <string name="msg_aguarde">Aguarde...</string>
     <string name="title_submenu">Menu</string>

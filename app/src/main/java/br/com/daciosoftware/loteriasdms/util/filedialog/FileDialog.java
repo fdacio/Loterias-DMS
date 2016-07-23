@@ -17,8 +17,17 @@ public class FileDialog {
     public enum FileDialogType implements Serializable{
         OPEN_FILE, SAVE_FILE, SELECT_DIR
     }
-    public static final int FILE_DIALOG = 1;
+    public static final int FILE_DIALOG = 100;
     public static final String RESULT_PATH = "RESULT_PATH";
+    public static final String TYPE_DIALOG = "TYPE_DIALOG";
+    public static final String FILE_NAME = "FILE_NAME";
+    public static final String START_PATH = "START_PATH";
+    public static final String CAN_SELECT_DIR = "CAN_SELECT_DIR";
+    public static final String FORMAT_FILTER = "FORMAT_FILTER";
+    public static final String ITEM_KEY = "key";
+    public static final String ITEM_IMAGE = "image";
+    public static final String ROOT = "/";
+
 
     private Context context;
     private FileDialogType fileDialogType;
@@ -34,34 +43,33 @@ public class FileDialog {
         Intent intent = new Intent(this.context, FilesListActivity.class);
         Activity activity =  (Activity)(this.context);
 
-
         if(this.fileDialogType == FileDialogType.OPEN_FILE){
-            intent.putExtra("CAN_SELECT_DIR", false);
+            intent.putExtra(CAN_SELECT_DIR, false);
          }else if(this.fileDialogType == FileDialogType.SAVE_FILE){
-            intent.putExtra("CAN_SELECT_DIR", true);
-             if(this.fileName != null){
-                intent.putExtra("FILE_NAME", this.fileName);
-            }
+            intent.putExtra(CAN_SELECT_DIR, true);
         }else if(this.fileDialogType == FileDialogType.SELECT_DIR){
-            intent.putExtra("CAN_SELECT_DIR", true);
+            intent.putExtra(CAN_SELECT_DIR, true);
         }
 
-        intent.putExtra("TYPE_DIALOG",this.fileDialogType);
-        intent.putExtra("START_PATH",Environment.getExternalStorageDirectory().getPath());
+        intent.putExtra(TYPE_DIALOG,this.fileDialogType);
+        intent.putExtra(START_PATH,Environment.getExternalStorageDirectory().getPath());
+        if(this.fileName != null){
+            intent.putExtra(FILE_NAME, this.fileName);
+        }
         if(this.formaterFilter != null){
-            intent.putExtra("FORMAT_FILTER",this.formaterFilter);
+            intent.putExtra(FORMAT_FILTER,this.formaterFilter);
         }
 
         activity.startActivityForResult(intent,FILE_DIALOG);
     }
 
 
+    /**
+     *
+     * @param fileName Nome padrao
+     */
     public void setFileName(String fileName) {
         this.fileName = fileName;
-    }
-
-    public String getFileName() {
-        return fileName;
     }
 
     public void setFormaterFilter(String[] formaterFilter){
