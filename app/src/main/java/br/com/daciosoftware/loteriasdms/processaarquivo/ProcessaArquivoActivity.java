@@ -1,33 +1,39 @@
 package br.com.daciosoftware.loteriasdms.processaarquivo;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
-import android.text.util.Linkify;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
+import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.Decompress;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
-import br.com.daciosoftware.loteriasdms.util.HttpDownload;
+import br.com.daciosoftware.loteriasdms.util.DownloadFile;
 import br.com.daciosoftware.loteriasdms.util.filedialog.FileDialog;
 
 public class ProcessaArquivoActivity extends AppCompatActivity {
@@ -46,7 +52,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        View layout = (View) findViewById(R.id.layout_processar_arquivo);
+        View layout = findViewById(R.id.layout_processar_arquivo);
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
         StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this, layout);
         styleTypeSorteio.setStyleHeader(typeSorteio);
@@ -54,13 +60,14 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         editTextArquivo = (EditText) findViewById(R.id.editTextArquivo);
         ImageButton imageButtonArquivo = (ImageButton) findViewById(R.id.imageButtonArquivo);
         Button buttonProcessarArquivo = (Button) findViewById(R.id.buttonProcessarArquivo);
-        TextView textViewLinkBaixar = (TextView) findViewById(R.id.textViewLinkBaixar);
+        Button buttonBaixarArquivo = (Button) findViewById(R.id.buttonBaixarArquivo);
 
         imageButtonArquivo.setOnClickListener(new OnClickListenerButtonArquivo());
         buttonProcessarArquivo.setOnClickListener(new OnClickListenerButtonProcessarArquivo());
-        textViewLinkBaixar.setOnClickListener(new OnClickListenerBaixaArquivo());
+        buttonBaixarArquivo.setOnClickListener(new OnClickListenerBaixaArquivo());
 
     }
+
 
     private class OnClickListenerButtonArquivo implements View.OnClickListener {
         @Override
@@ -73,13 +80,15 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     }
 
     private class OnClickListenerBaixaArquivo implements View.OnClickListener {
-
         @Override
         public void onClick(View v) {
-            isBaixarArquivo = true;
-            FileDialog fileDialog = new FileDialog(ProcessaArquivoActivity.this, FileDialog.FileDialogType.SELECT_DIR);
-            fileDialog.show();
-
+            if (isNetwork()) {
+                isBaixarArquivo = true;
+                FileDialog fileDialog = new FileDialog(ProcessaArquivoActivity.this, FileDialog.FileDialogType.SELECT_DIR);
+                fileDialog.show();
+            } else {
+                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", getResources().getString(R.string.error_conexao)).show();
+            }
         }
     }
 
@@ -92,17 +101,24 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
             String filePath = editTextArquivo.getText().toString();
             if (filePath.equals("")) {
                 new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", getResources().getString(R.string.error_informe_arquivo)).show();
-                return;
             }
 
             File file = new File(filePath);
             if (!file.exists()) {
                 new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", getResources().getString(R.string.error_arquivo_invalido)).show();
-                return;
             }
 
             //Aqui executar AsyncTask para processar o arquivo
         }
+    }
+
+    /*
+    Verifiaca o status da conexão
+     */
+    private boolean isNetwork() {
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return networkInfo != null && networkInfo.isConnected();
     }
 
     private String getLinkBaixar(TypeSorteio typeSorteio) {
@@ -124,18 +140,36 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     }
 
     private String getNomeArquivoZip(TypeSorteio typeSorteio) {
+        String time = DateUtil.timeToString(Calendar.getInstance());
         switch (typeSorteio) {
             case MEGASENA:
-                return "megasena.zip";
+                return "megasena_"+time+".zip";
 
             case LOTOFACIL:
-                return "lotofacio.zip";
+                return "lotofacil_"+time+".zip";
 
             case QUINA:
-                return "quina.zip";
+                return "quina_"+time+".zip";
 
             default:
-                return "arquivo.zip";
+                return "arquivo_"+time+".zip";
+        }
+    }
+
+    private String getNomeArquivoHtml(TypeSorteio typeSorteio) {
+        String time = DateUtil.timeToString(Calendar.getInstance());
+        switch (typeSorteio) {
+            case MEGASENA:
+                return "megasena_"+time+".htm";
+
+            case LOTOFACIL:
+                return "lotofacil_"+time+".htm";
+
+            case QUINA:
+                return "quina_"+time+".htm";
+
+            default:
+                return "arquivo_"+time+".htm";
         }
     }
 
@@ -171,51 +205,73 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     }
 
 
-    private class BaixarArquivoZipTask extends AsyncTask<String, Integer, String> {
-
+    private class BaixarArquivoZipTask extends AsyncTask<String, String, String> {
         private boolean running = true;
-        private Integer progress;
+        private String pathFileHtml;
 
         @Override
         protected String doInBackground(String... params) {
             while (running) {
+
                 String url = params[0];
                 String outFile = params[1];
-                HttpDownload httpDownload = new HttpDownload();
                 try {
-                    httpDownload.downloadFile(url, outFile, progress);
-                    publishProgress(progress);
-                    return "Download concluído com sucesso";
-                } catch (IOException e) {
+                    publishProgress("Baixando arquivo. Aguarde...");
+                    DownloadFile downloadFile = new DownloadFile();
+                    downloadFile.downloadFile(url, outFile);
+                }catch (IOException e) {
                     e.printStackTrace();
-                    return "Erro ao baixar o arquivo(" + url + ")-" + outFile + ": " + e.getMessage();
+                    return "Erro ao baixar o arquivo: " + e.getMessage();
                 }
+
+                try{
+                    publishProgress("Descomprimindo arquivo. Aguarde...");
+                    String outFileDecompress = outFile;
+                    String dirFileDecompress = new File(outFile).getParent() + "/";
+                    String htmlFileName = getNomeArquivoHtml(typeSorteio);
+                    Decompress decompress = new Decompress(ProcessaArquivoActivity.this, outFileDecompress, dirFileDecompress, htmlFileName);
+                    pathFileHtml = decompress.unzip();
+
+                } catch (IOException e2) {
+                    e2.printStackTrace();
+                    return "Erro ao descomprimir o aquivo:" + e2.getMessage();
+                }
+
+                if(isCancelled()) {
+                    break;
+                }
+
+                return "Processo concluído com sucesso.";
+
             }
-            return "Download cancelado";
+            return "Processo cancelado.";
+
+
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            progressDialog = ProgressDialog.show(ProcessaArquivoActivity.this,
-                    "Baixando Arquivo",
-                    "Aguarde...("+progress+"%)",
-                    false,
-                    true
-            );
+            progressDialog = new ProgressDialog(ProcessaArquivoActivity.this);
+            progressDialog.setCancelable(true);
+            progressDialog.setIndeterminate(true);
             progressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
                 @Override
                 public void onCancel(DialogInterface dialog) {
+                    Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
                     cancel(true);
                 }
             });
+            progressDialog.show();
         }
 
 
         @Override
         protected void onPostExecute(String retorno) {
             progressDialog.dismiss();
+            editTextArquivo.setText(pathFileHtml);
             new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Baixar Arquivo", retorno).show();
+
         }
 
         @Override
@@ -224,8 +280,11 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         }
 
         @Override
-        protected void onProgressUpdate(Integer... progress) {
-            progressDialog.setProgress(progress[0]);
+        protected void onProgressUpdate(String... msgs){
+            String newMsg = msgs[0];
+            progressDialog.setMessage(newMsg);
+
+
         }
 
     }

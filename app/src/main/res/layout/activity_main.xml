@@ -22,7 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_loterias_dms" />
+    <include layout="@layout/content_main" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -31,28 +31,18 @@
         android:orientation="horizontal"
         android:layout_margin="@dimen/fab_margin">
 
-        <TextView
-            android:id="@+id/textViewConfig"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            style="@style/smallButton"
             android:text="@string/label_configuracoes"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/colorAccent"
-            android:clickable="true"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp"
-            android:paddingRight="5dp" />
+            android:id="@+id/buttonConfig"
+            android:layout_marginRight="5dp" />
 
-        <TextView
-            android:id="@+id/textViewIntrucoes"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+        <Button
+            style="@style/smallButton"
             android:text="@string/label_instrucoes"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:textColor="@color/colorAccent"
-            android:clickable="true"
-            android:paddingTop="10dp"
-            android:paddingBottom="10dp" />
+            android:id="@+id/buttonInstru"
+            android:layout_width="100dp" />
+
     </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton

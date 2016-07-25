@@ -41,4 +41,10 @@ public class DateUtil {
     }
 
 
+    public static String timeToString(Calendar data){
+        SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss", Locale.getDefault());
+        return sdf.format(data.getTime());
+    }
+
+
 }

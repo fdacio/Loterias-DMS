@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -61,8 +62,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             listViewMenuMain.setOnItemClickListener(this);
         }
 
-        TextView textViewConfig = (TextView) findViewById(R.id.textViewConfig);
-        textViewConfig.setOnClickListener(new View.OnClickListener() {
+        Button buttonConfig = (Button) findViewById(R.id.buttonConfig);
+        buttonConfig.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ConfiguracoesActivity.class);
