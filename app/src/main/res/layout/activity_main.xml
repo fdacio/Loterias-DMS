@@ -33,12 +33,14 @@
 
         <Button
             style="@style/smallButton"
+            android:background="@drawable/selector_button"
             android:text="@string/label_configuracoes"
             android:id="@+id/buttonConfig"
             android:layout_marginRight="5dp" />
 
         <Button
             style="@style/smallButton"
+            android:background="@drawable/selector_button"
             android:text="@string/label_instrucoes"
             android:id="@+id/buttonInstru"
             android:layout_width="100dp" />

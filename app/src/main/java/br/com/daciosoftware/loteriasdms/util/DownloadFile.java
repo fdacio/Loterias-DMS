@@ -1,5 +1,7 @@
 package br.com.daciosoftware.loteriasdms.util;
 
+import android.util.Log;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,8 +13,12 @@ import java.net.URL;
  */
 public class DownloadFile {
 
-    public DownloadFile() {
-    }
+    private InputStream inputStream;
+    private FileOutputStream fileOutputStream;
+    private HttpURLConnection conn;
+
+
+    public DownloadFile() {}
 
     /**
      *
@@ -20,10 +26,10 @@ public class DownloadFile {
      * @param outFile - Caminho completo ondo deve baixar o aquivo
      * @throws IOException
      */
-    public void downloadFile(String url, String outFile) throws IOException{
+    public void downloadFileBinary(String url, String outFile) throws IOException{
 
             URL urlParse = new URL(url);
-            HttpURLConnection conn = (HttpURLConnection) urlParse.openConnection();
+            conn = (HttpURLConnection) urlParse.openConnection();
             conn.setInstanceFollowRedirects(false);
             conn.setRequestMethod("GET");
             conn.connect();
@@ -47,20 +53,30 @@ public class DownloadFile {
                 }
             }
 
-            InputStream inputStream = conn.getInputStream();
-            FileOutputStream fileOutput = new FileOutputStream(outFile);
+            inputStream = conn.getInputStream();
+            fileOutputStream = new FileOutputStream(outFile);
             try {
                 byte[] buffer = new byte[1024];
                 int bufferLength;
                 while ((bufferLength = inputStream.read(buffer)) != -1) {
-                    fileOutput.write(buffer, 0, bufferLength);
+                    fileOutputStream.write(buffer, 0, bufferLength);
                 }
             } finally {
-                fileOutput.close();
+                fileOutputStream.close();
                 inputStream.close();
                 conn.disconnect();
+                Log.i(Constantes.CATEGORIA, "DownloaFile: Close Input and Output ");
             }
 
+    }
+
+    public void closeResources() throws IOException{
+        if(fileOutputStream != null)
+            fileOutputStream.close();
+        if(inputStream != null)
+            inputStream.close();
+        if(conn != null)
+            conn.disconnect();
     }
 
 }

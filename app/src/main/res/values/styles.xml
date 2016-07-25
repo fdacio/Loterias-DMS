@@ -25,7 +25,7 @@
         <item name="android:paddingRight">4dp</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">2dp</item>
-        <item name="android:background">@drawable/small_button</item>
+        <item name="android:background">@drawable/bg_button_paused</item>
         <item name="android:textColor">#FFFFFF</item>
         <item name="android:singleLine">true</item>
         <item name="android:clickable">true</item>

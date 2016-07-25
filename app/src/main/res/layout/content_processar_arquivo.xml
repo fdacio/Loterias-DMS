@@ -36,7 +36,7 @@
                 android:layout_span="5" />
 
             <ImageButton
-                android:background="@drawable/small_button"
+                android:background="@drawable/bg_button_paused"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/imageButtonArquivo"
@@ -58,7 +58,9 @@
                 android:text="@string/label_processar_arquivo"
                 android:id="@+id/buttonProcessarArquivo"
                 android:layout_column="0"
-                android:layout_span="6" />
+                android:layout_span="6"
+                android:textColor="@color/colorWhite"
+                android:background="@drawable/bg_button_paused" />
         </TableRow>
 
     </TableLayout>

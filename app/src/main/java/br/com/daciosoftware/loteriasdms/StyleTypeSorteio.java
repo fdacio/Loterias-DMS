@@ -3,10 +3,11 @@ package br.com.daciosoftware.loteriasdms;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.support.annotation.ColorRes;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -118,6 +119,20 @@ public class StyleTypeSorteio {
     }
 
 
+    private int getBackgroundButton(TypeSorteio typeSorteio){
+        switch (typeSorteio) {
+            case MEGASENA:
+                return R.drawable.selector_button_megasena;
+            case LOTOFACIL:
+                return R.drawable.selector_button_lotofacil;
+            case QUINA:
+                return R.drawable.selector_button_quina;
+            default:
+                return R.drawable.selector_button;
+        }
+
+    }
+
     public void setStyleHeader(TypeSorteio typeSorteio) {
         ImageView imageViewIconJogo = (ImageView) layoutActivity.findViewById(R.id.imageViewIconJogo);
         TextView textViewLabelJogo = (TextView) layoutActivity.findViewById(R.id.textViewLabelJogo);
@@ -155,6 +170,23 @@ public class StyleTypeSorteio {
         }
         if (fabAdd != null){
             fabAdd.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
+        }
+
+    }
+
+    public void setStyleButton(TypeSorteio typeSorteio){
+        ImageButton imageButtonArquivo = (ImageButton) layoutActivity.findViewById(R.id.imageButtonArquivo);
+        Button buttonBaixarProcessar = (Button) layoutActivity.findViewById(R.id.buttonProcessarArquivo);
+        Button buttonBaixarArquivo = (Button) layoutActivity.findViewById(R.id.buttonBaixarArquivo);
+
+        if(imageButtonArquivo != null){
+            imageButtonArquivo.setBackgroundResource(getBackgroundButton(typeSorteio));
+        }
+        if(buttonBaixarProcessar != null){
+            buttonBaixarProcessar.setBackgroundResource(getBackgroundButton(typeSorteio));
+        }
+        if(buttonBaixarArquivo != null){
+            buttonBaixarArquivo.setBackgroundResource(getBackgroundButton(typeSorteio));
         }
 
     }

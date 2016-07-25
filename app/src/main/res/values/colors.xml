@@ -7,6 +7,12 @@
     <color name="colorMegasena">#229551</color>
     <color name="colorQuina">#290b89</color>
     <color name="colorLotofacil">#7c0b89</color>
+
+    <color name="colorMegasenaPressed">#229561</color>
+    <color name="colorQuinaPressed">#290b99</color>
+    <color name="colorLotofacilPressed">#7c0b99</color>
+
+
     <color name="colorBlack">#000000</color>
     <color name="colorGray">#CCCCCC</color>
     <color name="colorWhite">#ffffff</color>
