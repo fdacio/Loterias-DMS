@@ -9,37 +9,43 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DateUtil;
 import br.com.daciosoftware.loteriasdms.util.DecompressFile;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DownloadFile;
+import br.com.daciosoftware.loteriasdms.util.FileUtil;
 import br.com.daciosoftware.loteriasdms.util.filedialog.FileDialog;
 
 public class ProcessaArquivoActivity extends AppCompatActivity {
 
     private EditText editTextArquivo;
     private TypeSorteio typeSorteio;
-    private boolean isSelecionarArquivo = false;
-    private boolean isBaixarArquivo = false;
     private ProgressDialog progressDialog;
     private DownloadFile downloadFile;
     private DecompressFile decompressFile;
@@ -74,16 +80,12 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
      * Subclasse privada que implementar o OnClickListener do Botao com lupa.
      * Esse botão abri um FileDialog para seleção de um arquivo HTML para
      * o processamento dos sorteios
-     *
      */
     private class OnClickListenerButtonArquivo implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-
-            final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
-            v.startAnimation(buttonClick);
-
             FileDialog fileDialog = new FileDialog(ProcessaArquivoActivity.this, FileDialog.FileDialogType.OPEN_FILE);
+            fileDialog.setStartPath(FileUtil.getDefaultDirectory("LoteriasDMS"));
             fileDialog.setFormaterFilter(new String[]{"html", "htm"});
             fileDialog.show();
         }
@@ -93,16 +95,10 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     private class OnClickListenerBaixaArquivo implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
-            v.startAnimation(buttonClick);
 
             if (isNetwork()) {
-                String defaulDirectory = Environment.getExternalStorageDirectory().getPath() + "/LoteriasDMS";
-                File dir = new File(defaulDirectory);
-                if(!dir.exists()){
-                    dir.mkdir();
-                }
-                String outFile = defaulDirectory+"/" + getNomeArquivoZip(typeSorteio);
+                String defaulDirectory = FileUtil.getDefaultDirectory("LoteriasDMS");
+                String outFile = defaulDirectory + "/" + getNomeArquivoZip(typeSorteio);
                 downloadFile = new DownloadFile();
                 decompressFile = new DecompressFile();
                 new BaixarArquivoZipTask().execute(getLinkBaixar(typeSorteio), outFile);
@@ -121,8 +117,6 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     private class OnClickListenerButtonProcessarArquivo implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            final AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
-            v.startAnimation(buttonClick);
 
             String filePath = editTextArquivo.getText().toString();
             if (filePath.equals("")) {
@@ -135,6 +129,8 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                 new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", getResources().getString(R.string.error_arquivo_invalido)).show();
                 return;
             }
+
+            new ProcessarArquivoHtml().execute(filePath);
             //Aqui executar AsyncTask para processar o arquivo
         }
     }
@@ -170,16 +166,16 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         String time = DateUtil.timeToString(Calendar.getInstance());
         switch (typeSorteio) {
             case MEGASENA:
-                return "megasena_"+time+".zip";
+                return "megasena_" + time + ".zip";
 
             case LOTOFACIL:
-                return "lotofacil_"+time+".zip";
+                return "lotofacil_" + time + ".zip";
 
             case QUINA:
-                return "quina_"+time+".zip";
+                return "quina_" + time + ".zip";
 
             default:
-                return "arquivo_"+time+".zip";
+                return "arquivo_" + time + ".zip";
         }
     }
 
@@ -187,16 +183,32 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         String time = DateUtil.timeToString(Calendar.getInstance());
         switch (typeSorteio) {
             case MEGASENA:
-                return "megasena_"+time+".htm";
+                return "megasena_" + time + ".htm";
 
             case LOTOFACIL:
-                return "lotofacil_"+time+".htm";
+                return "lotofacil_" + time + ".htm";
 
             case QUINA:
-                return "quina_"+time+".htm";
+                return "quina_" + time + ".htm";
 
             default:
-                return "arquivo_"+time+".htm";
+                return "arquivo_" + time + ".htm";
+        }
+    }
+
+    private String getTituloArquivoHtml(TypeSorteio typeSorteio) {
+        switch (typeSorteio) {
+            case MEGASENA:
+                return "mega-sena";
+
+            case LOTOFACIL:
+                return "lotofácil";
+
+            case QUINA:
+                return "quina";
+
+            default:
+                return "titulo";
         }
     }
 
@@ -232,40 +244,35 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... params) {
+
             while (running) {
 
                 String url = params[0];
                 String outFile = params[1];
                 try {
                     downloadFile.downloadFileBinary(url, outFile);
-                }catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException e) {
                     return "Erro ao baixar o arquivo: " + e.getMessage();
                 }
 
-
-                try{
+                try {
                     publishProgress("Descomprimindo arquivo. Aguarde...");
                     String inFileDecompress = outFile;
-                    String outFileHtml = new File(outFile).getParent() + "/"+ getNomeArquivoHtml(typeSorteio);
+                    String outFileHtml = new File(outFile).getParent() + "/" + getNomeArquivoHtml(typeSorteio);
                     pathFileHtml = decompressFile.unzip(inFileDecompress, outFileHtml);
 
                 } catch (IOException e2) {
-                    e2.printStackTrace();
                     return "Erro ao descomprimir o aquivo:" + e2.getMessage();
                 }
 
 
-                if(isCancelled()) {
-                    break;
+                if (isCancelled()) {
+                    return "Processo cancelado.";
                 }
 
                 return "Processo concluído com sucesso.";
-
             }
             return "Processo cancelado.";
-
-
         }
 
         @Override
@@ -275,7 +282,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
             progressDialog.setMessage("Baixando arquivo. Aguarde...");
             progressDialog.setCancelable(true);
             progressDialog.setIndeterminate(true);
-            progressDialog.setOnCancelListener(new cancelTask(this));
+            progressDialog.setOnCancelListener(new cancelTaskBaixarArquivoZip(this));
             progressDialog.show();
         }
 
@@ -284,19 +291,25 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         protected void onPostExecute(String retorno) {
             progressDialog.dismiss();
             editTextArquivo.setText(pathFileHtml);
+            try {
+                downloadFile.closeResources();
+                decompressFile.closeResources();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Baixar Arquivo", retorno).show();
 
         }
 
         @Override
         protected void onCancelled() {
-            super.onCancelled();
             Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
             running = false;
+            super.onCancelled();
         }
 
         @Override
-        protected void onProgressUpdate(String... msgs){
+        protected void onProgressUpdate(String... msgs) {
             String newMsg = msgs[0];
             progressDialog.setMessage(newMsg);
 
@@ -312,12 +325,14 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
      * Ela e instanciada no onCancelListener do progressDialog e recebe no
      * construtor a AsyncTask a ser cancelada, no caso de BaixarArquivoZipTask
      */
-    private class cancelTask implements DialogInterface.OnCancelListener{
+    private class cancelTaskBaixarArquivoZip implements DialogInterface.OnCancelListener {
 
         private AsyncTask task;
-        public cancelTask(AsyncTask task){
+
+        public cancelTaskBaixarArquivoZip(AsyncTask task) {
             this.task = task;
         }
+
         @Override
         public void onCancel(DialogInterface dialog) {
             new DialogBox(ProcessaArquivoActivity.this,
@@ -327,10 +342,13 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                     new DialogInterface.OnClickListener() {//Resposta SIM do DialogBox Question
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
+
                             try {
                                 downloadFile.closeResources();
                                 decompressFile.closeResources();
-                            }catch (IOException e){e.printStackTrace();}
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                             task.cancel(true);
                         }
@@ -344,7 +362,134 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                     }
 
             ).show();
-
         }
     }
+
+    private boolean isRowValid(String col) {
+        try {
+            Integer.parseInt(col);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    private class ProcessarArquivoHtml extends AsyncTask<String, Integer, String> {
+
+        private boolean running = true;
+
+        @Override
+        protected String doInBackground(String... params) {
+            String pathFileHtml = params[0];
+            SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
+
+            try {
+                Document doc = Jsoup.parse(new File(pathFileHtml), "UTF-8");
+
+                String title = doc.title();
+                String titleJogo = getTituloArquivoHtml(typeSorteio);
+
+                if (!title.contains(titleJogo)) {
+                    return "Arquivo de outro Jogo: " + title;
+                }
+
+                File fileLog1 = new File(FileUtil.getDefaultDirectory("LoteriasDMS") + "/" + "log_processamento.txt");
+                BufferedWriter writer = new BufferedWriter(new FileWriter(fileLog1));
+
+                Element table = doc.select("table").first();
+                Elements trows = table.select("tr");
+                trows.remove(0);
+                for (Element row : trows) {
+                    Elements tds = row.select("td");
+                    String valueTd = row.child(0).text();
+                    if (isRowValid(valueTd)) {
+                        writer.write(tds.html());
+                        writer.write("\n" + "======================================================" + "\n");
+                        try {
+                            sorteioDAO.insertSorteioFromTrow(tds);
+                        } catch (ParseException e) {
+                            writer.write("\n" + "======================================================" + "\n");
+                            writer.write(e.getMessage());
+                        }
+                    }
+                    if (!running) {
+                        writer.close();
+                        return "Processamento cancelado";
+                    }
+                }
+                writer.close();
+
+            } catch (NumberFormatException | IOException e) {
+                e.printStackTrace();
+
+                return "Erro ao processar arquivo: " + e.getMessage();
+            }
+
+
+            return "Processamento concluído com sucesso";
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(ProcessaArquivoActivity.this);
+            progressDialog.setMessage("Processando arquivo. Aguarde...");
+            progressDialog.setCancelable(true);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setOnCancelListener(new cancelTaskProcessamentoHtml(this));
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(String retorno) {
+            progressDialog.dismiss();
+            editTextArquivo.setText("");
+            new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Processar Arquivo", retorno).show();
+
+        }
+
+        @Override
+        protected void onCancelled() {
+            running = false;
+            Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
+            super.onCancelled();
+
+        }
+
+    }
+
+
+
+    private class cancelTaskProcessamentoHtml implements DialogInterface.OnCancelListener {
+
+        private AsyncTask task;
+        public cancelTaskProcessamentoHtml(AsyncTask task) {
+            this.task = task;
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            new DialogBox(ProcessaArquivoActivity.this,
+                    DialogBox.DialogBoxType.QUESTION,
+                    "Processar Arquivo",
+                    "Deseja cancelar o processo?",
+                    new DialogInterface.OnClickListener() {//Resposta SIM do DialogBox Question
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            task.cancel(true);
+                        }
+                    },
+                    new DialogInterface.OnClickListener() {//Resposta NÃO do DialogBox Question
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            progressDialog.show();
+                        }
+                    }
+
+            ).show();
+        }
+    }
+
 }

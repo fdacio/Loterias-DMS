@@ -13,5 +13,17 @@
         android:icon="@drawable/ic_restore_page_white_24dp"
         app:showAsAction="collapseActionView|ifRoom">
     </item>
+    <item android:id="@+id/orderBySorteio"
+        android:title="@string/orderby_sorteio"
+        app:showAsAction="never">
+    </item>
+    <item android:id="@+id/orderByCrescente"
+        android:title="@string/orderby_crescente"
+        app:showAsAction="never">
+    </item>
+    <item android:id="@+id/deleteAll"
+        android:title="@string/delete_all"
+        app:showAsAction="never">
+    </item>
 
  </menu>

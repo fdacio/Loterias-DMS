@@ -3,6 +3,7 @@ package br.com.daciosoftware.loteriasdms.util;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.net.Uri;
+import android.os.Environment;
 import android.webkit.MimeTypeMap;
 
 import java.io.File;
@@ -23,5 +24,15 @@ public class FileUtil {
             mimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(fileExtension.toLowerCase());
         }
         return mimeType;
+    }
+
+
+    public static String getDefaultDirectory(String defaultDirectory){
+        String directory = Environment.getExternalStorageDirectory().getPath() + "/" +defaultDirectory;
+        File dir = new File(directory);
+        if (!dir.exists()) {
+            dir.mkdir();
+        }
+        return dir.getPath();
     }
 }

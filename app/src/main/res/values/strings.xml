@@ -47,6 +47,10 @@
     <string name="search_hint">Pesquisar</string>
     <string name="desfazer">Desfazer</string>
     <string name="recarregar">Recarregar</string>
+    <string name="orderby_sorteio">Ordernar por Sorteio</string>
+    <string name="orderby_crescente">Ordernar Crescente</string>
+    <string name="delete_all">Excluir Tudo</string>
+    <string name="msg_delete_todos">Todos Sorteios</string>
 
 
     <string name="title_file_dialog">Arquivo/Diretorio</string>

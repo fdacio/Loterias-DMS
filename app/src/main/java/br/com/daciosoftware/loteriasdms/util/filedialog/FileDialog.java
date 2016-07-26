@@ -32,6 +32,9 @@ public class FileDialog {
     private Context context;
     private FileDialogType fileDialogType;
     private String fileName;
+
+
+    private String startPath;
     private String[] formaterFilter;
 
     public FileDialog(Context context, FileDialogType fileDialogType){
@@ -52,7 +55,12 @@ public class FileDialog {
         }
 
         intent.putExtra(TYPE_DIALOG,this.fileDialogType);
-        intent.putExtra(START_PATH,Environment.getExternalStorageDirectory().getPath());
+
+        if(this.startPath != null) {
+            intent.putExtra(START_PATH, this.startPath);
+        }else{
+            intent.putExtra(START_PATH, Environment.getExternalStorageDirectory().getPath());
+        }
         if(this.fileName != null){
             intent.putExtra(FILE_NAME, this.fileName);
         }
@@ -75,4 +83,9 @@ public class FileDialog {
     public void setFormaterFilter(String[] formaterFilter){
         this.formaterFilter = formaterFilter;
     }
+
+    public void setStartPath(String startPath) {
+        this.startPath = startPath;
+    }
+
 }

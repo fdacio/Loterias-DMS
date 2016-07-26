@@ -39,6 +39,8 @@ public class SorteioListActivity extends AppCompatActivity {
     private ListView listViewSorteio;
     private TypeSorteio typeSorteio;
 
+    private boolean flagOrdemCrescente = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,11 +81,14 @@ public class SorteioListActivity extends AppCompatActivity {
     private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio) {
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
         if (sorteioDAO != null) {
-            listSorteio = sorteioDAO.listAll();
+            if(flagOrdemCrescente)
+                listSorteio = sorteioDAO.listAllDezenasCrescente();
+            else
+                listSorteio = sorteioDAO.listAll();
+
         }
         return new SorteioListAdapter(this, listSorteio, typeSorteio);
     }
-
 
     private SorteioListAdapter getSorteioListAdapter(TypeSorteio typeSorteio, int numero) {
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
@@ -186,6 +191,18 @@ public class SorteioListActivity extends AppCompatActivity {
             case R.id.reloadMenu:
                 listViewSorteio.setAdapter(getSorteioListAdapter(typeSorteio));
                 return true;
+            case R.id.orderByCrescente:
+                flagOrdemCrescente = true;
+                listViewSorteio.setAdapter(getSorteioListAdapter(typeSorteio));
+                return true;
+            case R.id.orderBySorteio:
+                flagOrdemCrescente = false;
+                listViewSorteio.setAdapter(getSorteioListAdapter(typeSorteio));
+                return true;
+
+            case R.id.deleteAll:
+                deleteAllSorteio();
+                return true;
 
         }
         return super.onOptionsItemSelected(item);
@@ -230,6 +247,28 @@ public class SorteioListActivity extends AppCompatActivity {
                 getResources().getString(R.string.label_numero_concurso) + sorteio.getNumero(),
                 new OnClickYesDialog(sorteio),
                 new OnClickNoDialog());
+        dialogBox.show();
+    }
+
+    private void deleteAllSorteio() {
+        DialogBox dialogBox = new DialogBox(this,
+                DialogBox.DialogBoxType.QUESTION,
+                getResources().getString(R.string.msg_delete_registro),
+                getResources().getString(R.string.msg_delete_todos),
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
+                        sorteioDAO.deleteAll();
+                        listViewSorteio.setAdapter(getSorteioListAdapter(typeSorteio));
+                    }
+                },
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
         dialogBox.show();
     }
 
