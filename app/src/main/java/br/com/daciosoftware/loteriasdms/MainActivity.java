@@ -20,6 +20,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.jsoup.Jsoup;
@@ -197,7 +198,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     int numero = jsonObject.getInt("NumeroConcurso");
                     Calendar data = DateUtil.dateUSToCalendar(jsonObject.getString("Data"));
                     String local = jsonObject.getString("RealizadoEm").split(" ")[3];
-                    String numeros = jsonObject.getString("Numeros");
+                    JSONArray jsonArray = jsonObject.optJSONArray("Sorteios");
+                    JSONObject jsonObject2 = jsonArray.getJSONObject(0);
+                    String numeros = jsonObject2.getString("Numeros");
                     String[] dezenas = numeros.replace("[","").replace("]","").split(",");
 
                     SorteioDAO sorteioDAO = SorteioDAO.getDAO(MainActivity.this, typeSorteio);
