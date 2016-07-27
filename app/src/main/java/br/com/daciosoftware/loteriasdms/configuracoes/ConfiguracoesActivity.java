@@ -107,6 +107,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+
             case R.id.save:
                 DialogBox dialogBox = new DialogBox(this,
                         DialogBox.DialogBoxType.QUESTION,
@@ -115,6 +116,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                         new OnClickYesDialogSave(),
                         new OnClickNoDialogSave());
                 dialogBox.show();
+                return true;
+
             case R.id.restaurar:
                 DialogBox dialogBox2 = new DialogBox(this,
                         DialogBox.DialogBoxType.QUESTION,
@@ -123,8 +126,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                         new OnClickYesDialogRestore(),
                         new OnClickNoDialogRestore());
                 dialogBox2.show();
-
                 return true;
+
             case R.id.desfazer:
                 loadUrlInForm();
                 return true;

@@ -9,7 +9,7 @@
     <item android:id="@+id/desfazer"
         android:title="@string/desfazer"
         android:icon="@drawable/ic_redo_white_24dp"
-        app:showAsAction="always">
+        app:showAsAction="collapseActionView|ifRoom">
     </item>
     <item android:id="@+id/restaurar"
         android:title="@string/restaurar"
