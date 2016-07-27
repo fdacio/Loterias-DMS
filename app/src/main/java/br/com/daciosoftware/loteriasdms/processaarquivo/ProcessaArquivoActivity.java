@@ -384,13 +384,14 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
             SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
 
             try {
-                Document doc = Jsoup.parse(new File(pathFileHtml), "UTF-8");
 
-                String title = doc.title();
+                Document doc = Jsoup.parse(new File(pathFileHtml), "ISO-8859-1");
+
+                String titleDoc = doc.title();
                 String titleJogo = getTituloArquivoHtml(typeSorteio);
 
-                if (!title.contains(titleJogo)) {
-                    return "Arquivo de outro Jogo: " + title;
+                if (!titleDoc.toLowerCase().contains(titleJogo.substring(0, 4))) {
+                    return "Arquivo de outro Jogo: " + titleDoc;
                 }
 
                 File fileLog1 = new File(FileUtil.getDefaultDirectory("LoteriasDMS") + "/" + "log_processamento.txt");
@@ -419,9 +420,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                 }
                 writer.close();
 
-            } catch (NumberFormatException | IOException e) {
-                e.printStackTrace();
-
+            } catch (NumberFormatException | IOException | OutOfMemoryError e) {
                 return "Erro ao processar arquivo: " + e.getMessage();
             }
 
@@ -459,10 +458,10 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     }
 
 
-
     private class cancelTaskProcessamentoHtml implements DialogInterface.OnCancelListener {
 
         private AsyncTask task;
+
         public cancelTaskProcessamentoHtml(AsyncTask task) {
             this.task = task;
         }

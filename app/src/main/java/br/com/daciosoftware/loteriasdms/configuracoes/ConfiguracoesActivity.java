@@ -16,6 +16,7 @@ import br.com.daciosoftware.loteriasdms.util.DialogBox;
 
 public class ConfiguracoesActivity extends AppCompatActivity {
 
+    private EditText editTextUrlWebService;
     private EditText editTextUrlArquivoResultadoMegasena;
     private EditText editTextUrlResultadoMegasena;
     private EditText editTextUrlArquivoResultadoLotofacil;
@@ -31,6 +32,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        editTextUrlWebService = (EditText) findViewById(R.id.editTextUrlWebService);
         editTextUrlArquivoResultadoMegasena = (EditText) findViewById(R.id.editTextUrlArquivoResultadoMegasena);
         editTextUrlResultadoMegasena = (EditText)findViewById(R.id.editTextUrlResultadoMegasena);
         editTextUrlArquivoResultadoLotofacil = (EditText) findViewById(R.id.editTextUrlArquivoResultadoLotofacil);
@@ -48,6 +50,8 @@ public class ConfiguracoesActivity extends AppCompatActivity {
     private void loadUrlInForm(){
         SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF,0);
 
+        editTextUrlWebService.setText(sharedPreferences.getString(Constantes.URL_WEB_SERVICE, Constantes.URL_WEB_SERVICE_DEFAULT));
+
         editTextUrlArquivoResultadoMegasena.setText(sharedPreferences.getString(Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA, Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA_DEFAULT));
         editTextUrlResultadoMegasena.setText(sharedPreferences.getString(Constantes.URL_RESULTADOS_MEGASENA, Constantes.URL_RESULTADOS_MEGASENA_DEFAULT));
 
@@ -62,6 +66,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF,MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
+        editor.putString(Constantes.URL_WEB_SERVICE,editTextUrlWebService.getText().toString());
         editor.putString(Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA,editTextUrlArquivoResultadoMegasena.getText().toString());
         editor.putString(Constantes.URL_RESULTADOS_MEGASENA,editTextUrlResultadoMegasena.getText().toString());
 
@@ -74,11 +79,24 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         editor.commit();
     }
 
+    private void restoreDefalutInForm(){
+        editTextUrlWebService.setText(Constantes.URL_WEB_SERVICE_DEFAULT);
+
+        editTextUrlArquivoResultadoMegasena.setText(Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA_DEFAULT);
+        editTextUrlResultadoMegasena.setText(Constantes.URL_RESULTADOS_MEGASENA_DEFAULT);
+
+        editTextUrlArquivoResultadoLotofacil.setText(Constantes.URL_ARQUIVO_RESULTADOS_LOTOFACIL_DEFAULT);
+        editTextUrlResultadoLotofacil.setText(Constantes.URL_RESULTADOS_LOTOFACIL_DEFAULT);
+
+        editTextUrlArquivoResultadoQuina.setText(Constantes.URL_ARQUIVO_RESULTADOS_QUINA_DEFAULT);
+        editTextUrlResultadoQuina.setText(Constantes.URL_RESULTADOS_QUINA_DEFAULT);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_edit, menu);
+        inflater.inflate(R.menu.menu_edit_config, menu);
         return true;
     }
 
@@ -94,10 +112,17 @@ public class ConfiguracoesActivity extends AppCompatActivity {
                         DialogBox.DialogBoxType.QUESTION,
                         getResources().getString(R.string.msg_salvar_configuracoes),
                         "",
-                        new OnClickYesDialog(),
-                        new OnClickNoDialog());
+                        new OnClickYesDialogSave(),
+                        new OnClickNoDialogSave());
                 dialogBox.show();
-
+            case R.id.restaurar:
+                DialogBox dialogBox2 = new DialogBox(this,
+                        DialogBox.DialogBoxType.QUESTION,
+                        getResources().getString(R.string.msg_restaurar_config),
+                        "",
+                        new OnClickYesDialogRestore(),
+                        new OnClickNoDialogRestore());
+                dialogBox2.show();
 
                 return true;
             case R.id.desfazer:
@@ -107,7 +132,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private class OnClickYesDialog implements DialogInterface.OnClickListener {
+    private class OnClickYesDialogSave implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
@@ -116,7 +141,7 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         }
     }
 
-    private class OnClickNoDialog implements DialogInterface.OnClickListener {
+    private class OnClickNoDialogSave implements DialogInterface.OnClickListener {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             dialog.dismiss();
@@ -124,5 +149,21 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         }
     }
 
+    private class OnClickYesDialogRestore implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+            restoreDefalutInForm();
+
+        }
+    }
+
+    private class OnClickNoDialogRestore implements DialogInterface.OnClickListener {
+        @Override
+        public void onClick(DialogInterface dialog, int which) {
+            dialog.dismiss();
+
+        }
+    }
 
 }

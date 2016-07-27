@@ -141,9 +141,7 @@ public class SorteioEditActivity extends AppCompatActivity {
                         String methodName = "getD" + String.valueOf(i + 1);
                         try {
                             methodGet = this.sorteio.getClass().getMethod(methodName);
-                        } catch (SecurityException | NoSuchMethodException e) {
-                            e.printStackTrace();
-                        }
+                        } catch (SecurityException | NoSuchMethodException e) {}
 
                         if (methodGet != null) {
                             try {
@@ -183,18 +181,14 @@ public class SorteioEditActivity extends AppCompatActivity {
             try {
                 Class clazz = this.sorteio.getClass().getSuperclass();
                 methodSet = clazz.getMethod(methodName, Integer.TYPE);
-            } catch (SecurityException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
+            } catch (SecurityException | NoSuchMethodException e) {}
             if (methodSet != null) {
                 /*
                 Aqui seta os valores dos editsText das dezenas no objeto this.sorteio.
                  */
                 try {
                     methodSet.invoke(this.sorteio, dezena);
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                    e.printStackTrace();
-                }
+                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {}
             }
         }
     }
