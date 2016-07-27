@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.jsoup.Jsoup;
@@ -27,6 +28,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.util.Calendar;
 
@@ -40,10 +42,12 @@ import br.com.daciosoftware.loteriasdms.util.DecompressFile;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DownloadFile;
 import br.com.daciosoftware.loteriasdms.util.FileUtil;
+import br.com.daciosoftware.loteriasdms.util.LogProcessamento;
 import br.com.daciosoftware.loteriasdms.util.filedialog.FileDialog;
 
 public class ProcessaArquivoActivity extends AppCompatActivity {
 
+    private TextView textViewLabelFile;
     private EditText editTextArquivo;
     private TypeSorteio typeSorteio;
     private ProgressDialog progressDialog;
@@ -64,6 +68,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this, layout);
         styleTypeSorteio.setStyleHeader(typeSorteio);
 
+        textViewLabelFile = (TextView) findViewById(R.id.textViewLabelFile);
         editTextArquivo = (EditText) findViewById(R.id.editTextArquivo);
         ImageButton imageButtonArquivo = (ImageButton) findViewById(R.id.imageButtonArquivo);
         Button buttonProcessarArquivo = (Button) findViewById(R.id.buttonProcessarArquivo);
@@ -374,7 +379,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         }
     }
 
-    private class ProcessarArquivoHtml extends AsyncTask<String, Integer, String> {
+    private class ProcessarArquivoHtml extends AsyncTask<String, String, String> {
 
         private boolean running = true;
 
@@ -385,7 +390,12 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
             try {
 
-                Document doc = Jsoup.parse(new File(pathFileHtml), "ISO-8859-1");
+                File fileHtml = new File(pathFileHtml);
+
+                float fileSize = FileUtil.getSizeMBytes(fileHtml);
+                publishProgress(new DecimalFormat("0.00").format(fileSize)+"MB");
+
+                Document doc = Jsoup.parse(fileHtml, "ISO-8859-1");
 
                 String titleDoc = doc.title();
                 String titleJogo = getTituloArquivoHtml(typeSorteio);
@@ -394,9 +404,6 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                     return "Arquivo de outro Jogo: " + titleDoc;
                 }
 
-                File fileLog1 = new File(FileUtil.getDefaultDirectory("LoteriasDMS") + "/" + "log_processamento.txt");
-                BufferedWriter writer = new BufferedWriter(new FileWriter(fileLog1));
-
                 Element table = doc.select("table").first();
                 Elements trows = table.select("tr");
                 trows.remove(0);
@@ -404,27 +411,20 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                     Elements tds = row.select("td");
                     String valueTd = row.child(0).text();
                     if (isRowValid(valueTd)) {
-                        writer.write(tds.html());
-                        writer.write("\n" + "======================================================" + "\n");
+                        LogProcessamento.registraLog(tds.html());
                         try {
                             sorteioDAO.insertSorteioFromTrow(tds);
                         } catch (ParseException e) {
-                            writer.write("\n" + "======================================================" + "\n");
-                            writer.write(e.getMessage());
-                        }
+                            LogProcessamento.registraLog(e.getMessage());                        }
                     }
                     if (!running) {
-                        writer.close();
                         return "Processamento cancelado";
                     }
                 }
-                writer.close();
 
             } catch (NumberFormatException | IOException | OutOfMemoryError e) {
                 return "Erro ao processar arquivo: " + e.getMessage();
             }
-
-
             return "Processamento concluído com sucesso";
         }
 
@@ -454,6 +454,13 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
             super.onCancelled();
 
         }
+
+        @Override
+        protected void onProgressUpdate(String... msgs) {
+            String sizeFile = msgs[0];
+            textViewLabelFile.setText(textViewLabelFile.getText().toString()+"("+String.valueOf(sizeFile)+")");
+        }
+
 
     }
 

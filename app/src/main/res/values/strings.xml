@@ -114,5 +114,6 @@
     <string name="msg_restaurar_config">Restuarar configurações padrão?</string>
     <string name="label_web_service">Web Service</string>
     <string name="label_url_web_service">URL raiz do Web Service</string>
+    <string name="label_informe_arquivo">Informe o arquivo HTML</string>
 
 </resources>

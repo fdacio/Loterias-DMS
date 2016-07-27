@@ -197,7 +197,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                     JSONObject jsonObject = new JSONObject(jsonWebService);
                     int numero = jsonObject.getInt("NumeroConcurso");
                     Calendar data = DateUtil.dateUSToCalendar(jsonObject.getString("Data"));
-                    String local = jsonObject.getString("RealizadoEm").split(" ")[3];
+                    String local = jsonObject.getString("RealizadoEm");
                     JSONArray jsonArray = jsonObject.optJSONArray("Sorteios");
                     JSONObject jsonObject2 = jsonArray.getJSONObject(0);
                     String numeros = jsonObject2.getString("Numeros");
@@ -228,6 +228,9 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                                 return "Erro ao obter dados do Web Service: " + e.getMessage();
                             }
                         }
+                    }
+                    if(sorteioDAO.findByNumber(numero)==null) {
+                        sorteioDAO.save(sorteio);
                     }
 
 

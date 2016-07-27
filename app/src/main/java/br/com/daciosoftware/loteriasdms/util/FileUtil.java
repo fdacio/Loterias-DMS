@@ -13,6 +13,8 @@ import java.io.File;
  */
 public class FileUtil {
 
+    private static final float SIZE_KB = 1024.0f;
+
     public static String getMimeType(Context context, File file) {
         Uri uri = Uri.fromFile(file);
         String mimeType;
@@ -35,4 +37,17 @@ public class FileUtil {
         }
         return dir.getPath();
     }
+
+    public static float getSizeBytes(File file){
+        return file.length()/SIZE_KB;
+    }
+
+    public static float getSizeMBytes(File file){
+        return getSizeBytes(file)/SIZE_KB;
+    }
+
+    public static float getSizeGBytes(File file){
+        return getSizeMBytes(file)/SIZE_KB;
+    }
+
 }

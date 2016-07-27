@@ -28,6 +28,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_informe_arquivo"
+                android:id="@+id/textViewLabelFile" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
             <EditText android:id="@+id/editTextArquivo"
                 android:layout_column="0"
                 android:inputType="text"
@@ -64,6 +75,7 @@
         </TableRow>
 
     </TableLayout>
+
     <Button
         style="@style/smallButton"
         android:text="@string/label_baixar_arquivo"
