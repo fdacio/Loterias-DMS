@@ -12,15 +12,16 @@
     tools:context=".dezemasmaissorteadas.DezenasMaisSorteadasActivity"
     tools:showIn="@layout/activity_dezenas_mais_sorteadas">
 
-    <include layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel"/>
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listViewDezenasMaisSorteadas"
         android:headerDividersEnabled="true"
-        android:layout_below="@+id/linearLayouLogoLabel"/>
+        android:layout_below="@+id/linearLayouLogoLabel" />
 
     <TextView
         android:id="@+id/emptyElement"
@@ -29,7 +30,7 @@
         android:layout_height="match_parent"
         android:textSize="25sp"
         android:textAlignment="center"
-        android:gravity="center_vertical|center_horizontal"/>
+        android:gravity="center_vertical|center_horizontal" />
 
     <TextView
         android:layout_width="match_parent"
@@ -40,7 +41,7 @@
         android:textColor="@color/colorPrimary"
         android:textStyle="bold"
         android:gravity="right"
-        android:layout_above="@+id/btnGerarJogos"/>
+        android:layout_above="@+id/btnGerarJogos" />
 
     <Button
         android:id="@+id/btnGerarJogos"
@@ -48,6 +49,6 @@
         android:layout_height="wrap_content"
         android:text="@string/label_gerar_jogos"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true"/>
+        android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

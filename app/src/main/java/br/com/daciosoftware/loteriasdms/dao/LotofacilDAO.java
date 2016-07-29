@@ -152,46 +152,48 @@ public class LotofacilDAO extends SorteioDAO {
     }
 
     @Override
-    public Lotofacil getEntityDezenasCrescente(Cursor c) {
-        if (c.getCount() > 0) {
+    public Lotofacil getEntityDezenasCrescente(Sorteio sorteio) {
 
-            Lotofacil lotofacil = getInstanciaEntity();
-            lotofacil.setId(c.getInt(0));
-            lotofacil.setNumero(c.getInt(1));
-            try {
-                lotofacil.setData(DateUtil.dateUSToCalendar(c.getString(2)));
-            } catch (ParseException pe) {
-                pe.printStackTrace();
-            }
-            lotofacil.setLocal(c.getString(3));
 
-            int[] arrayDezendas = new int[15];
+        Lotofacil lotofacilDezenasCrescente = (Lotofacil) sorteio;
 
-            for(int i=0; i<15; i++){
-                arrayDezendas[i]=c.getInt(i+4);
-            }
-            Arrays.sort(arrayDezendas);
+        int[] arrayDezendas = new int[15];
 
-            lotofacil.setD1(arrayDezendas[0]);
-            lotofacil.setD2(arrayDezendas[1]);
-            lotofacil.setD3(arrayDezendas[2]);
-            lotofacil.setD4(arrayDezendas[3]);
-            lotofacil.setD5(arrayDezendas[4]);
-            lotofacil.setD6(arrayDezendas[5]);
-            lotofacil.setD7(arrayDezendas[6]);
-            lotofacil.setD8(arrayDezendas[7]);
-            lotofacil.setD9(arrayDezendas[8]);
-            lotofacil.setD10(arrayDezendas[9]);
-            lotofacil.setD11(arrayDezendas[10]);
-            lotofacil.setD12(arrayDezendas[11]);
-            lotofacil.setD13(arrayDezendas[12]);
-            lotofacil.setD14(arrayDezendas[13]);
-            lotofacil.setD15(arrayDezendas[14]);
-            return lotofacil;
-        } else {
-            return null;
-        }
+        arrayDezendas[0] = sorteio.getD1();
+        arrayDezendas[1] = sorteio.getD2();
+        arrayDezendas[2] = sorteio.getD3();
+        arrayDezendas[3] = sorteio.getD4();
+        arrayDezendas[4] = sorteio.getD5();
+        arrayDezendas[5] = sorteio.getD6();
+        arrayDezendas[6] = sorteio.getD7();
+        arrayDezendas[7] = sorteio.getD8();
+        arrayDezendas[8] = sorteio.getD9();
+        arrayDezendas[9] = sorteio.getD10();
+        arrayDezendas[10] = sorteio.getD11();
+        arrayDezendas[11] = sorteio.getD12();
+        arrayDezendas[12] = sorteio.getD13();
+        arrayDezendas[13] = sorteio.getD14();
+        arrayDezendas[14] = sorteio.getD15();
 
+        Arrays.sort(arrayDezendas);
+
+        lotofacilDezenasCrescente.setD1(arrayDezendas[0]);
+        lotofacilDezenasCrescente.setD2(arrayDezendas[1]);
+        lotofacilDezenasCrescente.setD3(arrayDezendas[2]);
+        lotofacilDezenasCrescente.setD4(arrayDezendas[3]);
+        lotofacilDezenasCrescente.setD5(arrayDezendas[4]);
+        lotofacilDezenasCrescente.setD6(arrayDezendas[5]);
+        lotofacilDezenasCrescente.setD7(arrayDezendas[6]);
+        lotofacilDezenasCrescente.setD8(arrayDezendas[7]);
+        lotofacilDezenasCrescente.setD9(arrayDezendas[8]);
+        lotofacilDezenasCrescente.setD10(arrayDezendas[9]);
+        lotofacilDezenasCrescente.setD11(arrayDezendas[10]);
+        lotofacilDezenasCrescente.setD12(arrayDezendas[11]);
+        lotofacilDezenasCrescente.setD13(arrayDezendas[12]);
+        lotofacilDezenasCrescente.setD14(arrayDezendas[13]);
+        lotofacilDezenasCrescente.setD15(arrayDezendas[14]);
+
+        return lotofacilDezenasCrescente;
     }
 
 }

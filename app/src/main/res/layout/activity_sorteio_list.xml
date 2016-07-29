@@ -25,13 +25,12 @@
     <include layout="@layout/content_sorteio_list" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fabAdd"
+        android:id="@+id/fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        android:src="@drawable/ic_add_white_24dp"
+        android:src="@drawable/ic_cloud_download_white_24dp"
         android:background="@color/colorAccent" />
-
 
 </android.support.design.widget.CoordinatorLayout>

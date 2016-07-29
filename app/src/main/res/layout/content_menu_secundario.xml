@@ -12,7 +12,7 @@
     tools:context="br.com.daciosoftware.loteriasdms.MenuSecundarioActivity"
     tools:showIn="@layout/activity_menu_secundario">
 
-    <include layout="@layout/header_type_sorteio"/>
+    <include layout="@layout/header_type_sorteio" />
 
     <ListView
         android:layout_width="wrap_content"

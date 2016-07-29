@@ -12,8 +12,9 @@
     tools:context=".dezemasmaissorteadas.GeraJogosActivity"
     tools:showIn="@layout/activity_gera_jogos">
 
-    <include layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel"/>
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -22,7 +23,7 @@
         android:id="@+id/textViewLabel1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayouLogoLabel"/>
+        android:layout_below="@+id/linearLayouLogoLabel" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -67,7 +68,7 @@
         android:id="@+id/listViewGeraJogos"
         android:layout_marginTop="10dp"
         android:headerDividersEnabled="true"
-        android:layout_below="@+id/relativeLayoutGerarJogos"/>
+        android:layout_below="@+id/relativeLayoutGerarJogos" />
 
     <TextView
         android:id="@+id/emptyElement"

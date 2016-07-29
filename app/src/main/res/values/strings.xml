@@ -49,8 +49,11 @@
     <string name="desfazer">Desfazer</string>
     <string name="restaurar">Restaurar Padrão</string>
     <string name="recarregar">Recarregar</string>
-    <string name="orderby_sorteio">Ordernar por Sorteio</string>
-    <string name="orderby_crescente">Ordernar Crescente</string>
+    <string name="atualizar_sorteios">Atualizar Sorteios</string>
+    <string name="listar_crescente">Por Ordem Crescente</string>
+    <string name="listar_decrescente">Por Ordem Decrescente</string>
+    <string name="ordenar_dezenas">Ordenar Dezenas</string>
+    <string name="adicionar_sorteio">Adicionar Sorteio</string>
     <string name="delete_all">Excluir Tudo</string>
     <string name="msg_delete_todos">Todos Sorteios</string>
 

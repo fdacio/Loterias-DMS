@@ -12,8 +12,9 @@
     tools:context=".sorteio.SorteioListActivity"
     tools:showIn="@layout/activity_sorteio_list">
 
-    <include layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel"/>
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
 
     <ListView
         android:layout_width="wrap_content"

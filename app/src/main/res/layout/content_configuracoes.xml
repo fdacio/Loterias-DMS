@@ -110,7 +110,7 @@
                     android:inputType="text"
                     android:singleLine="true"
                     android:lines="1"
-                    android:scrollHorizontally="true"/>
+                    android:scrollHorizontally="true" />
             </TableRow>
 
             <TableRow
@@ -135,7 +135,7 @@
                     android:layout_span="2"
                     android:singleLine="true"
                     android:lines="1"
-                    android:scrollHorizontally="true"/>
+                    android:scrollHorizontally="true" />
             </TableRow>
 
             <TableRow
@@ -178,7 +178,7 @@
                     android:layout_span="3"
                     android:singleLine="true"
                     android:lines="1"
-                    android:scrollHorizontally="true"/>
+                    android:scrollHorizontally="true" />
             </TableRow>
 
             <TableRow
@@ -203,7 +203,7 @@
                     android:layout_span="2"
                     android:singleLine="true"
                     android:lines="1"
-                    android:scrollHorizontally="true"/>
+                    android:scrollHorizontally="true" />
             </TableRow>
 
 
@@ -248,7 +248,7 @@
                     android:layout_span="3"
                     android:singleLine="true"
                     android:lines="1"
-                    android:scrollHorizontally="true"/>
+                    android:scrollHorizontally="true" />
             </TableRow>
 
             <TableRow
@@ -273,7 +273,7 @@
                     android:layout_span="2"
                     android:singleLine="true"
                     android:lines="1"
-                    android:scrollHorizontally="true"/>
+                    android:scrollHorizontally="true" />
             </TableRow>
 
         </TableLayout>

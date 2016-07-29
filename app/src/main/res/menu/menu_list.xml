@@ -1,29 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:id="@+id/searchMenu"
+    <item
+        android:id="@+id/searchMenu"
         android:title="@string/pesquisar_data_numero"
         android:icon="@drawable/ic_search_white_24dp"
         app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView">
-    </item>
-    <item android:id="@+id/reloadMenu"
-        android:title="@string/recarregar"
-        android:icon="@drawable/ic_restore_page_white_24dp"
-        app:showAsAction="collapseActionView|ifRoom">
-    </item>
-    <item android:id="@+id/orderBySorteio"
-        android:title="@string/orderby_sorteio"
-        app:showAsAction="never">
-    </item>
-    <item android:id="@+id/orderByCrescente"
-        android:title="@string/orderby_crescente"
-        app:showAsAction="never">
-    </item>
-    <item android:id="@+id/deleteAll"
-        android:title="@string/delete_all"
-        app:showAsAction="never">
-    </item>
+        app:actionViewClass="android.support.v7.widget.SearchView"></item>
 
- </menu>
+    <item
+        android:id="@+id/porOrdemCrescenteMenu"
+        android:title="@string/listar_crescente"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/porOrdemDecrescenteMenu"
+        android:title="@string/listar_decrescente"
+        app:showAsAction="never"></item>
+    <item
+        android:id="@+id/ordenarDezanas"
+        android:title="@string/ordenar_dezenas"
+        app:showAsAction="never"></item>
+
+    <item
+        android:id="@+id/addMenu"
+        android:title="@string/adicionar_sorteio"
+        app:showAsAction="never"></item>
+
+    <item
+        android:id="@+id/deleteAllMenu"
+        android:title="@string/delete_all"
+        app:showAsAction="never"></item>
+
+</menu>

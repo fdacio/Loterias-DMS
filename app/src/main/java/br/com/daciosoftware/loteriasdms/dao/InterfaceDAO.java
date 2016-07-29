@@ -1,6 +1,5 @@
 package br.com.daciosoftware.loteriasdms.dao;
 
-import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 
 import java.util.Calendar;
@@ -15,9 +14,11 @@ public interface InterfaceDAO<E, L> {
     int delete(E entity) throws SQLiteException;
     int deleteAll() throws SQLiteException;
     List<E> listAll();
-    List<E> listAllDezenasCrescente();
+    List<E> listAllDecrescente();
+    List<E> dezenasCrescente(List<E> list);
     E findById(L id);
     E findByNumber(Integer number);
+    E findMinNumber();
     E findByDate(Calendar date);
     List<E> findByDezenas(int... dezenas);
     int count();

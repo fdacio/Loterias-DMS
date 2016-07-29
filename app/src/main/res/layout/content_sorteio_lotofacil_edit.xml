@@ -12,7 +12,8 @@
     tools:context="br.com.daciosoftware.loteriasdms.sorteio.SorteioEditActivity"
     tools:showIn="@layout/activity_sorteio_lotofacil_edit">
 
-    <include layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel"/>
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
 
 </RelativeLayout>

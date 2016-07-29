@@ -12,7 +12,8 @@
     tools:context=".confiraseujogo.ConfiraSeuJogoActivity"
     tools:showIn="@layout/activity_confira_seu_jogo">
 
-    <include layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel"/>
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
 
 </RelativeLayout>

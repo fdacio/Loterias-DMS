@@ -12,8 +12,9 @@
     tools:context=".processaarquivo.ProcessaArquivoActivity"
     tools:showIn="@layout/activity_processar_arquivo">
 
-    <include layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel"/>
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
 
     <TableLayout
         android:layout_width="match_parent"
@@ -39,7 +40,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <EditText android:id="@+id/editTextArquivo"
+            <EditText
+                android:id="@+id/editTextArquivo"
                 android:layout_column="0"
                 android:inputType="text"
                 android:layout_width="match_parent"

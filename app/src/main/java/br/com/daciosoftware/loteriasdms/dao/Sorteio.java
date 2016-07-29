@@ -1,16 +1,11 @@
 package br.com.daciosoftware.loteriasdms.dao;
 
-import android.util.Log;
-
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
-import br.com.daciosoftware.loteriasdms.util.Constantes;
 
 /**
  * Created by Dácio Braga on 19/07/2016.
  */
-public abstract class Sorteio {
+public class Sorteio implements Comparable<Sorteio> {
 
     private long id;
     private int numero;
@@ -20,6 +15,7 @@ public abstract class Sorteio {
             d6, d7, d8, d9, d10,
             d11, d12, d13, d14, d15;
 
+    protected Sorteio() {}
 
     public long getId() {
         return id;
@@ -171,5 +167,10 @@ public abstract class Sorteio {
 
     public void setD15(int d15) {
         this.d15 = d15;
+    }
+
+    @Override
+    public int compareTo(Sorteio another) {
+        return new Integer(numero).compareTo(another.getNumero());
     }
 }

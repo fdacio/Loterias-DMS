@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
@@ -26,14 +27,18 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     private SQLiteDatabase db;
     private String tableName;
-    private String idColumn;
     private String[] allColumns;
+    private String colunaID;
+    private String colunaNumero;
+    private String colunaData;
 
     protected SorteioDAO(Context context, InterfaceContractDatabase contract) {
         this.db = Database.getDatabase(context);
         this.tableName = contract.getTableName();
-        this.idColumn = contract.getIdColumn();
+        this.colunaID = contract.getIdColumn();
         this.allColumns = contract.getAllColumns();
+        this.colunaNumero = contract.getAllColumns()[1];
+        this.colunaData = contract.getAllColumns()[2];
     }
 
     public SQLiteDatabase getDb() {
@@ -41,6 +46,12 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     }
 
 
+    /**
+     * Padrão Factory
+     * @param context
+     * @param typeSorteio
+     * @return
+     */
     public static SorteioDAO getDAO(Context context, TypeSorteio typeSorteio) {
         switch (typeSorteio) {
             case MEGASENA:
@@ -65,20 +76,20 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     public abstract Sorteio getEntity(Cursor c);
 
-    public abstract Sorteio getEntityDezenasCrescente(Cursor c);
+    public abstract Sorteio getEntityDezenasCrescente(Sorteio sorteio);
 
     public abstract Long insertSorteioFromTrow(Elements tds) throws NumberFormatException, ParseException, IOException;
 
     @Override
     public int delete(Sorteio sorteio) throws SQLiteException {
-        String where = this.idColumn + "=?";
+        String where = this.colunaID + "=?";
         String[] whereArgs = new String[]{String.valueOf(sorteio.getId())};
         return db.delete(this.tableName, where, whereArgs);
     }
 
     @Override
     public int deleteAll() throws SQLiteException {
-        String where = this.idColumn + ">?";
+        String where = this.colunaID + ">?";
         String[] whereArgs = new String[]{String.valueOf(0)};
         return db.delete(this.tableName, where, whereArgs);
     }
@@ -87,8 +98,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     public List<Sorteio> listAll() {
         List<Sorteio> list = new ArrayList<>();
         try {
-            String orderBy = allColumns[1] + " desc";
-            Cursor cursor = getCursor(null, null, orderBy);
+            Cursor cursor = getCursor(null, null, null);
             if (cursor.moveToFirst()) {
                 do {
                     Sorteio sorteio = getEntity(cursor);
@@ -99,33 +109,32 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
             throw new RuntimeException();
 
         }
+        Collections.sort(list);
         return list;
+    }
 
+
+    @Override
+    public List<Sorteio> listAllDecrescente() {
+        List<Sorteio> list = listAll();
+        Collections.reverse(list);
+        return list;
     }
 
     @Override
-    public List<Sorteio> listAllDezenasCrescente() {
-        List<Sorteio> list = new ArrayList<>();
-        try {
-            String orderBy = allColumns[1] + " desc";
-            Cursor cursor = getCursor(null, null, orderBy);
-            if (cursor.moveToFirst()) {
-                do {
-                    Sorteio sorteio = getEntityDezenasCrescente(cursor);
-                    list.add(sorteio);
-                } while (cursor.moveToNext());
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException();
-
+    public List<Sorteio> dezenasCrescente(List<Sorteio> list) {
+        List<Sorteio> listDezenasCrescente = new ArrayList<>();
+        for(Sorteio sorteio: list){
+            Sorteio sorteioDezenasCrescente = getEntityDezenasCrescente(sorteio);
+            listDezenasCrescente.add(sorteioDezenasCrescente);
         }
-        return list;
+         return listDezenasCrescente;
 
     }
 
     @Override
     public Sorteio findById(Long id) {
-        String where = this.idColumn + "=?";
+        String where = this.colunaID + "=?";
         String[] whereArgs = new String[]{String.valueOf(id)};
         Cursor cursor = getCursor(where, whereArgs);
         if (cursor.moveToFirst()) {
@@ -138,7 +147,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     @Override
     public Sorteio findByNumber(Integer number) {
-        String where = this.allColumns[1] + "=?";
+        String where = this.colunaNumero + "=?";
         String[] whereArgs = new String[]{String.valueOf(number)};
         Cursor cursor = getCursor(where, whereArgs);
         if (cursor.moveToFirst()) {
@@ -149,9 +158,15 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         }
     }
 
+
+    @Override
+    public Sorteio findMinNumber() {
+        return listAll().get(0);
+    }
+
     @Override
     public Sorteio findByDate(Calendar date) {
-        String where = this.allColumns[2] + "=?";
+        String where = this.colunaData + "=?";
         String[] whereArgs = new String[]{DateUtil.calendarToDateUS(date)};
         Cursor cursor = getCursor(where, whereArgs);
         if (cursor.moveToFirst()) {
@@ -200,9 +215,9 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     public List<Sorteio> findByBetweenDate(Calendar date1, Calendar date2) {
         List<Sorteio> list = new ArrayList<>();
         try {
-            String where = this.allColumns[2] + " between ? and ?";
+            String where = this.colunaData + " between ? and ?";
             String[] whereArgs = new String[]{DateUtil.calendarToDateUS(date1), DateUtil.calendarToDateUS(date2)};
-            String orderBy = allColumns[1] + " desc";
+            String orderBy = this.colunaNumero + " desc";
             Cursor cursor = getCursor(where, whereArgs, orderBy);
             if (cursor.moveToFirst()) {
                 do {

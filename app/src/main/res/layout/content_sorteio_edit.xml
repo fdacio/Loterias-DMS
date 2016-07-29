@@ -13,8 +13,9 @@
     tools:showIn="@layout/activity_sorteio_edit">
 
 
-    <include layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel"/>
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
 
     <TableLayout
         android:layout_width="wrap_content"
@@ -52,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:inputType="number"
-                 android:id="@+id/editTextNumero"
+                android:id="@+id/editTextNumero"
                 android:layout_column="0" />
 
             <Button
@@ -60,7 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/label_data_zero"
                 android:id="@+id/buttonData"
-                android:layout_column="2"/>
+                android:layout_column="2" />
         </TableRow>
 
         <TableRow

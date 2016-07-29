@@ -33,9 +33,9 @@ public class MenuSecundarioActivity extends AppCompatActivity implements Adapter
 
         String[] menuMain = {
                 getResources().getString(R.string.menu_dezenas_mais_sorteadas),
+                getResources().getString(R.string.menu_confira_seu_jogo),
                 getResources().getString(R.string.menu_sorteios),
-                getResources().getString(R.string.menu_processar_arquivo),
-                getResources().getString(R.string.menu_confira_seu_jogo),};
+                getResources().getString(R.string.menu_processar_arquivo)};
 
         ListView listViewMenuSecundario = (ListView) findViewById(R.id.listViewMenuSecundario);
         listViewMenuSecundario.setAdapter(new MenuSecundarioAdapter(getApplicationContext(),menuMain,typeSorteio));
@@ -65,13 +65,13 @@ public class MenuSecundarioActivity extends AppCompatActivity implements Adapter
                 intent = new Intent(MenuSecundarioActivity.this, DezenasMaisSorteadasActivity.class);
                 break;
             case 1:
-                intent = new Intent(MenuSecundarioActivity.this, SorteioListActivity.class);
+                intent = new Intent(MenuSecundarioActivity.this, ConfiraSeuJogoActivity.class);
                 break;
             case 2:
-                intent = new Intent(MenuSecundarioActivity.this, ProcessaArquivoActivity.class);
+                intent = new Intent(MenuSecundarioActivity.this, SorteioListActivity.class);
                 break;
             case 3:
-                intent = new Intent(MenuSecundarioActivity.this, ConfiraSeuJogoActivity.class);
+                intent = new Intent(MenuSecundarioActivity.this, ProcessaArquivoActivity.class);
                 break;
         }
 

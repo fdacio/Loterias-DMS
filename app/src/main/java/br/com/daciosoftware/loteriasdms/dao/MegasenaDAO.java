@@ -115,36 +115,27 @@ public class MegasenaDAO extends SorteioDAO {
     }
 
     @Override
-    public Megasena getEntityDezenasCrescente(Cursor c) {
-        if (c.getCount() > 0) {
+    public Megasena getEntityDezenasCrescente(Sorteio sorteio) {
+        Megasena megasenaDezenasCrescente = (Megasena) sorteio;
 
-            Megasena megasena = getInstanciaEntity();
-            megasena.setId(c.getInt(0));
-            megasena.setNumero(c.getInt(1));
-            try {
-                megasena.setData(DateUtil.dateUSToCalendar(c.getString(2)));
-            } catch (ParseException pe) {
-                pe.printStackTrace();
-            }
-            megasena.setLocal(c.getString(3));
+        int[] arrayDezendas = new int[6];
+        arrayDezendas[0] = sorteio.getD1();
+        arrayDezendas[1] = sorteio.getD2();
+        arrayDezendas[2] = sorteio.getD3();
+        arrayDezendas[3] = sorteio.getD4();
+        arrayDezendas[4] = sorteio.getD5();
+        arrayDezendas[5] = sorteio.getD6();
 
-            int[] arrayDezendas = new int[6];
+        Arrays.sort(arrayDezendas);
 
-            for (int i = 0; i < 6; i++) {
-                arrayDezendas[i] = c.getInt(i + 4);
-            }
-            Arrays.sort(arrayDezendas);
+        megasenaDezenasCrescente.setD1(arrayDezendas[0]);
+        megasenaDezenasCrescente.setD2(arrayDezendas[1]);
+        megasenaDezenasCrescente.setD3(arrayDezendas[2]);
+        megasenaDezenasCrescente.setD4(arrayDezendas[3]);
+        megasenaDezenasCrescente.setD5(arrayDezendas[4]);
+        megasenaDezenasCrescente.setD6(arrayDezendas[5]);
 
-            megasena.setD1(arrayDezendas[0]);
-            megasena.setD2(arrayDezendas[1]);
-            megasena.setD3(arrayDezendas[2]);
-            megasena.setD4(arrayDezendas[3]);
-            megasena.setD5(arrayDezendas[4]);
-            megasena.setD6(arrayDezendas[5]);
-            return megasena;
-        } else {
-            return null;
-        }
+        return megasenaDezenasCrescente;
     }
 
 }

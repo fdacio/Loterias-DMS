@@ -110,35 +110,28 @@ public class QuinaDAO extends SorteioDAO {
     }
 
     @Override
-    public Quina getEntityDezenasCrescente(Cursor c) {
-        if (c.getCount() > 0) {
+    public Quina getEntityDezenasCrescente(Sorteio sorteio) {
+        Quina quinaDezenasCrescente = (Quina) sorteio;
 
-            Quina quina = getInstanciaEntity();
-            quina.setId(c.getInt(0));
-            quina.setNumero(c.getInt(1));
-            try {
-                quina.setData(DateUtil.dateUSToCalendar(c.getString(2)));
-            } catch (ParseException pe) {
-                pe.printStackTrace();
-            }
-            quina.setLocal(c.getString(3));
+        int[] arrayDezendas = new int[5];
+        arrayDezendas[0] = sorteio.getD1();
+        arrayDezendas[1] = sorteio.getD2();
+        arrayDezendas[2] = sorteio.getD3();
+        arrayDezendas[3] = sorteio.getD4();
+        arrayDezendas[4] = sorteio.getD5();
 
-            int[] arrayDezendas = new int[5];
 
-            for (int i = 0; i < 5; i++) {
-                arrayDezendas[i] = c.getInt(i + 4);
-            }
-            Arrays.sort(arrayDezendas);
+        Arrays.sort(arrayDezendas);
 
-            quina.setD1(arrayDezendas[0]);
-            quina.setD2(arrayDezendas[1]);
-            quina.setD3(arrayDezendas[2]);
-            quina.setD4(arrayDezendas[3]);
-            quina.setD5(arrayDezendas[4]);
-            return quina;
-        } else {
-            return null;
-        }
+        quinaDezenasCrescente.setD1(arrayDezendas[0]);
+        quinaDezenasCrescente.setD2(arrayDezendas[1]);
+        quinaDezenasCrescente.setD3(arrayDezendas[2]);
+        quinaDezenasCrescente.setD4(arrayDezendas[3]);
+        quinaDezenasCrescente.setD5(arrayDezendas[4]);
+
+
+        return quinaDezenasCrescente;
     }
+
 
 }

@@ -3,9 +3,6 @@ package br.com.daciosoftware.loteriasdms.db;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
-
-import br.com.daciosoftware.loteriasdms.util.Constantes;
 
 public class SQLiteHelperDatabase extends SQLiteOpenHelper {
 

@@ -82,11 +82,11 @@ public class StyleTypeSorteio {
                     case 0:
                         return R.drawable.ic_dezenas_mais_sorteadas_megasena_24;
                     case 1:
-                        return R.drawable.ic_sorteios_megasena_24dp;
-                    case 2:
-                        return R.drawable.ic_processar_arquivo_megasena_24dp;
-                    case 3:
                         return R.drawable.ic_confira_seu_jogo_megasena_24dp;
+                    case 2:
+                        return R.drawable.ic_sorteios_megasena_24dp;
+                    case 3:
+                        return R.drawable.ic_processar_arquivo_megasena_24dp;
                 }
 
             case LOTOFACIL:
@@ -94,11 +94,11 @@ public class StyleTypeSorteio {
                     case 0:
                         return R.drawable.ic_dezenas_mais_sorteadas_lotofacil_24;
                     case 1:
-                        return R.drawable.ic_sorteios_lotofacil_24dp;
-                    case 2:
-                        return R.drawable.ic_processar_arquivo_lotofacil_24dp;
-                    case 3:
                         return R.drawable.ic_confira_seu_jogo_lotofacil_24dp;
+                    case 2:
+                        return R.drawable.ic_sorteios_lotofacil_24dp;
+                    case 3:
+                        return R.drawable.ic_processar_arquivo_lotofacil_24dp;
                 }
 
             case QUINA:
@@ -106,11 +106,11 @@ public class StyleTypeSorteio {
                     case 0:
                         return R.drawable.ic_dezenas_mais_sorteadas_quina_24;
                     case 1:
-                        return R.drawable.ic_sorteios_quina_24dp;
-                    case 2:
-                        return R.drawable.ic_processar_arquivo_quina_24dp;
-                    case 3:
                         return R.drawable.ic_confira_seu_jogo_quina_24dp;
+                    case 2:
+                        return R.drawable.ic_sorteios_quina_24dp;
+                    case 3:
+                        return R.drawable.ic_processar_arquivo_quina_24dp;
                 }
 
             default:
@@ -164,13 +164,15 @@ public class StyleTypeSorteio {
 
     public void setStyleFloatingActionButton(TypeSorteio typeSorteio) {
         FloatingActionButton fab = (FloatingActionButton) layoutActivity.findViewById(R.id.fab);
-        FloatingActionButton fabAdd = (FloatingActionButton) layoutActivity.findViewById(R.id.fabAdd);
+        //FloatingActionButton fabAdd = (FloatingActionButton) layoutActivity.findViewById(R.id.fabAdd);
         if (fab != null){
             fab.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
+        /*
         if (fabAdd != null){
             fabAdd.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
+        */
 
     }
 
