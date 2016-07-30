@@ -159,27 +159,20 @@ public class StyleTypeSorteio {
         if (textViewLabelMenu != null) {
             textViewLabelMenu.setTextColor(this.context.getResources().getColor(getColor(typeSorteio)));
         }
-
     }
 
     public void setStyleFloatingActionButton(TypeSorteio typeSorteio) {
         FloatingActionButton fab = (FloatingActionButton) layoutActivity.findViewById(R.id.fab);
-        //FloatingActionButton fabAdd = (FloatingActionButton) layoutActivity.findViewById(R.id.fabAdd);
         if (fab != null){
             fab.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
-        /*
-        if (fabAdd != null){
-            fabAdd.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
-        }
-        */
-
     }
 
     public void setStyleButton(TypeSorteio typeSorteio){
         ImageButton imageButtonArquivo = (ImageButton) layoutActivity.findViewById(R.id.imageButtonArquivo);
         Button buttonBaixarProcessar = (Button) layoutActivity.findViewById(R.id.buttonProcessarArquivo);
         Button buttonBaixarArquivo = (Button) layoutActivity.findViewById(R.id.buttonBaixarArquivo);
+        Button buttonConferir = (Button) layoutActivity.findViewById(R.id.buttonConferir);
 
         if(imageButtonArquivo != null){
             imageButtonArquivo.setBackgroundResource(getBackgroundButton(typeSorteio));
@@ -190,7 +183,9 @@ public class StyleTypeSorteio {
         if(buttonBaixarArquivo != null){
             buttonBaixarArquivo.setBackgroundResource(getBackgroundButton(typeSorteio));
         }
+        if(buttonConferir != null){
+            buttonConferir.setBackgroundResource(getBackgroundButton(typeSorteio));
+        }
 
     }
-
 }

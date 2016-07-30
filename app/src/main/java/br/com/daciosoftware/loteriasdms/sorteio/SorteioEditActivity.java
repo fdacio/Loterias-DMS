@@ -123,7 +123,7 @@ public class SorteioEditActivity extends AppCompatActivity {
     }
 
     private void loadSorteioInForm() {
-        Long id = null;
+        Long id;
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getLong(Constantes.ID_INSERT_UPDATE);

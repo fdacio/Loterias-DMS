@@ -67,86 +67,94 @@ public class AtualizaSorteioWebServiceTask extends AsyncTask<Void, String, Strin
 
 
         SharedPreferences sharedPreferences = context.getSharedPreferences(Constantes.SHARED_PREF, context.MODE_PRIVATE);
-        String urlWebService = sharedPreferences.getString(Constantes.URL_WEB_SERVICE, Constantes.URL_WEB_SERVICE_DEFAULT);
+        String urlWebServiceRoot = sharedPreferences.getString(Constantes.URL_WEB_SERVICE, Constantes.URL_WEB_SERVICE_DEFAULT);
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(context, typeSorteio);
+
+        String urlWebServicePrimeiroSorteio = urlWebServiceRoot+String.valueOf(jogo);
 
         try {
 
-            String jsonWebServiceUS = HttpConnection.getContent(urlWebService + String.valueOf(jogo));
+            String jsonWebServiceUS = HttpConnection.getContentJSON(urlWebServicePrimeiroSorteio);
             JSONObject jsonObjectUS = new JSONObject(jsonWebServiceUS);
             int numeroUltimoSorteioWS = jsonObjectUS.getInt("NumeroConcurso");
-            int numeroUltimoSorteioBD = sorteioDAO.findMinNumber().getNumero();
-
-            int numeroSorteio;
-
-            if(numeroUltimoSorteioBD == 0) {
-                numeroSorteio = numeroUltimoSorteioWS;
-            }else{
-                numeroSorteio = numeroUltimoSorteioBD;
-            }
+            Sorteio sorteio = sorteioDAO.findFirst();
+            int numeroUltimoSorteioBD = (sorteio != null) ? sorteio.getNumero() : 0;
+            int numeroSorteio = (numeroUltimoSorteioBD == 0) ? numeroUltimoSorteioWS : numeroUltimoSorteioBD - 1;
 
 
+            /*
+            Processamento inicia-se do mais rescente sorteio até o mais antigo.
+            Se já houver sorteio regisrados, inicia apartir do ultimo registro
+             */
             while (running) {
+                String urlWebServiceSorteio = urlWebServicePrimeiroSorteio + "/" + numeroSorteio;
 
-                String jsonWebService = HttpConnection.getContent(urlWebService + String.valueOf(jogo) + "/" + numeroSorteio);
-                JSONObject jsonObject = new JSONObject(jsonWebService);
                 try {
-                    String status = jsonObject.getString("Status");
-                    if (status.equals("Error")) {
-                        running = false;
-                        break;
-                    }
-                } catch (Exception e) {
-                }
+                    String jsonWebService = HttpConnection.getContentJSON(urlWebServiceSorteio);
+                    JSONObject jsonObject = new JSONObject(jsonWebService);
+                    /*
+                    Esse erro acontece pq não tem todos os sorteio, qndo chega nesse ponto
+                    é pq não ha mais sorteios disponível.
+                     */
 
-                int numero = jsonObject.getInt("NumeroConcurso");
-                Calendar data = DateUtil.dateUSToCalendar(jsonObject.getString("Data"));
-                String local = jsonObject.getString("RealizadoEm");
-                JSONArray jsonArray = jsonObject.optJSONArray("Sorteios");
-                JSONObject jsonObject2 = jsonArray.getJSONObject(0);
-                String numeros = jsonObject2.getString("Numeros");
-                String[] dezenas = numeros.replace("[", "").replace("]", "").split(",");
+                     String status = jsonObject.getString("Status");
+                     if (status.equals("end")) {
+                          return "Atualização realizada com sucesso.";
+                     }
 
-                msg = "Atualizando Sorteios.\n" +
-                        nomeSorteio + " Concurso:" + numero + "\n" +
-                        "Aguarde...";
-                publishProgress(msg);
+                    int numero = jsonObject.getInt("NumeroConcurso");
+                    Calendar data = DateUtil.dateUSToCalendar(jsonObject.getString("Data"));
+                    String local = jsonObject.getString("RealizadoEm");
+                    JSONArray jsonArray = jsonObject.optJSONArray("Sorteios");
+                    JSONObject jsonObject2 = jsonArray.getJSONObject(0);
+                    String numeros = jsonObject2.getString("Numeros");
+                    String[] dezenas = numeros.replace("[", "").replace("]", "").split(",");
 
-                Sorteio sorteio = sorteioDAO.getInstanciaEntity();
-                sorteio.setNumero(numero);
-                sorteio.setData(data);
-                sorteio.setLocal(local);
+                    msg = "Atualizando Sorteios.\n" +
+                            nomeSorteio + " Concurso:" + numero + "\n" +
+                            "Aguarde...";
+                    publishProgress(msg);
 
-                java.lang.reflect.Method methodGet = null;
-                for (int i = 0; i < dezenas.length; i++) {
-                    int dezena = Integer.parseInt(dezenas[i]);
+                    Sorteio sorteioAdd = sorteioDAO.getInstanciaEntity();
+                    sorteioAdd.setNumero(numero);
+                    sorteioAdd.setData(data);
+                    sorteioAdd.setLocal(local);
 
-                    String methodName = "setD" + String.valueOf(i + 1);
-                    try {
-                        methodGet = sorteio.getClass().getMethod(methodName, Integer.TYPE);
-                    } catch (SecurityException | NoSuchMethodException e) {
-                        return "Erro ao obter dados do Web Service: " + e.getMessage();
-                    }
+                    java.lang.reflect.Method methodGet = null;
+                    for (int i = 0; i < dezenas.length; i++) {
+                        int dezena = Integer.parseInt(dezenas[i]);
 
-                    if (methodGet != null) {
+                        String methodName = "setD" + String.valueOf(i + 1);
                         try {
-                            methodGet.invoke(sorteio, dezena);
-                        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                            return "Erro ao obter dados do Web Service: " + e.getMessage();
+                            methodGet = sorteioAdd.getClass().getMethod(methodName, Integer.TYPE);
+                        } catch (SecurityException | NoSuchMethodException e) {
+                            return "Erro ao gerar o sorteio: " + e.getMessage();
+                        }
+
+                        if (methodGet != null) {
+                            try {
+                                methodGet.invoke(sorteioAdd, dezena);
+                            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+                                return "Erro ao gerar o sorteio: " + e.getMessage();
+                            }
                         }
                     }
+
+                    if (sorteioDAO.findByNumber(numero) == null) {
+                        sorteioDAO.save(sorteioAdd);
+                    }
+
+                    numeroSorteio--;
+
+                } catch (IOException | JSONException | ParseException e) {
+                    return "Erro ao obter dados do Web Service: " + urlWebServiceSorteio;
                 }
 
-                if (sorteioDAO.findByNumber(numero) == null) {
-                    sorteioDAO.save(sorteio);
-                }
-
-                numeroSorteio--;
 
             }//Fim do while
 
-        } catch (IOException | JSONException | ParseException e) {
-            return "Erro ao obter dados do Web Service: " + e.getMessage();
+        } catch (IOException | JSONException  e) {
+            return "Erro ao obter dados do Web Service: " + urlWebServicePrimeiroSorteio;
         }
 
 
@@ -221,6 +229,5 @@ public class AtualizaSorteioWebServiceTask extends AsyncTask<Void, String, Strin
             ).show();
         }
     }
-
 
 }

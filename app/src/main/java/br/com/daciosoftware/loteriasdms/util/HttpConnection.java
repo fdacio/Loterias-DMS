@@ -12,8 +12,39 @@ import java.net.URL;
 public class HttpConnection {
 
 
+    public static String getContentJSON(String url) throws IOException {
 
-    public static String getContent(String url) throws IOException {
+        URL urlParse = new URL(url);
+        HttpURLConnection conn = (HttpURLConnection) urlParse.openConnection();
+        conn.setRequestMethod("GET");
+        conn.connect();
+
+        int responseCode = conn.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_BAD_REQUEST) {
+            conn.disconnect();
+            return "{\"Status\":\"end\"}";
+        }
+
+        StringBuilder sb = new StringBuilder();
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        try {
+            String line;
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+            }
+            String retorno = sb.toString();
+
+            return "{\"Status\":\"OK\","+retorno.substring(1);
+
+        }finally {
+            conn.disconnect();
+            in.close();
+        }
+
+    }
+
+
+    public static String getContentHTML(String url) throws IOException {
 
         URL urlParse = new URL(url);
         HttpURLConnection conn = (HttpURLConnection) urlParse.openConnection();
@@ -22,8 +53,12 @@ public class HttpConnection {
         conn.connect();
 
         int responseCode = conn.getResponseCode();
+
+
         boolean redirect = false;
         if (responseCode != HttpURLConnection.HTTP_OK) {
+
+
             if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
                     || responseCode == HttpURLConnection.HTTP_MOVED_PERM
                     || responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
@@ -41,14 +76,21 @@ public class HttpConnection {
         }
 
 
-
         StringBuilder sb = new StringBuilder();
-        BufferedReader in = new BufferedReader( new InputStreamReader(conn.getInputStream()));
-        String line;
-        while((line = in.readLine())!=null){
-            sb.append(line);
+        BufferedReader in = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        try {
+            String line;
+            while ((line = in.readLine()) != null) {
+                sb.append(line);
+            }
+
+            return sb.toString();
+        }finally {
+            conn.disconnect();
+            in.close();
         }
-        in.close();
-        return sb.toString();
+
     }
+
+
 }

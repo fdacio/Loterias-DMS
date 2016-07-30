@@ -79,7 +79,7 @@ public class AtualizaUltimoSorteioWebServiceTask extends AsyncTask<Void, String,
                 SorteioDAO sorteioDAO = SorteioDAO.getDAO(context, typeSorteio);
 
                 //Obtem o Objeto JSon com os dados do ultimo sorteio
-                String jsonWebService = HttpConnection.getContent(urlWebService + String.valueOf(jogo));
+                String jsonWebService = HttpConnection.getContentJSON(urlWebService + String.valueOf(jogo));
                 JSONObject jsonObject = new JSONObject(jsonWebService);
 
                 int numero = jsonObject.getInt("NumeroConcurso");

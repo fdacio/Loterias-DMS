@@ -65,7 +65,6 @@ public class DownloadFile {
                 fileOutputStream.close();
                 inputStream.close();
                 conn.disconnect();
-                Log.i(Constantes.CATEGORIA, "DownloaFile: Close Input and Output ");
             }
 
     }

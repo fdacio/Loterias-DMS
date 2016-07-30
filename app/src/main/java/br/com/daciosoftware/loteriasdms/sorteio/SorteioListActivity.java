@@ -28,7 +28,6 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.AtualizaSorteioWebServiceTask;
-import br.com.daciosoftware.loteriasdms.AtualizaUltimoSorteioWebServiceTask;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
@@ -36,12 +35,14 @@ import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 
 public class SorteioListActivity extends AppCompatActivity {
 
     private enum TipoListagem {CRESCENTE, DECRESCENTE, ORDENAR_DEZENAS, POR_NUMERO, POR_DATA, POR_DATAS}
 
+    private SorteioDAO sorteioDAO;
     private List<Sorteio> listSorteio;
     private ListView listViewSorteio;
     private TypeSorteio typeSorteio;
@@ -59,6 +60,8 @@ public class SorteioListActivity extends AppCompatActivity {
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
 
+        sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
+
         View layout = findViewById(R.id.layout_sorteio_list);
         StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this, layout);
         styleTypeSorteio.setStyleHeader(typeSorteio);
@@ -70,11 +73,19 @@ public class SorteioListActivity extends AppCompatActivity {
         listarSorteios(typeSorteio, TipoListagem.DECRESCENTE, null);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        styleTypeSorteio.setStyleFloatingActionButton(typeSorteio);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new AtualizaSorteioWebServiceTask(SorteioListActivity.this,typeSorteio).execute();
+                    if (DeviceInformation.isNetwork(SorteioListActivity.this)) {
+                        new AtualizaSorteioWebServiceTask(SorteioListActivity.this, typeSorteio).execute();
+                    }else {
+                        new DialogBox(SorteioListActivity.this,
+                                DialogBox.DialogBoxType.INFORMATION, "Error",
+                                getResources().getString(R.string.error_conexao)
+                        ).show();
+                    }
 
                 }
             });
@@ -88,8 +99,7 @@ public class SorteioListActivity extends AppCompatActivity {
         private Calendar data;
         private Calendar data2;
 
-        public Param() {
-        }
+        public Param() {}
 
         public int getNumero() {
             return numero;
@@ -123,7 +133,7 @@ public class SorteioListActivity extends AppCompatActivity {
         new Thread() {
 
             public void run() {
-                SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
+
 
                 switch (tipoListagem) {
                     case CRESCENTE:
@@ -321,7 +331,6 @@ public class SorteioListActivity extends AppCompatActivity {
                 new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
                         sorteioDAO.deleteAll();
                         listarSorteios(typeSorteio, TipoListagem.DECRESCENTE, null);
                     }
@@ -345,7 +354,6 @@ public class SorteioListActivity extends AppCompatActivity {
         @Override
         public void onClick(DialogInterface dialog, int which) {
             try {
-                SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
                 sorteioDAO.delete(sorteio);
                 listarSorteios(typeSorteio, TipoListagem.DECRESCENTE, null);
             } catch (SQLiteException e) {

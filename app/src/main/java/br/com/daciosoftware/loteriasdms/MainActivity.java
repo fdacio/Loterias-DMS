@@ -1,11 +1,9 @@
 package br.com.daciosoftware.loteriasdms;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -16,31 +14,21 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.text.ParseException;
-import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.configuracoes.ConfiguracoesActivity;
-import br.com.daciosoftware.loteriasdms.dao.Sorteio;
-import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.db.Database;
 import br.com.daciosoftware.loteriasdms.menuadapter.LoteriasDMSAdapter;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.HttpConnection;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
-
 
 
     @Override
@@ -80,7 +68,14 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    new AtualizaUltimoSorteioWebServiceTask(MainActivity.this).execute();
+                    if (DeviceInformation.isNetwork(MainActivity.this)) {
+                        new AtualizaUltimoSorteioWebServiceTask(MainActivity.this).execute();
+                    } else {
+                        new DialogBox(MainActivity.this,
+                                DialogBox.DialogBoxType.INFORMATION, "Error",
+                                getResources().getString(R.string.error_conexao)
+                        ).show();
+                    }
 
                 }
             });
@@ -166,9 +161,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     }
 
 
-
-
-
     private String getLinkSorteios(TypeSorteio typeSorteio) {
         SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF, MODE_PRIVATE);
 
@@ -191,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
     public int getNumeroUltimoSorteio(TypeSorteio typeSorteio) throws NumberFormatException, IOException {
 
         String url = getLinkSorteios(typeSorteio);
-        String html = HttpConnection.getContent(url);
+        String html = HttpConnection.getContentHTML(url);
 
         Element divResultados = Jsoup.parse(html).select("div#resultados").first();
 

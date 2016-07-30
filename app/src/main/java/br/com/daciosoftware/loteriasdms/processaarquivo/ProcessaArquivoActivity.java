@@ -37,6 +37,7 @@ import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DateUtil;
 import br.com.daciosoftware.loteriasdms.util.DecompressFile;
+import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DownloadFile;
 import br.com.daciosoftware.loteriasdms.util.FileUtil;
@@ -99,7 +100,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
 
-            if (isNetwork()) {
+            if (DeviceInformation.isNetwork(ProcessaArquivoActivity.this)) {
                 String defaulDirectory = FileUtil.getDefaultDirectory("LoteriasDMS");
                 String outFile = defaulDirectory + "/" + getNomeArquivoZip(typeSorteio);
                 downloadFile = new DownloadFile();
@@ -138,14 +139,6 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         }
     }
 
-    /*
-    Verifiaca o status da conexão
-     */
-    private boolean isNetwork() {
-        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        return networkInfo != null && networkInfo.isConnected();
-    }
 
     private String getLinkBaixar(TypeSorteio typeSorteio) {
         SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF, MODE_PRIVATE);

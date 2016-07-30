@@ -31,6 +31,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     private String colunaID;
     private String colunaNumero;
     private String colunaData;
+    private List<Sorteio> listSorteio;
 
     protected SorteioDAO(Context context, InterfaceContractDatabase contract) {
         this.db = Database.getDatabase(context);
@@ -96,27 +97,27 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     @Override
     public List<Sorteio> listAll() {
-        List<Sorteio> list = new ArrayList<>();
+        listSorteio = new ArrayList<>();
         try {
             Cursor cursor = getCursor(null, null, null);
             if (cursor.moveToFirst()) {
                 do {
                     Sorteio sorteio = getEntity(cursor);
-                    list.add(sorteio);
+                    listSorteio.add(sorteio);
                 } while (cursor.moveToNext());
             }
         } catch (SQLException e) {
             throw new RuntimeException();
 
         }
-        Collections.sort(list);
-        return list;
+        Collections.sort(listSorteio);
+        return listSorteio;
     }
 
 
     @Override
     public List<Sorteio> listAllDecrescente() {
-        List<Sorteio> list = listAll();
+        List<Sorteio> list = (listSorteio==null)?listAll():listSorteio;
         Collections.reverse(list);
         return list;
     }
@@ -160,8 +161,20 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
 
     @Override
-    public Sorteio findMinNumber() {
-        return listAll().get(0);
+    public Sorteio findFirst() {
+        if(count()>0)
+            return listSorteio.get(0);
+        else
+            return null;
+    }
+
+
+    @Override
+    public Sorteio findLast() {
+        if(count()>0)
+            return listSorteio.get(count()-1);
+        else
+            return null;
     }
 
     @Override
@@ -187,7 +200,10 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     @Override
     public int count() {
-        return listAll().size();
+        if(listSorteio != null)
+            return listSorteio.size();
+        else
+            return listAll().size();
     }
 
 
@@ -227,11 +243,9 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
             }
         } catch (SQLException e) {
             throw new RuntimeException();
-
         }
+
         return list;
-
     }
-
 
 }

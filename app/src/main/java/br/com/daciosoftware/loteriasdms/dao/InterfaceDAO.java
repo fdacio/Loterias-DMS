@@ -18,7 +18,8 @@ public interface InterfaceDAO<E, L> {
     List<E> dezenasCrescente(List<E> list);
     E findById(L id);
     E findByNumber(Integer number);
-    E findMinNumber();
+    E findFirst();
+    E findLast();
     E findByDate(Calendar date);
     List<E> findByDezenas(int... dezenas);
     int count();

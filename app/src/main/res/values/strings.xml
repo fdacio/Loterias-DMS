@@ -56,7 +56,7 @@
     <string name="adicionar_sorteio">Adicionar Sorteio</string>
     <string name="delete_all">Excluir Tudo</string>
     <string name="msg_delete_todos">Todos Sorteios</string>
-
+    <string name="codigo_barras">Codigo de Barras</string>
 
     <string name="title_file_dialog">Arquivo/Diretorio</string>
     <string name="location">Localização</string>
@@ -118,5 +118,9 @@
     <string name="label_web_service">Web Service</string>
     <string name="label_url_web_service">URL raiz do Web Service</string>
     <string name="label_informe_arquivo">Informe o arquivo HTML</string>
+    <string name="label_informe_jogo">Informe seu jogo</string>
+    <string name="label_concurso">Concurso</string>
+    <string name="label_dezenas">Dezenas</string>
+    <string name="label_confirir">Conferir</string>
 
 </resources>
