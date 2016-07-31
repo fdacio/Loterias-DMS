@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import br.com.daciosoftware.loteriasdms.configuracoes.ConfiguracoesActivity;
 import br.com.daciosoftware.loteriasdms.db.Database;
-import br.com.daciosoftware.loteriasdms.menuadapter.LoteriasDMSAdapter;
+import br.com.daciosoftware.loteriasdms.menuadapter.MainMenuAdapter;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         ListView listViewMenuMain = (ListView) findViewById(R.id.listViewMenuMain);
         if (listViewMenuMain != null) {
-            listViewMenuMain.setAdapter(new LoteriasDMSAdapter(getApplicationContext(), menuMain));
+            listViewMenuMain.setAdapter(new MainMenuAdapter(getApplicationContext(), menuMain));
             listViewMenuMain.setOnItemClickListener(this);
         }
 
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 @Override
                 public void onClick(View view) {
                     if (DeviceInformation.isNetwork(MainActivity.this)) {
-                        new AtualizaUltimoSorteioWebServiceTask(MainActivity.this).execute();
+                        new AtualizaUltimoSorteioTask(MainActivity.this).execute();
                     } else {
                         new DialogBox(MainActivity.this,
                                 DialogBox.DialogBoxType.INFORMATION, "Error",
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 typeSorteio = TypeSorteio.MEGASENA;
         }
 
-        Intent intent = new Intent(MainActivity.this, MenuSecundarioActivity.class);
+        Intent intent = new Intent(MainActivity.this, SecundaryMenuActivity.class);
         intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
         startActivity(intent);
 

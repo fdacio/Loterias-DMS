@@ -12,7 +12,7 @@ import java.util.List;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
  * Created by Dácio Braga on 20/07/2016.
@@ -101,7 +101,7 @@ public class SorteioListAdapter extends BaseAdapter {
         Sorteio sorteio = getItem(position);
 
         holder.textViewNumero.setText(String.valueOf(sorteio.getNumero()));
-        holder.textViewData.setText(DateUtil.calendarToDateBr(sorteio.getData()));
+        holder.textViewData.setText(MyDateUtil.calendarToDateBr(sorteio.getData()));
         holder.textViewLocal.setText(sorteio.getLocal());
 
         holder.textViewD1.setText(String.valueOf(sorteio.getD1()));

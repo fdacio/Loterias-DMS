@@ -14,7 +14,7 @@ import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
  * Created by Dácio Braga on 19/07/2016.
@@ -38,7 +38,7 @@ public class MegasenaDAO extends SorteioDAO {
 
         ContentValues values = new ContentValues();
         values.put(ContractDatabase.Megasena.COLUNA_NUMERO, megasena.getNumero());
-        values.put(ContractDatabase.Megasena.COLUNA_DATA, DateUtil.calendarToDateUS(megasena.getData()));
+        values.put(ContractDatabase.Megasena.COLUNA_DATA, MyDateUtil.calendarToDateUS(megasena.getData()));
         values.put(ContractDatabase.Megasena.COLUNA_LOCAL, megasena.getLocal());
 
         values.put(ContractDatabase.Megasena.COLUNA_D1, megasena.getD1());
@@ -62,7 +62,7 @@ public class MegasenaDAO extends SorteioDAO {
 
         int numero = Integer.parseInt(tds.get(0).text());
         if (findByNumber(numero) == null) {
-            Calendar data = DateUtil.dateBrToCalendar(tds.get(1).text());
+            Calendar data = MyDateUtil.dateBrToCalendar(tds.get(1).text());
             int d1 = Integer.parseInt(tds.get(2).text());
             int d2 = Integer.parseInt(tds.get(3).text());
             int d3 = Integer.parseInt(tds.get(4).text());
@@ -96,7 +96,7 @@ public class MegasenaDAO extends SorteioDAO {
             megasena.setId(c.getInt(0));
             megasena.setNumero(c.getInt(1));
             try {
-                megasena.setData(DateUtil.dateUSToCalendar(c.getString(2)));
+                megasena.setData(MyDateUtil.dateUSToCalendar(c.getString(2)));
             } catch (ParseException pe) {
                 pe.printStackTrace();
             }

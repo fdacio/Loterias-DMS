@@ -27,18 +27,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import br.com.daciosoftware.loteriasdms.AtualizaSorteioWebServiceTask;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
-public class SorteioListActivity extends AppCompatActivity {
+public class SorteioListActivity extends AppCompatActivity implements AtualizaSorteiosInterface {
 
     private enum TipoListagem {CRESCENTE, DECRESCENTE, ORDENAR_DEZENAS, POR_NUMERO, POR_DATA, POR_DATAS}
 
@@ -59,12 +58,7 @@ public class SorteioListActivity extends AppCompatActivity {
         }
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
-
         sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
-
-        View layout = findViewById(R.id.layout_sorteio_list);
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this, layout);
-        styleTypeSorteio.setStyleHeader(typeSorteio);
 
         listViewSorteio = (ListView) findViewById(R.id.listViewSorteio);
         listViewSorteio.setEmptyView(findViewById(R.id.emptyElement));
@@ -73,14 +67,13 @@ public class SorteioListActivity extends AppCompatActivity {
         listarSorteios(typeSorteio, TipoListagem.DECRESCENTE, null);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        styleTypeSorteio.setStyleFloatingActionButton(typeSorteio);
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (DeviceInformation.isNetwork(SorteioListActivity.this)) {
-                        new AtualizaSorteioWebServiceTask(SorteioListActivity.this, typeSorteio).execute();
-                    }else {
+                        new AtualizaSorteiosTask(SorteioListActivity.this, typeSorteio, SorteioListActivity.this).execute();
+                    } else {
                         new DialogBox(SorteioListActivity.this,
                                 DialogBox.DialogBoxType.INFORMATION, "Error",
                                 getResources().getString(R.string.error_conexao)
@@ -91,15 +84,20 @@ public class SorteioListActivity extends AppCompatActivity {
             });
         }
 
-
+        new StyleTypeSorteio(this, findViewById(R.id.layout_sorteio_list)).setStyleInViews(typeSorteio);
     }
 
+    /**
+     * Classe interna utilizada para
+     * passagem de parâmetros das consultas
+     */
     private class Param {
         private int numero;
         private Calendar data;
         private Calendar data2;
 
-        public Param() {}
+        public Param() {
+        }
 
         public int getNumero() {
             return numero;
@@ -146,13 +144,13 @@ public class SorteioListActivity extends AppCompatActivity {
                         listSorteio = sorteioDAO.dezenasCrescente(listSorteio);
                         break;
                     case POR_NUMERO:
-                        listSorteio = listarPorNumero(sorteioDAO, param.getNumero());
+                        listSorteio = listarPorNumero(sorteioDAO, param);
                         break;
                     case POR_DATA:
-                        listSorteio = listarPorData(sorteioDAO, param.getData());
+                        listSorteio = listarPorData(sorteioDAO, param);
                         break;
                     case POR_DATAS:
-                        listSorteio = listarPorData(sorteioDAO, param.getData(), param.getData2());
+                        listSorteio = listarPorDatas(sorteioDAO, param);
                         break;
                 }
 
@@ -163,15 +161,14 @@ public class SorteioListActivity extends AppCompatActivity {
         }.start();
 
 
-
     }
 
-    private Handler handlerListSorteio = new Handler(){
+    private Handler handlerListSorteio = new Handler() {
 
         @Override
-        public void handleMessage(Message msg){
+        public void handleMessage(Message msg) {
 
-            if(msg.what == 100) {
+            if (msg.what == 100) {
                 listViewSorteio.setAdapter(new SorteioListAdapter(SorteioListActivity.this, listSorteio, typeSorteio));
             }
 
@@ -179,20 +176,25 @@ public class SorteioListActivity extends AppCompatActivity {
         }
     };
 
-    private List<Sorteio> listarPorNumero(SorteioDAO sorteioDAO, int numero) {
+    private List<Sorteio> listarPorNumero(SorteioDAO sorteioDAO, Param param) {
         List<Sorteio> list = new ArrayList<>();
-        list.add(sorteioDAO.findByNumber(numero));
+        list.add(sorteioDAO.findByNumber(param.getNumero()));
         return list;
     }
 
-    private List<Sorteio> listarPorData(SorteioDAO sorteioDAO, Calendar date) {
+    private List<Sorteio> listarPorData(SorteioDAO sorteioDAO, Param parama) {
         List<Sorteio> list = new ArrayList<>();
-        list.add(sorteioDAO.findByDate(date));
+        list.add(sorteioDAO.findByDate(parama.getData()));
         return list;
     }
 
-    private List<Sorteio> listarPorData(SorteioDAO sorteioDAO, Calendar date1, Calendar date2) {
-        return sorteioDAO.findByBetweenDate(date1, date2);
+    private List<Sorteio> listarPorDatas(SorteioDAO sorteioDAO, Param param) {
+        return sorteioDAO.findByBetweenDate(param.getData(), param.getData2());
+    }
+
+    @Override
+    public void executarAposAtualizacao() {
+        listarSorteios(typeSorteio, TipoListagem.DECRESCENTE, null);
     }
 
     @Override
@@ -228,7 +230,7 @@ public class SorteioListActivity extends AppCompatActivity {
                     Pesquisa pela data do concurso
                      */
                     try {
-                        Calendar data = DateUtil.dateBrToCalendar(searchFor);
+                        Calendar data = MyDateUtil.dateBrToCalendar(searchFor);
                         Param param = new Param();
                         param.setData(data);
                         listarSorteios(typeSorteio, TipoListagem.POR_DATA, param);

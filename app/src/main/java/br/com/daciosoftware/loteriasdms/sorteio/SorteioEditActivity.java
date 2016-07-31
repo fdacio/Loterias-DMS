@@ -26,7 +26,7 @@ import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogDate;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
@@ -53,17 +53,13 @@ public class SorteioEditActivity extends AppCompatActivity {
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
         sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
 
-        View layout = findViewById(R.id.layout_activity_sorteio_edit);
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this, layout);
-        styleTypeSorteio.setStyleHeader(typeSorteio);
-
         editTextNumero = (EditText) findViewById(R.id.editTextNumero);
         buttonData = (Button) findViewById(R.id.buttonData);
         editTextLocal = (EditText) findViewById(R.id.editTextLocal);
 
         //Setar data do dia no botao
         Calendar dataAtual = Calendar.getInstance();
-        buttonData.setText(DateUtil.calendarToDateBr(dataAtual));
+        buttonData.setText(MyDateUtil.calendarToDateBr(dataAtual));
 
         buttonData.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,6 +67,8 @@ public class SorteioEditActivity extends AppCompatActivity {
                 new DialogDate(buttonData).show();
             }
         });
+
+        new StyleTypeSorteio(this, findViewById(R.id.layout_activity_sorteio_edit)).setStyleInViews(typeSorteio);
 
         buildEdits();
         loadSorteioInForm();
@@ -131,7 +129,7 @@ public class SorteioEditActivity extends AppCompatActivity {
                 this.sorteio = sorteioDAO.findById(id);
                 if (this.sorteio != null) {
                     editTextNumero.setText(String.valueOf(this.sorteio.getNumero()));
-                    buttonData.setText(DateUtil.calendarToDateBr(this.sorteio.getData()));
+                    buttonData.setText(MyDateUtil.calendarToDateBr(this.sorteio.getData()));
                     editTextLocal.setText(this.sorteio.getLocal());
 
                     java.lang.reflect.Method methodGet = null;
@@ -166,7 +164,7 @@ public class SorteioEditActivity extends AppCompatActivity {
             this.sorteio = sorteioDAO.getInstanciaEntity();
         }
         int numero = Integer.parseInt(editTextNumero.getText().toString());
-        Calendar data = DateUtil.dateBrToCalendar(buttonData.getText().toString());
+        Calendar data = MyDateUtil.dateBrToCalendar(buttonData.getText().toString());
         String local = editTextLocal.getText().toString();
 
         this.sorteio.setNumero(numero);

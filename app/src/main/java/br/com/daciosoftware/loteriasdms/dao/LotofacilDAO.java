@@ -14,7 +14,7 @@ import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
  * Created by Dácio Braga on 19/07/2016.
@@ -36,7 +36,7 @@ public class LotofacilDAO extends SorteioDAO {
 
         ContentValues values = new ContentValues();
         values.put(ContractDatabase.Lotofacil.COLUNA_NUMERO, lotofacil.getNumero());
-        values.put(ContractDatabase.Lotofacil.COLUNA_DATA, DateUtil.calendarToDateUS(lotofacil.getData()));
+        values.put(ContractDatabase.Lotofacil.COLUNA_DATA, MyDateUtil.calendarToDateUS(lotofacil.getData()));
         values.put(ContractDatabase.Lotofacil.COLUNA_LOCAL, lotofacil.getLocal());
 
         values.put(ContractDatabase.Lotofacil.COLUNA_D1, lotofacil.getD1());
@@ -70,7 +70,7 @@ public class LotofacilDAO extends SorteioDAO {
 
         int numero = Integer.parseInt(tds.get(0).text());
         if (findByNumber(numero) == null) {
-            Calendar data = DateUtil.dateBrToCalendar(tds.get(1).text());
+            Calendar data = MyDateUtil.dateBrToCalendar(tds.get(1).text());
             int d1 = Integer.parseInt(tds.get(2).text());
             int d2 = Integer.parseInt(tds.get(3).text());
             int d3 = Integer.parseInt(tds.get(4).text());
@@ -124,7 +124,7 @@ public class LotofacilDAO extends SorteioDAO {
             lotofacil.setId(c.getInt(0));
             lotofacil.setNumero(c.getInt(1));
             try {
-                lotofacil.setData(DateUtil.dateUSToCalendar(c.getString(2)));
+                lotofacil.setData(MyDateUtil.dateUSToCalendar(c.getString(2)));
             } catch (ParseException pe) {
                 pe.printStackTrace();
             }

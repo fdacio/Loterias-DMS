@@ -11,12 +11,12 @@ import android.widget.ListView;
 
 import br.com.daciosoftware.loteriasdms.confiraseujogo.ConfiraSeuJogoActivity;
 import br.com.daciosoftware.loteriasdms.dezemasmaissorteadas.DezenasMaisSorteadasActivity;
-import br.com.daciosoftware.loteriasdms.menuadapter.MenuSecundarioAdapter;
+import br.com.daciosoftware.loteriasdms.menuadapter.SecundaryMenuAdapter;
 import br.com.daciosoftware.loteriasdms.processaarquivo.ProcessaArquivoActivity;
 import br.com.daciosoftware.loteriasdms.sorteio.SorteioListActivity;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 
-public class MenuSecundarioActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
+public class SecundaryMenuActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
 
     private TypeSorteio typeSorteio;
@@ -38,12 +38,10 @@ public class MenuSecundarioActivity extends AppCompatActivity implements Adapter
                 getResources().getString(R.string.menu_processar_arquivo)};
 
         ListView listViewMenuSecundario = (ListView) findViewById(R.id.listViewMenuSecundario);
-        listViewMenuSecundario.setAdapter(new MenuSecundarioAdapter(getApplicationContext(),menuMain,typeSorteio));
+        listViewMenuSecundario.setAdapter(new SecundaryMenuAdapter(getApplicationContext(),menuMain,typeSorteio));
         listViewMenuSecundario.setOnItemClickListener(this);
 
-        View layout = (View) findViewById(R.id.layout_activity_menu_secundario);
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this,layout);
-        styleTypeSorteio.setStyleHeader(typeSorteio);
+        new StyleTypeSorteio(this, findViewById(R.id.layout_activity_menu_secundario)).setStyleInViews(typeSorteio);
     }
 
     @Override
@@ -62,16 +60,16 @@ public class MenuSecundarioActivity extends AppCompatActivity implements Adapter
         Intent intent = null;
         switch (position){
             case 0:
-                intent = new Intent(MenuSecundarioActivity.this, DezenasMaisSorteadasActivity.class);
+                intent = new Intent(SecundaryMenuActivity.this, DezenasMaisSorteadasActivity.class);
                 break;
             case 1:
-                intent = new Intent(MenuSecundarioActivity.this, ConfiraSeuJogoActivity.class);
+                intent = new Intent(SecundaryMenuActivity.this, ConfiraSeuJogoActivity.class);
                 break;
             case 2:
-                intent = new Intent(MenuSecundarioActivity.this, SorteioListActivity.class);
+                intent = new Intent(SecundaryMenuActivity.this, SorteioListActivity.class);
                 break;
             case 3:
-                intent = new Intent(MenuSecundarioActivity.this, ProcessaArquivoActivity.class);
+                intent = new Intent(SecundaryMenuActivity.this, ProcessaArquivoActivity.class);
                 break;
         }
 

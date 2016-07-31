@@ -11,10 +11,17 @@ import java.io.File;
 /**
  * Created by Dácio Braga on 25/07/2016.
  */
-public class FileUtil {
+public class MyFileUtil {
 
+    public static final String NAME_DIR_APP = "LoteriasDMS";
     private static final float SIZE_KB = 1024.0f;
 
+    /**
+     *
+     * @param context contexto da aplicação
+     * @param file arquivo para obter o MimeType
+     * @return
+     */
     public static String getMimeType(Context context, File file) {
         Uri uri = Uri.fromFile(file);
         String mimeType;
@@ -29,8 +36,8 @@ public class FileUtil {
     }
 
 
-    public static String getDefaultDirectory(String defaultDirectory){
-        String directory = Environment.getExternalStorageDirectory().getPath() + "/" +defaultDirectory;
+    public static String getDefaultDirectoryApp(){
+        String directory = Environment.getExternalStorageDirectory().getPath() + "/" +NAME_DIR_APP;
         File dir = new File(directory);
         if (!dir.exists()) {
             dir.mkdir();
@@ -48,6 +55,37 @@ public class FileUtil {
 
     public static float getSizeGBytes(File file){
         return getSizeMBytes(file)/SIZE_KB;
+    }
+
+
+    /**
+     *
+     * @param directory diretorio que contem os arquivos a serem deletada
+     */
+    public static void removeFilesInDirectory(File directory){
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            for (File toDelete : files) {
+                toDelete.delete();
+            }
+        }
+    }
+
+    /**
+     *
+     * @param directory diretorio que contem os arquivos a serem deletada
+     * @param mimeType Tipo a ser deletado
+     * @param context contexto da aplicação
+     */
+    public static void removeFilesInDirectory(File directory, String mimeType, Context context){
+        if (directory.isDirectory()) {
+            File[] files = directory.listFiles();
+            for (File toDelete : files) {
+                if(getMimeType(context,toDelete).equals(mimeType)) {
+                    toDelete.delete();
+                }
+            }
+        }
     }
 
 }

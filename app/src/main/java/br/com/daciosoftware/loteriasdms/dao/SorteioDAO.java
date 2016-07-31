@@ -18,7 +18,7 @@ import java.util.List;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.db.Database;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
  * Created by Dácio Braga on 19/07/2016.
@@ -180,7 +180,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     @Override
     public Sorteio findByDate(Calendar date) {
         String where = this.colunaData + "=?";
-        String[] whereArgs = new String[]{DateUtil.calendarToDateUS(date)};
+        String[] whereArgs = new String[]{MyDateUtil.calendarToDateUS(date)};
         Cursor cursor = getCursor(where, whereArgs);
         if (cursor.moveToFirst()) {
             return getEntity(cursor);
@@ -232,7 +232,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         List<Sorteio> list = new ArrayList<>();
         try {
             String where = this.colunaData + " between ? and ?";
-            String[] whereArgs = new String[]{DateUtil.calendarToDateUS(date1), DateUtil.calendarToDateUS(date2)};
+            String[] whereArgs = new String[]{MyDateUtil.calendarToDateUS(date1), MyDateUtil.calendarToDateUS(date2)};
             String orderBy = this.colunaNumero + " desc";
             Cursor cursor = getCursor(where, whereArgs, orderBy);
             if (cursor.moveToFirst()) {

@@ -10,9 +10,9 @@ import java.util.Locale;
 /**
  * Created by Dácio Braga on 19/07/2016.
  */
-public class DateUtil {
+public class MyDateUtil {
 
-    private DateUtil(){}
+    private MyDateUtil(){}
 
     public static Calendar dateBrToCalendar(String data) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -41,8 +41,9 @@ public class DateUtil {
     }
 
 
-    public static String timeToString(Calendar data){
+    public static String timeToString(){
         SimpleDateFormat sdf = new SimpleDateFormat("ddMMyyyyhhmmss", Locale.getDefault());
+        Calendar data = Calendar.getInstance();
         return sdf.format(data.getTime());
     }
 

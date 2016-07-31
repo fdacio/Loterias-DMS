@@ -14,7 +14,7 @@ import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
  * Created by Dácio Braga on 19/07/2016.
@@ -37,7 +37,7 @@ public class QuinaDAO extends SorteioDAO {
 
         ContentValues values = new ContentValues();
         values.put(ContractDatabase.Quina.COLUNA_NUMERO, quina.getNumero());
-        values.put(ContractDatabase.Quina.COLUNA_DATA, DateUtil.calendarToDateUS(quina.getData()));
+        values.put(ContractDatabase.Quina.COLUNA_DATA, MyDateUtil.calendarToDateUS(quina.getData()));
         values.put(ContractDatabase.Quina.COLUNA_LOCAL, quina.getLocal());
 
         values.put(ContractDatabase.Quina.COLUNA_D1, quina.getD1());
@@ -62,7 +62,7 @@ public class QuinaDAO extends SorteioDAO {
             quina.setId(c.getInt(0));
             quina.setNumero(c.getInt(1));
             try {
-                quina.setData(DateUtil.dateUSToCalendar(c.getString(2)));
+                quina.setData(MyDateUtil.dateUSToCalendar(c.getString(2)));
             } catch (ParseException pe) {
                 pe.printStackTrace();
             }
@@ -84,7 +84,7 @@ public class QuinaDAO extends SorteioDAO {
 
         int numero = Integer.parseInt(tds.get(0).text());
         if (findByNumber(numero) == null) {
-            Calendar data = DateUtil.dateBrToCalendar(tds.get(1).text());
+            Calendar data = MyDateUtil.dateBrToCalendar(tds.get(1).text());
             int d1 = Integer.parseInt(tds.get(2).text());
             int d2 = Integer.parseInt(tds.get(3).text());
             int d3 = Integer.parseInt(tds.get(4).text());

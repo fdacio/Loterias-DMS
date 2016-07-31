@@ -15,15 +15,7 @@ import android.widget.Toast;
 
 import com.googlecode.tesseract.android.TessBaseAPI;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-
-import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
-import br.com.daciosoftware.loteriasdms.util.FileUtil;
 
 /**
  * Created by Dácio Braga on 30/07/2016.
@@ -45,17 +37,17 @@ public class OCRTask extends AsyncTask<Bitmap, String, String> {
         Bitmap bmp = params[0];
         /*
         Tratamento do bpm
+        */
 
+        //bmp = BITMAP_RESIZER(bmp,bmp.getWidth(),bmp.getHeight());
+       // bmp = convertToGrayscale(bmp);
+        //bmp = RemoveNoise(bmp);
 
-        bmp = BITMAP_RESIZER(bmp,bmp.getWidth(),bmp.getHeight());
-        bmp = convertToGrayscale(bmp);
-        bmp = RemoveNoise(bmp);
-     */
         TessBaseAPI baseApi = new TessBaseAPI();
 
         baseApi.init("/storage/sdcard0/tesseract/", "eng");
         baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST,"1234567890");
-        baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST,"!@#$%^&*   ()_+=-[]}{" +";:'\"\\|~`,./<>?");
+        baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST,"!@#$%^&*  ()_+=-[]}{" +";:'\"\\|~`,./<>?");
         baseApi.setDebug(true);
         baseApi.setImage(bmp);
 

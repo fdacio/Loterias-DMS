@@ -1,12 +1,9 @@
 package br.com.daciosoftware.loteriasdms.processaarquivo;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -35,12 +32,12 @@ import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.DecompressFile;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DownloadFile;
-import br.com.daciosoftware.loteriasdms.util.FileUtil;
+import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.LogProcessamento;
 import br.com.daciosoftware.loteriasdms.util.filedialog.FileDialog;
 
@@ -62,22 +59,22 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        View layout = findViewById(R.id.layout_processar_arquivo);
+
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this, layout);
-        styleTypeSorteio.setStyleHeader(typeSorteio);
 
         textViewLabelFile = (TextView) findViewById(R.id.textViewLabelFile);
         editTextArquivo = (EditText) findViewById(R.id.editTextArquivo);
         ImageButton imageButtonArquivo = (ImageButton) findViewById(R.id.imageButtonArquivo);
         Button buttonProcessarArquivo = (Button) findViewById(R.id.buttonProcessarArquivo);
         Button buttonBaixarArquivo = (Button) findViewById(R.id.buttonBaixarArquivo);
-        styleTypeSorteio.setStyleButton(typeSorteio);
+
 
         imageButtonArquivo.setOnClickListener(new OnClickListenerButtonArquivo());
         buttonProcessarArquivo.setOnClickListener(new OnClickListenerButtonProcessarArquivo());
         buttonBaixarArquivo.setOnClickListener(new OnClickListenerBaixaArquivo());
 
+
+        new StyleTypeSorteio(this, findViewById(R.id.layout_processar_arquivo)).setStyleInViews(typeSorteio);
     }
 
     /**
@@ -89,7 +86,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             FileDialog fileDialog = new FileDialog(ProcessaArquivoActivity.this, FileDialog.FileDialogType.OPEN_FILE);
-            fileDialog.setStartPath(FileUtil.getDefaultDirectory("LoteriasDMS"));
+            fileDialog.setStartPath(MyFileUtil.getDefaultDirectoryApp());
             fileDialog.setFormaterFilter(new String[]{"html", "htm"});
             fileDialog.show();
         }
@@ -101,7 +98,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         public void onClick(View v) {
 
             if (DeviceInformation.isNetwork(ProcessaArquivoActivity.this)) {
-                String defaulDirectory = FileUtil.getDefaultDirectory("LoteriasDMS");
+                String defaulDirectory = MyFileUtil.getDefaultDirectoryApp();
                 String outFile = defaulDirectory + "/" + getNomeArquivoZip(typeSorteio);
                 downloadFile = new DownloadFile();
                 decompressFile = new DecompressFile();
@@ -159,7 +156,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     }
 
     private String getNomeArquivoZip(TypeSorteio typeSorteio) {
-        String time = DateUtil.timeToString(Calendar.getInstance());
+        String time = MyDateUtil.timeToString();
         switch (typeSorteio) {
             case MEGASENA:
                 return "megasena_" + time + ".zip";
@@ -176,7 +173,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
     }
 
     private String getNomeArquivoHtml(TypeSorteio typeSorteio) {
-        String time = DateUtil.timeToString(Calendar.getInstance());
+        String time = MyDateUtil.timeToString();
         switch (typeSorteio) {
             case MEGASENA:
                 return "megasena_" + time + ".htm";
@@ -383,7 +380,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
                 File fileHtml = new File(pathFileHtml);
 
-                float fileSize = FileUtil.getSizeMBytes(fileHtml);
+                float fileSize = MyFileUtil.getSizeMBytes(fileHtml);
                 publishProgress(new DecimalFormat("0.00").format(fileSize)+"MB");
 
                 Document doc = Jsoup.parse(fileHtml, "ISO-8859-1");

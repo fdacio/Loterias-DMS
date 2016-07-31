@@ -31,10 +31,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        View layout = (View) findViewById(R.id.layout_dezenas_mais_sorteadas);
-        TypeSorteio typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this,layout);
-        styleTypeSorteio.setStyleHeader(typeSorteio);
+       TypeSorteio typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
 
         switch (typeSorteio){
             case MEGASENA:
@@ -56,6 +53,8 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
 
         Button btnGerarJogos = (Button) findViewById(R.id.btnGerarJogos);
         btnGerarJogos.setOnClickListener(new OnClickListenerGerarJogos(typeSorteio));
+
+        new StyleTypeSorteio(this, findViewById(R.id.layout_dezenas_mais_sorteadas)).setStyleInViews(typeSorteio);
 
     }
 

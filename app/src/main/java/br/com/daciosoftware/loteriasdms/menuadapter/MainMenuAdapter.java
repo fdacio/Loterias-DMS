@@ -13,12 +13,12 @@ import br.com.daciosoftware.loteriasdms.R;
 /**
  * Created by Dácio Braga on 17/07/2016.
  */
-public class LoteriasDMSAdapter extends BaseAdapter {
+public class MainMenuAdapter extends BaseAdapter {
     
     private Context context;
     private String[] list;
 
-    public LoteriasDMSAdapter(Context context, String[] list){
+    public MainMenuAdapter(Context context, String[] list){
         this.context = context;
         this.list = list;
 
@@ -65,7 +65,7 @@ public class LoteriasDMSAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.row_loteriasdms_adapter, parent, false);

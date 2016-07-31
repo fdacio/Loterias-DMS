@@ -6,10 +6,13 @@ import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * Created by Dácio Braga on 18/07/2016.
@@ -22,6 +25,38 @@ public class StyleTypeSorteio {
         this.context = context;
         this.layoutActivity = layoutActivity;
     }
+
+    /**
+     * Estiliza um active conforme Tipo de Jogo
+     *
+     * @param typeSorteio
+     */
+    public void setStyleInViews(TypeSorteio typeSorteio) {
+        setStyleHeader(typeSorteio);
+        setStyleToolbar(typeSorteio);
+        setStyleButton(typeSorteio);
+        setStyleFloatingActionButton(typeSorteio);
+        setStyleImageButton(typeSorteio);
+    }
+
+    /**
+     * Estiliza o SecundaryMenu. É chamado no adapter do secundary menu
+     *
+     * @param typeSorteio
+     * @param positionMenu
+     */
+    public void setStyleMenu(TypeSorteio typeSorteio, int positionMenu) {
+        ImageView imageViewIconMenu = (ImageView) layoutActivity.findViewById(R.id.imageViewIconMenu);
+        TextView textViewLabelMenu = (TextView) layoutActivity.findViewById(R.id.textViewLabelMenu);
+
+        if (imageViewIconMenu != null) {
+            imageViewIconMenu.setImageResource(getIconMenu(typeSorteio, positionMenu));
+        }
+        if (textViewLabelMenu != null) {
+            textViewLabelMenu.setTextColor(ColorStateList.valueOf(getColorRgb(typeSorteio)));
+        }
+    }
+
 
     private int getIcon(TypeSorteio typeSorteio) {
         switch (typeSorteio) {
@@ -52,17 +87,17 @@ public class StyleTypeSorteio {
     private int getColorRgb(TypeSorteio typeSorteio) {
         switch (typeSorteio) {
             case MEGASENA:
-                return Color.rgb(34,149,81);
+                return Color.rgb(34, 149, 81);
             case LOTOFACIL:
-                return Color.rgb(124,11,137);
+                return Color.rgb(124, 11, 137);
             case QUINA:
-                return Color.rgb(41,11,137);
+                return Color.rgb(41, 11, 137);
             default:
-                return Color.rgb(63,81,181);
+                return Color.rgb(63, 81, 181);
         }
     }
 
-    private int getTexto(TypeSorteio typeSorteio){
+    private int getTexto(TypeSorteio typeSorteio) {
         switch (typeSorteio) {
             case MEGASENA:
                 return R.string.mega_sena;
@@ -119,7 +154,7 @@ public class StyleTypeSorteio {
     }
 
 
-    private int getBackgroundButton(TypeSorteio typeSorteio){
+    private int getBackgroundButton(TypeSorteio typeSorteio) {
         switch (typeSorteio) {
             case MEGASENA:
                 return R.drawable.selector_button_megasena;
@@ -133,59 +168,130 @@ public class StyleTypeSorteio {
 
     }
 
-    public void setStyleHeader(TypeSorteio typeSorteio) {
+    private void setStyleHeader(TypeSorteio typeSorteio) {
         ImageView imageViewIconJogo = (ImageView) layoutActivity.findViewById(R.id.imageViewIconJogo);
         TextView textViewLabelJogo = (TextView) layoutActivity.findViewById(R.id.textViewLabelJogo);
-        Toolbar toolbar = (Toolbar) layoutActivity.findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            toolbar.setBackgroundResource(getColor(typeSorteio));
-        }
         if (imageViewIconJogo != null) {
             imageViewIconJogo.setImageResource(getIcon(typeSorteio));
         }
         if (textViewLabelJogo != null) {
             textViewLabelJogo.setText(getTexto(typeSorteio));
-            textViewLabelJogo.setTextColor(this.context.getResources().getColor(getColor(typeSorteio)));
+            textViewLabelJogo.setTextColor(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
     }
 
-    public void setStyleMenu(TypeSorteio typeSorteio, int positionMenu) {
-        ImageView imageViewIconMenu = (ImageView) layoutActivity.findViewById(R.id.imageViewIconMenu);
-        TextView textViewLabelMenu = (TextView) layoutActivity.findViewById(R.id.textViewLabelMenu);
-
-        if(imageViewIconMenu != null){
-            imageViewIconMenu.setImageResource(getIconMenu(typeSorteio,positionMenu));
-        }
-        if (textViewLabelMenu != null) {
-            textViewLabelMenu.setTextColor(this.context.getResources().getColor(getColor(typeSorteio)));
-        }
-    }
-
-    public void setStyleFloatingActionButton(TypeSorteio typeSorteio) {
-        FloatingActionButton fab = (FloatingActionButton) layoutActivity.findViewById(R.id.fab);
-        if (fab != null){
+    private void setStyleFloatingActionButton(TypeSorteio typeSorteio) {
+        ArrayList<FloatingActionButton> floatinbActionsButtons = getFloatingActionButton();
+        for (FloatingActionButton fab : floatinbActionsButtons) {
             fab.setBackgroundTintList(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
     }
 
-    public void setStyleButton(TypeSorteio typeSorteio){
-        ImageButton imageButtonArquivo = (ImageButton) layoutActivity.findViewById(R.id.imageButtonArquivo);
-        Button buttonBaixarProcessar = (Button) layoutActivity.findViewById(R.id.buttonProcessarArquivo);
-        Button buttonBaixarArquivo = (Button) layoutActivity.findViewById(R.id.buttonBaixarArquivo);
-        Button buttonConferir = (Button) layoutActivity.findViewById(R.id.buttonConferir);
-
-        if(imageButtonArquivo != null){
-            imageButtonArquivo.setBackgroundResource(getBackgroundButton(typeSorteio));
+    private void setStyleButton(TypeSorteio typeSorteio) {
+        ArrayList<Button> buttons = getButtons();
+        for (Button button : buttons) {
+            button.setBackgroundResource(getBackgroundButton(typeSorteio));
+            button.setTextColor(ColorStateList.valueOf(Color.WHITE));
         }
-        if(buttonBaixarProcessar != null){
-            buttonBaixarProcessar.setBackgroundResource(getBackgroundButton(typeSorteio));
-        }
-        if(buttonBaixarArquivo != null){
-            buttonBaixarArquivo.setBackgroundResource(getBackgroundButton(typeSorteio));
-        }
-        if(buttonConferir != null){
-            buttonConferir.setBackgroundResource(getBackgroundButton(typeSorteio));
-        }
-
     }
+
+
+    private void setStyleImageButton(TypeSorteio typeSorteio) {
+        ArrayList<ImageButton> imageButtons = getImageButtons();
+        for (ImageButton imageButton : imageButtons) {
+            imageButton.setBackgroundResource(getBackgroundButton(typeSorteio));
+        }
+    }
+
+    private void setStyleToolbar(TypeSorteio typeSorteio) {
+        Toolbar toolbar = (Toolbar) layoutActivity.findViewById(R.id.toolbar);
+        if (toolbar != null) {
+            toolbar.setBackgroundResource(getColor(typeSorteio));
+        }
+        /**
+         * Para toolbar interna(Botton)
+         */
+        ArrayList<Toolbar> toolbars = getToolbars();
+        for (Toolbar toolbarInGroupView : toolbars) {
+            toolbarInGroupView.setBackgroundResource(getColor(typeSorteio));
+        }
+    }
+
+
+    private ArrayList<Button> getButtons() {
+        ArrayList<Button> buttons = new ArrayList<>();
+        ViewGroup viewGroup = (ViewGroup) layoutActivity.getParent();
+        findButtons(viewGroup, buttons);
+        return buttons;
+    }
+
+
+    private static void findButtons(ViewGroup viewGroup, ArrayList<Button> buttons) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findButtons((ViewGroup) child, buttons);
+            } else if (child instanceof Button) {
+                buttons.add((Button) child);
+            }
+        }
+    }
+
+    private ArrayList<ImageButton> getImageButtons() {
+        ArrayList<ImageButton> imageButtons = new ArrayList<>();
+        ViewGroup viewGroup = (ViewGroup) layoutActivity.getParent();
+        findImageButtons(viewGroup, imageButtons);
+        return imageButtons;
+    }
+
+
+    private static void findImageButtons(ViewGroup viewGroup, ArrayList<ImageButton> imageButtons) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findImageButtons((ViewGroup) child, imageButtons);
+            } else if (child instanceof Button) {
+                imageButtons.add((ImageButton) child);
+            }
+        }
+    }
+
+
+    private ArrayList<FloatingActionButton> getFloatingActionButton() {
+        ArrayList<FloatingActionButton> floatinbActionsButtons = new ArrayList<>();
+        ViewGroup viewGroup = (ViewGroup) layoutActivity.getParent();
+        findFloatingActionButton(viewGroup, floatinbActionsButtons);
+        return floatinbActionsButtons;
+    }
+
+    private static void findFloatingActionButton(ViewGroup viewGroup, ArrayList<FloatingActionButton> buttons) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findFloatingActionButton((ViewGroup) child, buttons);
+            } else if (child instanceof FloatingActionButton) {
+                buttons.add((FloatingActionButton) child);
+            }
+        }
+    }
+
+    private ArrayList<Toolbar> getToolbars() {
+        ArrayList<Toolbar> toolbars = new ArrayList<>();
+        ViewGroup viewGroup = (ViewGroup) layoutActivity.getParent();
+        findToolbars(viewGroup, toolbars);
+        return toolbars;
+    }
+
+    private static void findToolbars(ViewGroup viewGroup, ArrayList<Toolbar> toolbars) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findToolbars((ViewGroup) child, toolbars);
+            } else if (child instanceof Toolbar) {
+                toolbars.add((Toolbar) child);
+            }
+        }
+    }
+
+
 }

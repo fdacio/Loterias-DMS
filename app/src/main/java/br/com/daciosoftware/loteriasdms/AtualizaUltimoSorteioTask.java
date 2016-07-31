@@ -19,7 +19,7 @@ import java.util.Calendar;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.HttpConnection;
 
@@ -30,14 +30,14 @@ import br.com.daciosoftware.loteriasdms.util.HttpConnection;
 /**
  *
  */
-public class AtualizaUltimoSorteioWebServiceTask extends AsyncTask<Void, String, String> {
+public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
 
     private Context context;
     private boolean running = true;
     private ProgressDialog progressDialog;
     private String msg = "Atualizando Sorteios.\nAguarde...";
 
-    public AtualizaUltimoSorteioWebServiceTask(Context context) {
+    public AtualizaUltimoSorteioTask(Context context) {
         this.context = context;
     }
 
@@ -83,7 +83,7 @@ public class AtualizaUltimoSorteioWebServiceTask extends AsyncTask<Void, String,
                 JSONObject jsonObject = new JSONObject(jsonWebService);
 
                 int numero = jsonObject.getInt("NumeroConcurso");
-                Calendar data = DateUtil.dateUSToCalendar(jsonObject.getString("Data"));
+                Calendar data = MyDateUtil.dateUSToCalendar(jsonObject.getString("Data"));
                 String local = jsonObject.getString("RealizadoEm");
                 JSONArray jsonArray = jsonObject.optJSONArray("Sorteios");
                 JSONObject jsonObject2 = jsonArray.getJSONObject(0);

@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".SecundaryMenuActivity"
-    android:id="@+id/layout_activity_menu_secundario">
+    android:id="@+id/layout_resultado_seu_jogo"
+    tools:context="br.com.daciosoftware.loteriasdms.confiraseujogo.ResultadoSeuJogoActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +22,8 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_menu_secundario" />
+    <include layout="@layout/content_resultado_seu_jogo" />
+
 
 
 </android.support.design.widget.CoordinatorLayout>

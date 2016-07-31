@@ -14,13 +14,13 @@ import br.com.daciosoftware.loteriasdms.TypeSorteio;
 /**
  * Created by Dácio Braga on 17/07/2016.
  */
-public class MenuSecundarioAdapter extends BaseAdapter {
+public class SecundaryMenuAdapter extends BaseAdapter {
 
     private Context context;
     private String[] list;
     private TypeSorteio typeSorteio;
 
-    public MenuSecundarioAdapter(Context context, String[] list, TypeSorteio typeSorteio){
+    public SecundaryMenuAdapter(Context context, String[] list, TypeSorteio typeSorteio){
         this.context = context;
         this.list = list;
         this.typeSorteio = typeSorteio;
@@ -49,7 +49,7 @@ public class MenuSecundarioAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
-        ViewHolder holder = null;
+        ViewHolder holder;
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.row_menu_secundario_adapter, parent, false);

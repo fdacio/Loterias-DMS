@@ -29,13 +29,8 @@ public class GeraJogosActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        /**
-         * Seta o logo e o titulo do tipo do sorteio com o padrao de cores
-         */
-        View layout = (View) findViewById(R.id.layout_activity_gera_jogos);
         TypeSorteio typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(this,layout);
-        styleTypeSorteio.setStyleHeader(typeSorteio);
+
 
         /**
          * Captura o array de dezenas selecionadas via Intente
@@ -71,6 +66,8 @@ public class GeraJogosActivity extends AppCompatActivity {
          */
         ListView listViewGeraJogos = (ListView) findViewById(R.id.listViewGeraJogos);
         listViewGeraJogos.setEmptyView((TextView) findViewById(R.id.emptyElement));
+
+        new StyleTypeSorteio(this, findViewById(R.id.layout_activity_gera_jogos)).setStyleInViews(typeSorteio);
 
     }
 

@@ -1,4 +1,4 @@
-package br.com.daciosoftware.loteriasdms;
+package br.com.daciosoftware.loteriasdms.sorteio;
 
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -16,10 +16,11 @@ import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.Calendar;
 
+import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.HttpConnection;
 
@@ -30,7 +31,7 @@ import br.com.daciosoftware.loteriasdms.util.HttpConnection;
 /**
  *
  */
-public class AtualizaSorteioWebServiceTask extends AsyncTask<Void, String, String> {
+public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
 
     private Context context;
     private TypeSorteio typeSorteio;
@@ -38,11 +39,16 @@ public class AtualizaSorteioWebServiceTask extends AsyncTask<Void, String, Strin
     private String msg = "Atualizando Sorteios.\nAguarde...";
     private String nomeSorteio;
     private ProgressDialog progressDialog;
+    private AtualizaSorteiosInterface atualizacaoSorteioInterface;
 
-
-    public AtualizaSorteioWebServiceTask(Context context, TypeSorteio typeSorteio) {
+    public AtualizaSorteiosTask(Context context, TypeSorteio typeSorteio) {
         this.context = context;
         this.typeSorteio = typeSorteio;
+    }
+
+    public AtualizaSorteiosTask(Context context, TypeSorteio typeSorteio, AtualizaSorteiosInterface atulizacaoSorteiointerface) {
+        this(context, typeSorteio);
+        this.atualizacaoSorteioInterface = atulizacaoSorteiointerface;
     }
 
 
@@ -103,7 +109,7 @@ public class AtualizaSorteioWebServiceTask extends AsyncTask<Void, String, Strin
                      }
 
                     int numero = jsonObject.getInt("NumeroConcurso");
-                    Calendar data = DateUtil.dateUSToCalendar(jsonObject.getString("Data"));
+                    Calendar data = MyDateUtil.dateUSToCalendar(jsonObject.getString("Data"));
                     String local = jsonObject.getString("RealizadoEm");
                     JSONArray jsonArray = jsonObject.optJSONArray("Sorteios");
                     JSONObject jsonObject2 = jsonArray.getJSONObject(0);
@@ -178,6 +184,9 @@ public class AtualizaSorteioWebServiceTask extends AsyncTask<Void, String, Strin
         progressDialog.dismiss();
         new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, "Atualização de Sorteios", retorno).show();
 
+        if(this.atualizacaoSorteioInterface != null) {
+            this.atualizacaoSorteioInterface.executarAposAtualizacao();
+        }
     }
 
     @Override
