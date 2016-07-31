@@ -17,11 +17,11 @@ import java.util.ArrayList;
 /**
  * Created by Dácio Braga on 18/07/2016.
  */
-public class StyleTypeSorteio {
+public class StyleOfActivity {
     private Context context;
     private View layoutActivity;
 
-    public StyleTypeSorteio(Context context, View layoutActivity) {
+    public StyleOfActivity(Context context, View layoutActivity) {
         this.context = context;
         this.layoutActivity = layoutActivity;
     }

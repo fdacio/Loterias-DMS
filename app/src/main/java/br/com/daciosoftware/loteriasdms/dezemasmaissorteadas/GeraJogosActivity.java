@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.Arrays;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
+import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 
@@ -67,7 +67,7 @@ public class GeraJogosActivity extends AppCompatActivity {
         ListView listViewGeraJogos = (ListView) findViewById(R.id.listViewGeraJogos);
         listViewGeraJogos.setEmptyView((TextView) findViewById(R.id.emptyElement));
 
-        new StyleTypeSorteio(this, findViewById(R.id.layout_activity_gera_jogos)).setStyleInViews(typeSorteio);
+        new StyleOfActivity(this, findViewById(R.id.layout_activity_gera_jogos)).setStyleInViews(typeSorteio);
 
     }
 

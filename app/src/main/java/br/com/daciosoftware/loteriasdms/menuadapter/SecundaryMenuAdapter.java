@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
+import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 
 /**
@@ -66,7 +66,7 @@ public class SecundaryMenuAdapter extends BaseAdapter {
         /*
         Configurar estilo de cores e imagens para o menu
          */
-        StyleTypeSorteio styleTypeSorteio = new StyleTypeSorteio(context,view);
+        StyleOfActivity styleTypeSorteio = new StyleOfActivity(context,view);
         styleTypeSorteio.setStyleMenu(typeSorteio,position);
 
         return view;

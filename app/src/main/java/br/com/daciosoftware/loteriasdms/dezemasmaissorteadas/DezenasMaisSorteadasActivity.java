@@ -14,7 +14,7 @@ import android.widget.Toast;
 import java.util.Arrays;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
+import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 
@@ -54,7 +54,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
         Button btnGerarJogos = (Button) findViewById(R.id.btnGerarJogos);
         btnGerarJogos.setOnClickListener(new OnClickListenerGerarJogos(typeSorteio));
 
-        new StyleTypeSorteio(this, findViewById(R.id.layout_dezenas_mais_sorteadas)).setStyleInViews(typeSorteio);
+        new StyleOfActivity(this, findViewById(R.id.layout_dezenas_mais_sorteadas)).setStyleInViews(typeSorteio);
 
     }
 

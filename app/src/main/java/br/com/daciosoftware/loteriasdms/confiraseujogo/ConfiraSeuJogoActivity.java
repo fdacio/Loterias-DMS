@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
+import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
@@ -85,7 +85,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             });
         }
 
-        new StyleTypeSorteio(this, findViewById(R.id.layout_confira_seu_jogo)).setStyleInViews(typeSorteio);
+        new StyleOfActivity(this, findViewById(R.id.layout_confira_seu_jogo)).setStyleInViews(typeSorteio);
 
         buildEdits();
     }

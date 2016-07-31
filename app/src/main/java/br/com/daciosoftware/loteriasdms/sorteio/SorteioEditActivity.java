@@ -21,7 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
+import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
@@ -68,7 +68,7 @@ public class SorteioEditActivity extends AppCompatActivity {
             }
         });
 
-        new StyleTypeSorteio(this, findViewById(R.id.layout_activity_sorteio_edit)).setStyleInViews(typeSorteio);
+        new StyleOfActivity(this, findViewById(R.id.layout_activity_sorteio_edit)).setStyleInViews(typeSorteio);
 
         buildEdits();
         loadSorteioInForm();

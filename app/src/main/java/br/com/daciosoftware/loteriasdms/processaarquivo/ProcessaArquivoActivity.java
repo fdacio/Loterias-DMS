@@ -25,10 +25,9 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
-import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.StyleTypeSorteio;
+import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
@@ -74,7 +73,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         buttonBaixarArquivo.setOnClickListener(new OnClickListenerBaixaArquivo());
 
 
-        new StyleTypeSorteio(this, findViewById(R.id.layout_processar_arquivo)).setStyleInViews(typeSorteio);
+        new StyleOfActivity(this, findViewById(R.id.layout_processar_arquivo)).setStyleInViews(typeSorteio);
     }
 
     /**

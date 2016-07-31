@@ -41,7 +41,7 @@ public class SecundaryMenuActivity extends AppCompatActivity implements AdapterV
         listViewMenuSecundario.setAdapter(new SecundaryMenuAdapter(getApplicationContext(),menuMain,typeSorteio));
         listViewMenuSecundario.setOnItemClickListener(this);
 
-        new StyleTypeSorteio(this, findViewById(R.id.layout_activity_menu_secundario)).setStyleInViews(typeSorteio);
+        new StyleOfActivity(this, findViewById(R.id.layout_activity_menu_secundario)).setStyleInViews(typeSorteio);
     }
 
     @Override
