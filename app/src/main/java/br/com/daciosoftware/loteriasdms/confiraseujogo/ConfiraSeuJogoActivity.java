@@ -152,14 +152,13 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             EditText edtDezena = listaEditDezenas.get(i);
             int dezena = Integer.parseInt(edtDezena.getText().toString());
             String methodName = "setD" + String.valueOf(i + 1);
+
             try {
                 Class clazz = seuJogo.getClass().getSuperclass();
                 methodSet = clazz.getMethod(methodName, Integer.TYPE);
             } catch (SecurityException | NoSuchMethodException e) {}
+
             if (methodSet != null) {
-                /*
-                Aqui seta os valores dos editsText das dezenas no objeto seuJogo.
-                 */
                 try {
                     methodSet.invoke(seuJogo, dezena);
                 } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {}

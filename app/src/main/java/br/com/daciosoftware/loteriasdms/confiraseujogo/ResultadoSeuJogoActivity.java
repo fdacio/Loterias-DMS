@@ -18,6 +18,7 @@ import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 
@@ -47,6 +48,10 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         new StyleOfActivity(this, findViewById(R.id.layout_resultado_seu_jogo)).setStyleInViews(typeSorteio);
 
         buildTextViewDezenas(seuJogo);
+
+        SorteioDAO sorteioDAO = SorteioDAO.getDAO(this, typeSorteio);
+        List<SorteioAcerto> listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteioDAO.findByNumber(seuJogo.getNumero()));
+        listViewResultadoSeuJogo.setAdapter(new ResultadoSeuJogoAdapter(this,listSorteioAcerto,typeSorteio));
     }
 
     @Override

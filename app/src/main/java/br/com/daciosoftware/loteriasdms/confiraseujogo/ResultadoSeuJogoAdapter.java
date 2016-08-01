@@ -22,6 +22,13 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
     private List<SorteioAcerto> list;
     private TypeSorteio typeSorteio;
 
+    public ResultadoSeuJogoAdapter(Context context, List<SorteioAcerto> list, TypeSorteio typeSorteio) {
+        this.context = context;
+        this.list = list;
+        this.typeSorteio = typeSorteio;
+    }
+
+
     @Override
     public int getCount() {
         return list.size();
