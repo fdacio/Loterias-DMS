@@ -1,11 +1,13 @@
 package br.com.daciosoftware.loteriasdms.dao;
 
+import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
  * Created by Dácio Braga on 19/07/2016.
  */
-public class Sorteio implements Comparable<Sorteio> {
+public abstract class Sorteio implements Comparable<Sorteio>, Serializable {
 
     private long id;
     private int numero;
@@ -173,4 +175,7 @@ public class Sorteio implements Comparable<Sorteio> {
     public int compareTo(Sorteio another) {
         return new Integer(numero).compareTo(another.getNumero());
     }
+
+    public abstract int[] getDezenas();
+    public abstract void setDezenas(int[] arrayDezenas);
 }

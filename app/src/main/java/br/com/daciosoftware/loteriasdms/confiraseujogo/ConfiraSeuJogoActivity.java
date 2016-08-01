@@ -23,6 +23,8 @@ import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
 import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -30,7 +32,10 @@ import java.util.concurrent.ExecutionException;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
+import br.com.daciosoftware.loteriasdms.dao.Sorteio;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
+import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
@@ -40,8 +45,12 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     private static final int CAMERA_REQUEST = 200;
     private static final int CROP_FROM_CAMERA = 201;
     private TypeSorteio typeSorteio;
+    private List<String> fieldsValidate;
+    private EditText editTextNumeroConcurso;
     private List<EditText> listaEditDezenas;
     private Uri uriSavedImage;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,14 +62,11 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
 
-        EditText edtNumeroConcurso = (EditText) findViewById(R.id.editTextNumeroConcurso);
+        editTextNumeroConcurso = (EditText) findViewById(R.id.editTextNumeroConcurso);
         Button buttonConferir = (Button) findViewById(R.id.buttonConferir);
-
-
+        buttonConferir.setOnClickListener(new OnClickListenerConferir());
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-
-
         if (fab != null) {
             fab.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -136,12 +142,70 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     }
 
 
+    private Sorteio getSeuJogoFromForm() throws ParseException {
+        Sorteio seuJogo = SorteioDAO.getDAO(this,typeSorteio).getInstanciaEntity();
+
+        seuJogo.setNumero(Integer.parseInt(editTextNumeroConcurso.getText().toString()));
+
+        java.lang.reflect.Method methodSet = null;
+        for (int i = 0; i < listaEditDezenas.size(); i++) {
+            EditText edtDezena = listaEditDezenas.get(i);
+            int dezena = Integer.parseInt(edtDezena.getText().toString());
+            String methodName = "setD" + String.valueOf(i + 1);
+            try {
+                Class clazz = seuJogo.getClass().getSuperclass();
+                methodSet = clazz.getMethod(methodName, Integer.TYPE);
+            } catch (SecurityException | NoSuchMethodException e) {}
+            if (methodSet != null) {
+                /*
+                Aqui seta os valores dos editsText das dezenas no objeto seuJogo.
+                 */
+                try {
+                    methodSet.invoke(seuJogo, dezena);
+                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {}
+            }
+        }
+        return seuJogo;
+    }
+
+    private boolean validateForm() {
+        fieldsValidate = new ArrayList<>();
+        String numero = editTextNumeroConcurso.getText().toString();
+
+        if(numero.equals("")){
+            fieldsValidate.add("Número");
+        }
+
+        for (int i = 0; i < listaEditDezenas.size(); i++) {
+            EditText edtDezena = listaEditDezenas.get(i);
+            if(edtDezena.getText().toString().equals("")){
+                fieldsValidate.add("Dezena "+(i+1));
+            }
+        }
+
+        if(fieldsValidate.size() > 0){
+            return false;
+        }else {
+            return true;
+        }
+    }
+
+
     private class OnClickListenerConferir implements View.OnClickListener {
         @Override
         public void onClick(View v) {
-            //Arqui executar a conferencia, passando o numero do
-            //concurso e as dezenas para outra Activity que
-            //conterá uma listView com os resultados
+            if(validateForm()){
+                Intent intent = new Intent(ConfiraSeuJogoActivity.this, ResultadoSeuJogoActivity.class);
+                intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
+                try {
+                    intent.putExtra(Constantes.SEU_JOGO, getSeuJogoFromForm());
+                } catch (ParseException e) {e.printStackTrace();}
+
+                startActivity(intent);
+
+            } else {
+                new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.msg_validade_form), fieldsValidate.toString()).show();
+            }
 
         }
     }

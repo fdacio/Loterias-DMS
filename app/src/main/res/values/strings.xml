@@ -122,6 +122,10 @@
     <string name="label_concurso">Concurso</string>
     <string name="label_dezenas">Dezenas</string>
     <string name="label_confirir">Conferir</string>
-    <string name="title_activity_resultado_seu_jogo">ResultadoSeuJogoActivity</string>
+    <string name="title_activity_resultado_seu_jogo">Resultado do Seu Jogo</string>
+    <string name="label_seu_jogo">Seu Jogo</string>
+    <string name="label_ver_mais">Ver Mais</string>
+    <string name="label_qtde_acertos">Qtde.Acertos</string>
+    <string name="label_acertos">Acertos</string>
 
 </resources>

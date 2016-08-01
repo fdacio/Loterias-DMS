@@ -154,44 +154,27 @@ public class LotofacilDAO extends SorteioDAO {
     @Override
     public Lotofacil getEntityDezenasCrescente(Sorteio sorteio) {
 
-
         Lotofacil lotofacilDezenasCrescente = (Lotofacil) sorteio;
 
-        int[] arrayDezendas = new int[15];
+        int[] arrayDezenas = sorteio.getDezenas();
 
-        arrayDezendas[0] = sorteio.getD1();
-        arrayDezendas[1] = sorteio.getD2();
-        arrayDezendas[2] = sorteio.getD3();
-        arrayDezendas[3] = sorteio.getD4();
-        arrayDezendas[4] = sorteio.getD5();
-        arrayDezendas[5] = sorteio.getD6();
-        arrayDezendas[6] = sorteio.getD7();
-        arrayDezendas[7] = sorteio.getD8();
-        arrayDezendas[8] = sorteio.getD9();
-        arrayDezendas[9] = sorteio.getD10();
-        arrayDezendas[10] = sorteio.getD11();
-        arrayDezendas[11] = sorteio.getD12();
-        arrayDezendas[12] = sorteio.getD13();
-        arrayDezendas[13] = sorteio.getD14();
-        arrayDezendas[14] = sorteio.getD15();
+        Arrays.sort(arrayDezenas);
 
-        Arrays.sort(arrayDezendas);
-
-        lotofacilDezenasCrescente.setD1(arrayDezendas[0]);
-        lotofacilDezenasCrescente.setD2(arrayDezendas[1]);
-        lotofacilDezenasCrescente.setD3(arrayDezendas[2]);
-        lotofacilDezenasCrescente.setD4(arrayDezendas[3]);
-        lotofacilDezenasCrescente.setD5(arrayDezendas[4]);
-        lotofacilDezenasCrescente.setD6(arrayDezendas[5]);
-        lotofacilDezenasCrescente.setD7(arrayDezendas[6]);
-        lotofacilDezenasCrescente.setD8(arrayDezendas[7]);
-        lotofacilDezenasCrescente.setD9(arrayDezendas[8]);
-        lotofacilDezenasCrescente.setD10(arrayDezendas[9]);
-        lotofacilDezenasCrescente.setD11(arrayDezendas[10]);
-        lotofacilDezenasCrescente.setD12(arrayDezendas[11]);
-        lotofacilDezenasCrescente.setD13(arrayDezendas[12]);
-        lotofacilDezenasCrescente.setD14(arrayDezendas[13]);
-        lotofacilDezenasCrescente.setD15(arrayDezendas[14]);
+        lotofacilDezenasCrescente.setD1(arrayDezenas[0]);
+        lotofacilDezenasCrescente.setD2(arrayDezenas[1]);
+        lotofacilDezenasCrescente.setD3(arrayDezenas[2]);
+        lotofacilDezenasCrescente.setD4(arrayDezenas[3]);
+        lotofacilDezenasCrescente.setD5(arrayDezenas[4]);
+        lotofacilDezenasCrescente.setD6(arrayDezenas[5]);
+        lotofacilDezenasCrescente.setD7(arrayDezenas[6]);
+        lotofacilDezenasCrescente.setD8(arrayDezenas[7]);
+        lotofacilDezenasCrescente.setD9(arrayDezenas[8]);
+        lotofacilDezenasCrescente.setD10(arrayDezenas[9]);
+        lotofacilDezenasCrescente.setD11(arrayDezenas[10]);
+        lotofacilDezenasCrescente.setD12(arrayDezenas[11]);
+        lotofacilDezenasCrescente.setD13(arrayDezenas[12]);
+        lotofacilDezenasCrescente.setD14(arrayDezenas[13]);
+        lotofacilDezenasCrescente.setD15(arrayDezenas[14]);
 
         return lotofacilDezenasCrescente;
     }

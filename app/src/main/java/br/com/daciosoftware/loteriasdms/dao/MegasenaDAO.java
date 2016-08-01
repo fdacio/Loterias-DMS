@@ -9,7 +9,6 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Arrays;
 import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
@@ -116,17 +115,10 @@ public class MegasenaDAO extends SorteioDAO {
 
     @Override
     public Megasena getEntityDezenasCrescente(Sorteio sorteio) {
+
         Megasena megasenaDezenasCrescente = (Megasena) sorteio;
 
-        int[] arrayDezendas = new int[6];
-        arrayDezendas[0] = sorteio.getD1();
-        arrayDezendas[1] = sorteio.getD2();
-        arrayDezendas[2] = sorteio.getD3();
-        arrayDezendas[3] = sorteio.getD4();
-        arrayDezendas[4] = sorteio.getD5();
-        arrayDezendas[5] = sorteio.getD6();
-
-        Arrays.sort(arrayDezendas);
+        int[] arrayDezendas =sorteio.getDezenas();
 
         megasenaDezenasCrescente.setD1(arrayDezendas[0]);
         megasenaDezenasCrescente.setD2(arrayDezendas[1]);
@@ -137,5 +129,6 @@ public class MegasenaDAO extends SorteioDAO {
 
         return megasenaDezenasCrescente;
     }
+
 
 }
