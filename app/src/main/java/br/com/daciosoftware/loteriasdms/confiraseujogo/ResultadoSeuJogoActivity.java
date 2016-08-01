@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
@@ -153,6 +154,7 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         SorteioAcerto sorteioAcerto = new SorteioAcerto();
         sorteioAcerto.setNumero(sorteio.getNumero());
         sorteioAcerto.setData(sorteio.getData());
+        Arrays.sort(arrayDezenasSorteio);
         sorteioAcerto.setDezenas(arrayDezenasSorteio);
         sorteioAcerto.setQtdeAcertos(qtdeAcerto);
         listSorteioAcerto.add(sorteioAcerto);
@@ -170,6 +172,7 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
                 SorteioAcerto sorteioAcerto = new SorteioAcerto();
                 sorteioAcerto.setNumero(sorteio.getNumero());
                 sorteioAcerto.setData(sorteio.getData());
+                Arrays.sort(arrayDezenasSorteio);
                 sorteioAcerto.setDezenas(arrayDezenasSorteio);
                 sorteioAcerto.setQtdeAcertos(qtdeAcerto);
                 listSorteioAcerto.add(sorteioAcerto);
