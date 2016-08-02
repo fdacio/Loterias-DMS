@@ -250,7 +250,7 @@ public class StyleOfActivity {
             View child = viewGroup.getChildAt(i);
             if (child instanceof ViewGroup) {
                 findImageButtons((ViewGroup) child, imageButtons);
-            } else if (child instanceof Button) {
+            } else if (child instanceof ImageButton) {
                 imageButtons.add((ImageButton) child);
             }
         }

@@ -52,10 +52,8 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sorteio_list);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        if (toolbar != null) {
-            setSupportActionBar(toolbar);
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
         sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);

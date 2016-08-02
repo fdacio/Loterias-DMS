@@ -57,11 +57,10 @@
                 android:layout_column="0" />
 
             <Button
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:text="@string/label_data_zero"
                 android:id="@+id/buttonData"
-                android:layout_column="2" />
+                android:layout_column="2"
+                style="@style/smallButton" />
         </TableRow>
 
         <TableRow

@@ -37,7 +37,6 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
     private TypeSorteio typeSorteio;
     private boolean running = true;
     private String msg = "Atualizando Sorteios.\nAguarde...";
-    private String nomeSorteio;
     private ProgressDialog progressDialog;
     private AtualizaSorteiosInterface atualizacaoSorteioInterface;
 
@@ -54,7 +53,7 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
 
     @Override
     protected String doInBackground(Void... v) {
-
+        String nomeSorteio;
         int jogo = 0;
         switch (typeSorteio) {
             case MEGASENA:
@@ -68,6 +67,9 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
             case LOTOFACIL:
                 nomeSorteio = "Lotofácil";
                 jogo = 3;
+                break;
+            default:
+                nomeSorteio = "Sorteio";
                 break;
         }
 
@@ -156,6 +158,10 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
                     return "Erro ao obter dados do Web Service: " + urlWebServiceSorteio;
                 }
 
+                if(isCancelled()){
+                    running = false;
+                    return  "Atualização Cancelada";
+                }
 
             }//Fim do while
 
@@ -183,7 +189,6 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
     protected void onPostExecute(String retorno) {
         progressDialog.dismiss();
         new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, "Atualização de Sorteios", retorno).show();
-
         if(this.atualizacaoSorteioInterface != null) {
             this.atualizacaoSorteioInterface.executarAposAtualizacao();
         }
@@ -192,9 +197,9 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        Toast.makeText(context, "Atualização cancelado!", Toast.LENGTH_SHORT).show();
-        running = false;
-
+        if(this.atualizacaoSorteioInterface != null) {
+            this.atualizacaoSorteioInterface.executarAposAtualizacao();
+        }
     }
 
     @Override

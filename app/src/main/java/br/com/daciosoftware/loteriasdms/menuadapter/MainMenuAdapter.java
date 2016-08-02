@@ -1,6 +1,8 @@
 package br.com.daciosoftware.loteriasdms.menuadapter;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import br.com.daciosoftware.loteriasdms.R;
+import br.com.daciosoftware.loteriasdms.TypeSorteio;
 
 /**
  * Created by Dácio Braga on 17/07/2016.
@@ -44,6 +47,19 @@ public class MainMenuAdapter extends BaseAdapter {
         TextView textViewLabelJogo;
     }
 
+    private int getColorRgb(int index) {
+        switch (index) {
+            case 0:
+                return Color.rgb(34, 149, 81);
+            case 1:
+                return Color.rgb(124, 11, 137);
+            case 2:
+                return Color.rgb(41, 11, 137);
+            default:
+                return Color.rgb(63, 81, 181);
+        }
+    }
+
     private int getIconJogo(int index){
         switch (index){
             case 0: return R.mipmap.ic_mega_sena;
@@ -53,13 +69,8 @@ public class MainMenuAdapter extends BaseAdapter {
         }
     }
 
-    private int getColorLabel(int index){
-        switch (index){
-            case 0: return this.context.getResources().getColor(R.color.colorMegasena);
-            case 1: return this.context.getResources().getColor(R.color.colorLotofacil);
-            case 2: return this.context.getResources().getColor(R.color.colorQuina);
-            default: return 0;
-        }
+    private ColorStateList getColorLabel(int index){
+        return ColorStateList.valueOf(getColorRgb(index));
     }
 
     @Override

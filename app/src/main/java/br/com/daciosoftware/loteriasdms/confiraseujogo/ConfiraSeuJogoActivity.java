@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
@@ -16,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.NumberPicker;
 import android.widget.TableRow;
 import android.widget.Toast;
 
@@ -36,6 +37,7 @@ import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
+import br.com.daciosoftware.loteriasdms.util.DialogNumber;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
@@ -49,7 +51,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     private EditText editTextNumeroConcurso;
     private List<EditText> listaEditDezenas;
     private Uri uriSavedImage;
-
+    private int qtdeEdit;
 
 
     @Override
@@ -63,44 +65,17 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
 
         editTextNumeroConcurso = (EditText) findViewById(R.id.editTextNumeroConcurso);
+
+        Button buttonNumberPiker = (Button) findViewById(R.id.buttonNumberPiker);
+        buttonNumberPiker.setOnClickListener(new DialogNumberPickerOnClickListener());
+
+        ImageButton imageButtonDigitalizar = (ImageButton) findViewById(R.id.imageButtonDigitalizar);
+        imageButtonDigitalizar.setOnClickListener(new DigitalizarOnClickListener());
+
         Button buttonConferir = (Button) findViewById(R.id.buttonConferir);
-        buttonConferir.setOnClickListener(new OnClickListenerConferir());
+        buttonConferir.setOnClickListener(new ConferirOnClickListener());
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        if (fab != null) {
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    try {
-                        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                        File imagesFolder = new File(MyFileUtil.getDefaultDirectoryApp(), "images");
-                        imagesFolder.mkdirs();
-                        MyFileUtil.removeFilesInDirectory(imagesFolder);
-                        File image = new File(imagesFolder, "image_" + MyDateUtil.timeToString() + ".jpg");
-                        uriSavedImage = Uri.fromFile(image);
-                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-                        startActivityForResult(cameraIntent, CAMERA_REQUEST);
 
-                    } catch (ActivityNotFoundException anfe) {
-                        //display an error message
-                        String errorMessage = "Seu dispositivo não suporta captura de imagens!";
-                        Toast toast = Toast.makeText(ConfiraSeuJogoActivity.this, errorMessage, Toast.LENGTH_SHORT);
-                        toast.show();
-                    }
-                }
-            });
-        }
-
-        new StyleOfActivity(this, findViewById(R.id.layout_confira_seu_jogo)).setStyleInViews(typeSorteio);
-
-        buildEdits();
-    }
-
-    private void buildEdits() {
-        TableRow tableRow1 = (TableRow) findViewById(R.id.trow1);
-        TableRow tableRow2 = (TableRow) findViewById(R.id.trow2);
-        TableRow tableRow3 = (TableRow) findViewById(R.id.trow3);
-        int qtdeEdit;
         switch (typeSorteio) {
             case MEGASENA:
                 qtdeEdit = 6;
@@ -115,13 +90,108 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
                 qtdeEdit = 0;
                 break;
         }
+        buttonNumberPiker.setText(String.valueOf(qtdeEdit) + " dezenas");
+        buildEdits(qtdeEdit);
+
+        new StyleOfActivity(this, findViewById(R.id.layout_confira_seu_jogo)).setStyleInViews(typeSorteio);
+    }
+
+    private class DialogNumberPickerOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            DialogNumber dialogNumber = new DialogNumber(ConfiraSeuJogoActivity.this);
+            dialogNumber.setOnValueChangeListener(new DialogNumberPickerOnValueChangeListener((Button) view));
+            dialogNumber.setTitle("Quantidade de Dezenas");
+            dialogNumber.setStartValue(qtdeEdit);
+            dialogNumber.setMinValue(5);
+            dialogNumber.setMaxValue(30);
+            dialogNumber.show();
+        }
+    }
+
+    private class DialogNumberPickerOnValueChangeListener implements NumberPicker.OnValueChangeListener {
+        private Button button;
+        public DialogNumberPickerOnValueChangeListener(Button button) {
+            this.button = button;
+        }
+
+        @Override
+        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+            this.button.setText(String.valueOf(newVal) + " dezenas");
+            qtdeEdit = newVal;
+            buildEdits(newVal);
+        }
+    }
+
+    private class ConferirOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (validateForm()) {
+                Intent intent = new Intent(ConfiraSeuJogoActivity.this, ResultadoSeuJogoActivity.class);
+                intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
+                try {
+                    intent.putExtra(Constantes.SEU_JOGO, getSeuJogoFromForm());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                startActivity(intent);
+
+            } else {
+                new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.msg_validade_form), fieldsValidate.toString()).show();
+            }
+
+        }
+    }
+
+    private class DigitalizarOnClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View v) {
+            try {
+                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                File imagesFolder = new File(MyFileUtil.getDefaultDirectoryApp(), "images");
+                imagesFolder.mkdirs();
+                MyFileUtil.removeFilesInDirectory(imagesFolder);
+                File image = new File(imagesFolder, "image_" + MyDateUtil.timeToString() + ".jpg");
+                uriSavedImage = Uri.fromFile(image);
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
+
+            } catch (ActivityNotFoundException anfe) {
+                //display an error message
+                String errorMessage = "Seu dispositivo não suporta captura de imagens!";
+                Toast toast = Toast.makeText(ConfiraSeuJogoActivity.this, errorMessage, Toast.LENGTH_SHORT);
+                toast.show();
+            }
+
+        }
+    }
+
+    private void buildEdits(int qtdeEdit) {
+        TableRow tableRow1 = (TableRow) findViewById(R.id.trow1);
+        TableRow tableRow2 = (TableRow) findViewById(R.id.trow2);
+        TableRow tableRow3 = (TableRow) findViewById(R.id.trow3);
+        TableRow tableRow4 = (TableRow) findViewById(R.id.trow4);
+        TableRow tableRow5 = (TableRow) findViewById(R.id.trow5);
+        TableRow tableRow6 = (TableRow) findViewById(R.id.trow6);
+        tableRow1.removeAllViews();
+        tableRow2.removeAllViews();
+        tableRow3.removeAllViews();
+        tableRow4.removeAllViews();
+        tableRow5.removeAllViews();
+        tableRow6.removeAllViews();
 
         listaEditDezenas = new ArrayList<>();
+        int col = 0;
         for (int i = 0; i < qtdeEdit; i++) {
             TableRow.LayoutParams tableRowLayoutParam = new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
                     TableRow.LayoutParams.WRAP_CONTENT,
-                    i);
+                    col);
+            col++;
+            if(col > 4 && qtdeEdit != 6) col = 0;
             EditText edtDezena = new EditText(this);
             edtDezena.setId(ViewIdGenerator.generateViewId());
             edtDezena.setLayoutParams(tableRowLayoutParam);
@@ -134,8 +204,14 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
                 tableRow1.addView(edtDezena);
             } else if (i >= 5 && i < 10) {
                 tableRow2.addView(edtDezena);
-            } else {
+            } else if (i >= 10 && i < 15) {
                 tableRow3.addView(edtDezena);
+            } else if (i >= 15 && i < 20) {
+                tableRow4.addView(edtDezena);
+            } else if (i >= 20 && i < 25) {
+                tableRow5.addView(edtDezena);
+            } else if (i >= 25 && i < 30) {
+                tableRow6.addView(edtDezena);
             }
 
         }
@@ -143,7 +219,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
 
     private Sorteio getSeuJogoFromForm() throws ParseException {
-        Sorteio seuJogo = SorteioDAO.getDAO(this,typeSorteio).getInstanciaEntity();
+        Sorteio seuJogo = SorteioDAO.getDAO(this, typeSorteio).getInstanciaEntity();
 
         seuJogo.setNumero(Integer.parseInt(editTextNumeroConcurso.getText().toString()));
 
@@ -156,12 +232,14 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             try {
                 Class clazz = seuJogo.getClass().getSuperclass();
                 methodSet = clazz.getMethod(methodName, Integer.TYPE);
-            } catch (SecurityException | NoSuchMethodException e) {}
+            } catch (SecurityException | NoSuchMethodException e) {
+            }
 
             if (methodSet != null) {
                 try {
                     methodSet.invoke(seuJogo, dezena);
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {}
+                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
+                }
             }
         }
         return seuJogo;
@@ -171,42 +249,29 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         fieldsValidate = new ArrayList<>();
         String numero = editTextNumeroConcurso.getText().toString();
 
-        if(numero.equals("")){
+        if (numero.equals("")) {
             fieldsValidate.add("Número");
         }
 
         for (int i = 0; i < listaEditDezenas.size(); i++) {
             EditText edtDezena = listaEditDezenas.get(i);
-            if(edtDezena.getText().toString().equals("")){
-                fieldsValidate.add("Dezena "+(i+1));
+            if (edtDezena.getText().toString().equals("")) {
+                fieldsValidate.add("Dezena " + (i + 1));
             }
         }
 
-        if(fieldsValidate.size() > 0){
+        if (fieldsValidate.size() > 0) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
 
 
-    private class OnClickListenerConferir implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if(validateForm()){
-                Intent intent = new Intent(ConfiraSeuJogoActivity.this, ResultadoSeuJogoActivity.class);
-                intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
-                try {
-                    intent.putExtra(Constantes.SEU_JOGO, getSeuJogoFromForm());
-                } catch (ParseException e) {e.printStackTrace();}
-
-                startActivity(intent);
-
-            } else {
-                new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.msg_validade_form), fieldsValidate.toString()).show();
-            }
-
-        }
+    @Override
+    public void onResume(){
+        super.onResume();
+        buildEdits(qtdeEdit);
     }
 
     @Override
@@ -288,7 +353,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         for (int i = 0; i < novoTextoOCR.length(); i++) {
             ch = novoTextoOCR.charAt(i);
             textoForSplit += ch;
-            if( i%2 != 0){
+            if (i % 2 != 0) {
                 textoForSplit += '-';
             }
         }
@@ -298,7 +363,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         editTextOCR.setText(textoForSplit);
         String[] arrayDezenasOCR = textoForSplit.split("-");
         for (int i = 0; i < arrayDezenasOCR.length; i++) {
-            if(i<listaEditDezenas.size()) {
+            if (i < listaEditDezenas.size()) {
                 EditText editText = listaEditDezenas.get(i);
                 if (editText != null) {
                     editText.setText(arrayDezenasOCR[i]);

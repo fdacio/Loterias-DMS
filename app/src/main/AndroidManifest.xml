@@ -53,6 +53,7 @@
         <activity
             android:name=".confiraseujogo.ConfiraSeuJogoActivity"
             android:label="@string/title_activity_confira_seu_jogo"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -98,6 +99,7 @@
         <activity
             android:name=".confiraseujogo.ResultadoSeuJogoActivity"
             android:label="@string/title_activity_resultado_seu_jogo"
+            android:windowSoftInputMode="adjustPan"
             android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 

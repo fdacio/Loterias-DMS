@@ -204,7 +204,7 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         if (view == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if (position == list.size() - 1) {
-                return inflater.inflate(R.layout.row_resultado_seu_jogo_button_mais_adapter, parent, false);
+                return inflater.inflate(R.layout.row_resultado_seu_jogo_ver_mais_adapter, parent, false);
             } else {
                 view = inflater.inflate(getLayoutRow(typeSorteio), parent, false);
             }

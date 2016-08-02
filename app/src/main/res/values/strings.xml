@@ -74,7 +74,7 @@
     <string name="title_activity_sorteio_list">Sorteios</string>
     <string name="title_activity_processar_arquivo">Processar Arquivo</string>
     <string name="title_activity_confira_seu_jogo">Confira Seu Jogo</string>
-    <string name="zero">0 dezenas selecionadas</string>
+    <string name="zero">0 dezenas</string>
     <string name="msg_validade_form">Informe os campos abaixo</string>
 
 
@@ -127,5 +127,6 @@
     <string name="label_ver_mais">Ver Mais</string>
     <string name="label_qtde_acertos">Qtde.Acertos</string>
     <string name="label_acertos">Acertos</string>
+    <string name="label_digitalizar_seu_jogo">Digitalizar seu jogo</string>
 
 </resources>

@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:padding="10dp">
 
-    <Button
-        style="@style/smallButton"
-        android:text="@string/label_ver_mais"
-        android:id="@+id/buttonVerMais"
-        android:layout_gravity="center_horizontal"
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/label_ver_mais"
+        android:id="@+id/textViewVerMais"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp" />
 </LinearLayout>
