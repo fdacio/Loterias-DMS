@@ -57,7 +57,7 @@
                     android:id="@+id/textView13"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/label_concurso" />
+                    android:text="@string/label_numero_concurso" />
 
                 <EditText
                     android:id="@+id/editTextNumeroConcurso"

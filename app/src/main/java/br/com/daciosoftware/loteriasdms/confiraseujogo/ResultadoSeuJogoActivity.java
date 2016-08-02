@@ -1,15 +1,14 @@
 package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +24,7 @@ import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 public class ResultadoSeuJogoActivity extends AppCompatActivity {
 
     private TypeSorteio typeSorteio;
-    private Sorteio seuJogo;
+    private SeuJogo seuJogo;
     private List<TextView> listaTextViewDezenas;
     private ListView listViewResultadoSeuJogo;
     private TextView textViewNumeroConcurso;
@@ -39,19 +38,23 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
-        seuJogo = (Sorteio) getIntent().getSerializableExtra(Constantes.SEU_JOGO);
+        seuJogo = (SeuJogo) getIntent().getSerializableExtra(Constantes.SEU_JOGO);
 
         textViewNumeroConcurso = (TextView) findViewById(R.id.textViewNumeroConcurso);
-        textViewNumeroConcurso.setText(seuJogo.getNumero());
+        textViewNumeroConcurso.setText(String.valueOf(seuJogo.getNumeroConcurso()));
+
         listViewResultadoSeuJogo = (ListView) findViewById(R.id.listViewResultadoSeuJogo);
 
         new StyleOfActivity(this, findViewById(R.id.layout_resultado_seu_jogo)).setStyleInViews(typeSorteio);
 
         buildTextViewDezenas(seuJogo);
 
+
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(this, typeSorteio);
-        List<SorteioAcerto> listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteioDAO.findByNumber(seuJogo.getNumero()));
+        Sorteio sorteio = sorteioDAO.getEntityDezenasCrescente(sorteioDAO.findByNumber(seuJogo.getNumeroConcurso()));
+        List<SorteioAcerto> listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteio);
         listViewResultadoSeuJogo.setAdapter(new ResultadoSeuJogoAdapter(this,listSorteioAcerto,typeSorteio));
+
     }
 
     @Override
@@ -66,62 +69,50 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
     }
 
 
-    private void buildTextViewDezenas(Sorteio seuJogo) {
+    private void buildTextViewDezenas(SeuJogo seuJogo) {
         TableRow tableRow1 = (TableRow) findViewById(R.id.trow1);
         TableRow tableRow2 = (TableRow) findViewById(R.id.trow2);
         TableRow tableRow3 = (TableRow) findViewById(R.id.trow3);
-        int qtdeTextView;
-        switch (typeSorteio) {
-            case MEGASENA:
-                qtdeTextView = 6;
-                break;
-            case LOTOFACIL:
-                qtdeTextView = 15;
-                break;
-            case QUINA:
-                qtdeTextView = 5;
-                break;
-            default:
-                qtdeTextView = 0;
-                break;
-        }
+        TableRow tableRow4 = (TableRow) findViewById(R.id.trow4);
+        TableRow tableRow5 = (TableRow) findViewById(R.id.trow5);
+        TableRow tableRow6 = (TableRow) findViewById(R.id.trow6);
 
-        listaTextViewDezenas = new ArrayList<>();
-        java.lang.reflect.Method methodGet = null;
-        for (int i = 0; i < qtdeTextView; i++) {
+        int[] arrayDezenas = seuJogo.getDezenas();
+
+
+        int col = 0;
+        for (int i = 0; i < arrayDezenas.length; i++) {
             TableRow.LayoutParams tableRowLayoutParam = new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
-                    TableRow.LayoutParams.WRAP_CONTENT,
-                    i);
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            tableRowLayoutParam.column = col;
+            tableRowLayoutParam.span = 1;
+            col++;
+            if(col > 4 && arrayDezenas.length != 6) col = 0;
+
             TextView textViewDezena = new TextView(this);
             textViewDezena.setId(ViewIdGenerator.generateViewId());
             textViewDezena.setLayoutParams(tableRowLayoutParam);
-            textViewDezena.setInputType(InputType.TYPE_CLASS_NUMBER);
+            textViewDezena.setTextSize(18);
+            textViewDezena.setTypeface(null, Typeface.BOLD);
+            textViewDezena.setText(String.valueOf(arrayDezenas[i]));
 
-            String methodName = "getD" + String.valueOf(i + 1);
-            try {
-                methodGet = seuJogo.getClass().getMethod(methodName);
-            } catch (SecurityException | NoSuchMethodException e) {
-            }
-
-            if (methodGet != null) {
-                try {
-                    Integer valorDezena = (Integer) methodGet.invoke(seuJogo);
-                    textViewDezena.setText(String.valueOf(valorDezena.intValue()));
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                }
-            }
-
-            listaTextViewDezenas.add(textViewDezena);
             if (i < 5) {
                 tableRow1.addView(textViewDezena);
-            } else if ((i == 5) && (qtdeTextView == 6)) {
+            } else if ((i == 5) && (arrayDezenas.length == 6)) {
                 tableRow1.addView(textViewDezena);
             } else if (i >= 5 && i < 10) {
                 tableRow2.addView(textViewDezena);
-            } else {
+            } else if (i >= 10 && i < 15) {
                 tableRow3.addView(textViewDezena);
+            } else if (i >= 15 && i < 20) {
+                tableRow4.addView(textViewDezena);
+            } else if (i >= 20 && i < 25) {
+                tableRow5.addView(textViewDezena);
+            } else if (i >= 25 && i < 30) {
+                tableRow6.addView(textViewDezena);
             }
+
         }
     }
 
@@ -151,35 +142,51 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         return qtdeAcerto;
     }
 
-    private List<SorteioAcerto> getListSorteioAcertos(Sorteio seuJogo, Sorteio sorteio){
+    private int[] getDezenasAcertos(int[] arrayDezenasSeuJogo, int[] arrayDezenasSorteio){
+        int qtdeAcerto = getQtdeAcertos(arrayDezenasSeuJogo, arrayDezenasSorteio);
+        int[] arrayDezenasAcertos = new int[qtdeAcerto];
+        int k = 0;
+        for(int i = 0; i < arrayDezenasSeuJogo.length; i++){
+            for(int j = 0; j < arrayDezenasSorteio.length; j++){
+                if(arrayDezenasSeuJogo[i] == arrayDezenasSorteio[j]){
+                    arrayDezenasAcertos[k] = arrayDezenasSeuJogo[i];
+                    k++;
+                }
+            }
+        }
+        return arrayDezenasAcertos;
+    }
+
+    private List<SorteioAcerto> getListSorteioAcertos(SeuJogo seuJogo, Sorteio sorteio){
         List<SorteioAcerto> listSorteioAcerto = new ArrayList<>();
         int[] arrayDezenasSeuJogo = seuJogo.getDezenas();
         int[] arrayDezenasSorteio = sorteio.getDezenas();
-        int qtdeAcerto = getQtdeAcertos(arrayDezenasSeuJogo, arrayDezenasSorteio);
+        int[] arrayDezenasAcertos = getDezenasAcertos(arrayDezenasSeuJogo,arrayDezenasSorteio);
+        int qtdeAcerto = arrayDezenasAcertos.length;
+
         SorteioAcerto sorteioAcerto = new SorteioAcerto();
-        sorteioAcerto.setNumero(sorteio.getNumero());
-        sorteioAcerto.setData(sorteio.getData());
-        Arrays.sort(arrayDezenasSorteio);
-        sorteioAcerto.setDezenas(arrayDezenasSorteio);
+        sorteioAcerto.setSorteio(sorteio);
         sorteioAcerto.setQtdeAcertos(qtdeAcerto);
+        sorteioAcerto.setDezenasAcertos(arrayDezenasAcertos);
         listSorteioAcerto.add(sorteioAcerto);
+
         return listSorteioAcerto;
     }
 
-    private List<SorteioAcerto> getListSorteioAcertos(Sorteio seuJogo, List<Sorteio> listSorteio){
+    private List<SorteioAcerto> getListSorteioAcertos(SeuJogo seuJogo, List<Sorteio> listSorteio){
         List<SorteioAcerto> listSorteioAcerto = new ArrayList<>();
         for(Sorteio sorteio: listSorteio) {
             int[] arrayDezenasSeuJogo = seuJogo.getDezenas();
             int[] arrayDezenasSorteio = sorteio.getDezenas();
-            int qtdeAcerto = getQtdeAcertos(arrayDezenasSeuJogo, arrayDezenasSorteio);
+            int[] arrayDezenasAcertos = getDezenasAcertos(arrayDezenasSeuJogo,arrayDezenasSorteio);
+            int qtdeAcerto = arrayDezenasAcertos.length;
 
             if(qtdeAcerto >= getQtdeMinimaAcertos(typeSorteio)) {
                 SorteioAcerto sorteioAcerto = new SorteioAcerto();
-                sorteioAcerto.setNumero(sorteio.getNumero());
-                sorteioAcerto.setData(sorteio.getData());
-                Arrays.sort(arrayDezenasSorteio);
-                sorteioAcerto.setDezenas(arrayDezenasSorteio);
+                sorteioAcerto.setSorteio(sorteio);
                 sorteioAcerto.setQtdeAcertos(qtdeAcerto);
+                sorteioAcerto.setDezenasAcertos(arrayDezenasAcertos);
+                listSorteioAcerto.add(sorteioAcerto);
                 listSorteioAcerto.add(sorteioAcerto);
             }
         }

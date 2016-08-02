@@ -128,13 +128,15 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         @Override
         public void onClick(View v) {
             if (validateForm()) {
+                int numero = Integer.valueOf(editTextNumeroConcurso.getText().toString());
+                if(SorteioDAO.getDAO(ConfiraSeuJogoActivity.this, typeSorteio).findByNumber(Integer.valueOf(numero))==null){
+                    new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.title_activity_confira_seu_jogo), "Concuros "+ numero + " não encontrado").show();
+                    return;
+                }
+
                 Intent intent = new Intent(ConfiraSeuJogoActivity.this, ResultadoSeuJogoActivity.class);
                 intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
-                try {
-                    intent.putExtra(Constantes.SEU_JOGO, getSeuJogoFromForm());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
+                intent.putExtra(Constantes.SEU_JOGO, getSeuJogoFromForm());
 
                 startActivity(intent);
 
@@ -188,8 +190,10 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         for (int i = 0; i < qtdeEdit; i++) {
             TableRow.LayoutParams tableRowLayoutParam = new TableRow.LayoutParams(
                     TableRow.LayoutParams.WRAP_CONTENT,
-                    TableRow.LayoutParams.WRAP_CONTENT,
-                    col);
+                    TableRow.LayoutParams.WRAP_CONTENT);
+            tableRowLayoutParam.column = col;
+            tableRowLayoutParam.span = 1;
+
             col++;
             if(col > 4 && qtdeEdit != 6) col = 0;
             EditText edtDezena = new EditText(this);
@@ -218,30 +222,17 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     }
 
 
-    private Sorteio getSeuJogoFromForm() throws ParseException {
-        Sorteio seuJogo = SorteioDAO.getDAO(this, typeSorteio).getInstanciaEntity();
+    private SeuJogo getSeuJogoFromForm(){
+        SeuJogo seuJogo = new SeuJogo();
+        seuJogo.setNumeroConcurso(Integer.valueOf(editTextNumeroConcurso.getText().toString()));
 
-        seuJogo.setNumero(Integer.parseInt(editTextNumeroConcurso.getText().toString()));
-
-        java.lang.reflect.Method methodSet = null;
+        int[] arrayDezenas = new int[listaEditDezenas.size()];
         for (int i = 0; i < listaEditDezenas.size(); i++) {
             EditText edtDezena = listaEditDezenas.get(i);
-            int dezena = Integer.parseInt(edtDezena.getText().toString());
-            String methodName = "setD" + String.valueOf(i + 1);
-
-            try {
-                Class clazz = seuJogo.getClass().getSuperclass();
-                methodSet = clazz.getMethod(methodName, Integer.TYPE);
-            } catch (SecurityException | NoSuchMethodException e) {
-            }
-
-            if (methodSet != null) {
-                try {
-                    methodSet.invoke(seuJogo, dezena);
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                }
-            }
+            int dezena = Integer.valueOf(edtDezena.getText().toString());
+            arrayDezenas[i] = dezena;
         }
+        seuJogo.setDezenas(arrayDezenas);
         return seuJogo;
     }
 
@@ -259,6 +250,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
                 fieldsValidate.add("Dezena " + (i + 1));
             }
         }
+
 
         if (fieldsValidate.size() > 0) {
             return false;

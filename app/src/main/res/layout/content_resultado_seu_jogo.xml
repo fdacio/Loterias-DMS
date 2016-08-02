@@ -44,49 +44,40 @@
             android:layout_height="match_parent"
             android:layout_marginTop="5dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_concurso"
-                android:id="@+id/textView13"
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_span="2" />
+                android:layout_span="2">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/label_numero_concurso"
+                    android:id="@+id/textView13"
+                    android:layout_marginRight="10dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/label_concurso"
+                    android:id="@+id/textViewNumeroConcurso" />
+            </LinearLayout>
         </TableRow>
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/label_concurso"
-                android:id="@+id/textViewNumeroConcurso" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_dezenas"
-                android:id="@+id/textView12"
-                android:layout_column="0"
-                android:layout_span="2" />
-        </TableRow>
     </TableLayout>
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tableLayoutHeader"
-        android:layout_alignParentLeft="true"
+        android:layout_alignParentLeft="false"
         android:layout_alignParentStart="true"
         android:id="@+id/tableLayoutDezenas"
-        android:stretchColumns="0,1,2,3,4,5">
+        android:stretchColumns="0,1,2,3,4,5"
+        android:layout_centerHorizontal="true">
 
         <TableRow
             android:layout_width="match_parent"
@@ -102,13 +93,38 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/trow3"></TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/trow4"></TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/trow5"></TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/trow6"></TableRow>
     </TableLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/label_dezenas_sorteadas"
+        android:id="@+id/textViewDezenasSorteadas"
+        android:layout_below="@+id/tableLayoutDezenas"
+        android:layout_marginTop="15dp"
+        android:gravity="center_horizontal" />
 
     <ListView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/listViewResultadoSeuJogo"
-        android:layout_below="@+id/tableLayoutDezenas"
+        android:layout_below="@+id/textViewDezenasSorteadas"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 

@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
@@ -119,6 +120,8 @@ public class MegasenaDAO extends SorteioDAO {
         Megasena megasenaDezenasCrescente = (Megasena) sorteio;
 
         int[] arrayDezendas =sorteio.getDezenas();
+
+        Arrays.sort(arrayDezendas);
 
         megasenaDezenasCrescente.setD1(arrayDezendas[0]);
         megasenaDezenasCrescente.setD2(arrayDezendas[1]);

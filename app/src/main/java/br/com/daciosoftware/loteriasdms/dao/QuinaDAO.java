@@ -9,6 +9,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Arrays;
 import java.util.Calendar;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
@@ -113,6 +114,8 @@ public class QuinaDAO extends SorteioDAO {
         Quina quinaDezenasCrescente = (Quina) sorteio;
 
         int[] arrayDezendas = sorteio.getDezenas();
+
+        Arrays.sort(arrayDezendas);
 
         quinaDezenasCrescente.setD1(arrayDezendas[0]);
         quinaDezenasCrescente.setD2(arrayDezendas[1]);

@@ -128,5 +128,6 @@
     <string name="label_qtde_acertos">Qtde.Acertos</string>
     <string name="label_acertos">Acertos</string>
     <string name="label_digitalizar_seu_jogo">Digitalizar seu jogo</string>
+    <string name="label_dezenas_sorteadas">Dezenas Sorteadas</string>
 
 </resources>

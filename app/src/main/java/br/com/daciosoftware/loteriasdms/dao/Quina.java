@@ -14,7 +14,7 @@ public class Quina extends Sorteio{
 
     @Override
     public int[] getDezenas() {
-        int[] arrayDezendas = new int[6];
+        int[] arrayDezendas = new int[5];
 
         arrayDezendas[0] = getD1();
         arrayDezendas[1] = getD2();
