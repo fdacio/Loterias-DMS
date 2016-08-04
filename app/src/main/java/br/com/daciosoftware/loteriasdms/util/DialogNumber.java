@@ -64,7 +64,6 @@ public class DialogNumber {
         numberPicker = (NumberPicker) npView.findViewById(R.id.numberPicker);
         numberPicker.setMinValue(minValue);
         numberPicker.setMaxValue(maxValue);
-        Toast.makeText(context,"startValue:"+startValue,Toast.LENGTH_SHORT).show();
         numberPicker.setValue(startValue);
         numberPicker.setWrapSelectorWheel(true);
         if (onValueChangeListener != null) {

@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/irMenuMegasena"
+        android:title="@string/mega_sena"
+        android:icon="@drawable/ic_mega_sena_24"
+        app:showAsAction="always">
+
+    </item>
+    <item
+        android:id="@+id/irMenuLotofacil"
+        android:title="@string/lotofacil"
+        android:icon="@drawable/ic_lotofacil_24"
+        app:showAsAction="always">
+
+    </item>
+    <item
+        android:id="@+id/irMenuQuina"
+        android:title="@string/quina"
+        android:icon="@drawable/ic_quina_24"
+        app:showAsAction="always">
+
+    </item>
+</menu>

@@ -209,6 +209,8 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
             searchView = (android.support.v7.widget.SearchView) MenuItemCompat.getActionView(searchItem);
         }
 
+        searchView.setQueryHint(getResources().getString(R.string.hint_search_sorteio));
+
         if (searchView != null) {
             searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override

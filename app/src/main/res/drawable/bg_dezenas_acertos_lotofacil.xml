@@ -3,6 +3,6 @@
     <corners android:radius="100dp" />
     <stroke
         android:width="2dp"
-        android:color="@color/colorLotofacil" />
+        android:color="@color/colorLotofacil"/>
     <solid android:color="#FFF" />
 </shape>

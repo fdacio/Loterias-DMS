@@ -1,13 +1,18 @@
 package br.com.daciosoftware.loteriasdms;
 
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import java.text.ParseException;
 
 import br.com.daciosoftware.loteriasdms.confiraseujogo.ConfiraSeuJogoActivity;
 import br.com.daciosoftware.loteriasdms.dezemasmaissorteadas.DezenasMaisSorteadasActivity;
@@ -15,6 +20,7 @@ import br.com.daciosoftware.loteriasdms.menuadapter.SecundaryMenuAdapter;
 import br.com.daciosoftware.loteriasdms.processaarquivo.ProcessaArquivoActivity;
 import br.com.daciosoftware.loteriasdms.sorteio.SorteioListActivity;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
+import br.com.daciosoftware.loteriasdms.util.DialogBox;
 
 public class SecundaryMenuActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 
@@ -44,16 +50,6 @@ public class SecundaryMenuActivity extends AppCompatActivity implements AdapterV
         new StyleOfActivity(this, findViewById(R.id.layout_activity_menu_secundario)).setStyleInViews(typeSorteio);
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            // Respond to the action bar's Up/Home button
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -75,6 +71,54 @@ public class SecundaryMenuActivity extends AppCompatActivity implements AdapterV
 
         intent.putExtra(Constantes.TYPE_SORTEIO,typeSorteio);
         startActivity(intent);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_secundary_menu, menu);
+        MenuItem item;
+        switch (typeSorteio){
+            case MEGASENA:
+                item = menu.findItem(R.id.irMenuMegasena);
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                break;
+            case LOTOFACIL:
+                item = menu.findItem(R.id.irMenuLotofacil);
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                break;
+            case QUINA:
+                item = menu.findItem(R.id.irMenuQuina);
+                item.setShowAsAction(MenuItem.SHOW_AS_ACTION_NEVER);
+                break;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(SecundaryMenuActivity.this, SecundaryMenuActivity.class);
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                finish();
+                return true;
+            case R.id.irMenuMegasena:
+                intent.putExtra(Constantes.TYPE_SORTEIO, TypeSorteio.MEGASENA);
+                break;
+            case R.id.irMenuLotofacil:
+                intent.putExtra(Constantes.TYPE_SORTEIO, TypeSorteio.LOTOFACIL);
+                break;
+            case R.id.irMenuQuina:
+                intent.putExtra(Constantes.TYPE_SORTEIO, TypeSorteio.QUINA);
+                break;
+            default:
+        }
+        finish();
+        startActivity(intent);
+        return super.onOptionsItemSelected(item);
 
     }
+
 }

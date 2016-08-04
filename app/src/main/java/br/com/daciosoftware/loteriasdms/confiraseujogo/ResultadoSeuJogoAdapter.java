@@ -1,23 +1,17 @@
 package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
-import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
@@ -32,7 +26,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
     public ResultadoSeuJogoAdapter(Context context, List<SorteioAcerto> list, TypeSorteio typeSorteio) {
         this.context = context;
         this.list = list;
-        //this.list.add(null);//para a última linha Ver Mais
         this.typeSorteio = typeSorteio;
     }
 
@@ -65,8 +58,54 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
             textViewQtdeAcertos = (TextView) view.findViewById(R.id.textViewQtdeAcertos);
         }
 
+        private static void findTextViews(ViewGroup viewGroup, ArrayList<TextView> textViews) {
+            for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+                View child = viewGroup.getChildAt(i);
+                if (child instanceof ViewGroup) {
+                    findTextViews((ViewGroup) child, textViews);
+                } else if (child instanceof TextView) {
+                    textViews.add((TextView) child);
+                }
+            }
+        }
+
+        private ArrayList<TextView> getTextViews() {
+            ArrayList<TextView> textViews = new ArrayList<>();
+            ViewGroup viewGroup = (ViewGroup) view.findViewById(R.id.tableLayoutDezenas);
+            findTextViews(viewGroup, textViews);
+            return textViews;
+        }
+
+
+        public void setBackgroundMarcacao(SorteioAcerto sorteioacerto, TypeSorteio typeSorteio) {
+            int resourceBackground = 0;
+            switch (typeSorteio) {
+                case MEGASENA:
+                    resourceBackground = R.drawable.bg_dezenas_acertos_megasena;
+                    break;
+                case LOTOFACIL:
+                    resourceBackground = R.drawable.bg_dezenas_acertos_lotofacil;
+                    break;
+                case QUINA:
+                    resourceBackground = R.drawable.bg_dezenas_acertos_quina;
+                    break;
+            }
+
+            for (TextView textView : getTextViews()) {
+                int dezena = Integer.valueOf(textView.getText().toString());
+                int[] arrayDezenasAcertos = sorteioacerto.getDezenasAcertos();
+                for (int j = 0; j < arrayDezenasAcertos.length; j++) {
+                    if (dezena == arrayDezenasAcertos[j]) {
+                        textView.setBackgroundResource(resourceBackground);
+                    }
+                }
+
+            }
+
+        }
+
         public abstract void setValue(SorteioAcerto sorteioacerto);
-        public abstract void setBackgroundMarcacao(SorteioAcerto sorteioacerto);
+
     }
 
     private static class ViewHolderMegasena extends ViewHolder {
@@ -102,11 +141,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
 
         }
 
-        @Override
-        public void setBackgroundMarcacao(SorteioAcerto sorteioacerto) {
-
-        }
-
     }
 
     private static class ViewHolderQuina extends ViewHolder {
@@ -135,11 +169,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
             textViewD4.setText(String.valueOf(sorteioacerto.getSorteio().getD4()));
             textViewD5.setText(String.valueOf(sorteioacerto.getSorteio().getD5()));
             textViewQtdeAcertos.setText(String.valueOf(sorteioacerto.getQtdeAcertos() + " Acerto(s)"));
-        }
-
-        @Override
-        public void setBackgroundMarcacao(SorteioAcerto sorteioacerto) {
-
         }
 
     }
@@ -192,52 +221,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
             textViewQtdeAcertos.setText(String.valueOf(sorteioacerto.getQtdeAcertos() + " Acerto(s)"));
         }
 
-        @Override
-        public void setBackgroundMarcacao(SorteioAcerto sorteioacerto) {
-            ArrayList<TextView> textViews = getTextViews(view);
-            for (TextView textView : textViews) {
-                int dezena = Integer.valueOf(textView.getText().toString());
-                if(Arrays.binarySearch(sorteioacerto.getDezenasAcertos(),dezena) != -1) {
-                    textView.setBackgroundResource(R.drawable.bg_dezenas_acertos_megasena);
-                }
-            }
-
-        }
-    }
-
-    private static void findTextViews(ViewGroup viewGroup, ArrayList<TextView> textViews) {
-        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                findTextViews((ViewGroup) child, textViews);
-            } else if (child instanceof TextView) {
-                textViews.add((TextView) child);
-            }
-        }
-    }
-    private ArrayList<TextView> getTextViews(View view) {
-        ArrayList<TextView> textViews = new ArrayList<>();
-        ViewGroup viewGroup = (ViewGroup) view.getParent();
-        findTextViews(viewGroup, textViews);
-        return textViews;
-    }
-    private void setBackgroundCirculo(TypeSorteio typeSorteio, View view, SorteioAcerto sorteioAcerto) {
-        int resourceBackgroud;
-        switch (typeSorteio) {
-            case MEGASENA:
-                resourceBackgroud = R.drawable.bg_dezenas_acertos_megasena;
-                break;
-            case LOTOFACIL:
-                resourceBackgroud = R.drawable.bg_dezenas_acertos_lotofacil;
-                break;
-            case QUINA:
-                resourceBackgroud = R.drawable.bg_dezenas_acertos_quina;
-                break;
-            default:
-                resourceBackgroud = R.drawable.bg_dezenas_acertos;
-                break;
-        }
-
     }
 
 
@@ -271,12 +254,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        /*
-        if (position == list.size() - 1) {
-            return inflater.inflate(R.layout.row_resultado_seu_jogo_ver_mais_adapter, parent, false);
-        }
-        */
-
         View view = convertView;
         ViewHolder holder;
         if (view == null) {
@@ -291,7 +268,7 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
 
         holder.setValue(sorteioacerto);
 
-        holder.setBackgroundMarcacao(sorteioacerto);
+        holder.setBackgroundMarcacao(sorteioacerto, typeSorteio);
 
         return view;
 

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content">
 
     <TableLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/tableLayoutDezenas"
-        android:stretchColumns="0,1,2,3,4,5"
         android:layout_centerHorizontal="true">
 
         <TableRow
@@ -21,8 +20,7 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD1"
                 android:layout_column="0"
-                android:padding="5dp"
-                android:layout_gravity="center_horizontal" />
+                android:padding="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -31,8 +29,7 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD2"
                 android:layout_column="1"
-                android:padding="5dp"
-                android:layout_gravity="center_horizontal" />
+                android:padding="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,8 +38,7 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD3"
                 android:layout_column="2"
-                android:padding="5dp"
-                android:layout_gravity="center_horizontal" />
+                android:padding="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -51,8 +47,7 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD4"
                 android:layout_column="3"
-                android:padding="5dp"
-                android:layout_gravity="center_horizontal" />
+                android:padding="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -61,8 +56,8 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD5"
                 android:layout_column="4"
-                android:padding="5dp"
-                android:layout_gravity="center_horizontal" />
+
+                android:padding="4dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,75 +66,63 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD6"
                 android:layout_column="5"
-                android:padding="5dp"
-                android:layout_gravity="center_horizontal" />
+                android:padding="4dp" />
 
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:orientation="horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_span="6"
-                android:gravity="center_vertical|center_horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/label_numero_concurso"
-                    android:id="@+id/textView2"
-                    android:textSize="12sp"
-                    android:layout_marginRight="4dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_numero"
-                    android:id="@+id/textViewNumero"
-                    android:layout_marginRight="8dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="@string/label_data"
-                    android:id="@+id/textView3"
-                    android:textSize="12sp"
-                    android:layout_marginRight="4dp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/label_data_zero"
-                    android:id="@+id/textViewData"
-                    android:layout_marginRight="17dp"
-                    android:layout_marginEnd="17dp" />
-            </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_qtde_acertos"
-                android:id="@+id/textViewQtdeAcertos"
-                android:layout_span="6"
-                android:layout_column="0"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:textColor="@color/colorMegasena"
-                android:layout_gravity="center_horizontal" />
         </TableRow>
 
     </TableLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tableLayoutDezenas"
+        android:id="@+id/linearLayoutDados"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/label_numero_concurso"
+            android:id="@+id/textView2"
+            android:textSize="12sp"
+            android:layout_marginRight="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_numero"
+            android:id="@+id/textViewNumero"
+            android:layout_marginRight="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/label_data"
+            android:id="@+id/textView3"
+            android:textSize="12sp"
+            android:layout_marginRight="4dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/label_data_zero"
+            android:id="@+id/textViewData" />
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_qtde_acertos"
+        android:id="@+id/textViewQtdeAcertos"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="@color/colorMegasena"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/linearLayoutDados"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

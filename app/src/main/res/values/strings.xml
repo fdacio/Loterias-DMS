@@ -129,5 +129,8 @@
     <string name="label_acertos">Acertos</string>
     <string name="label_digitalizar_seu_jogo">Digitalizar seu jogo</string>
     <string name="label_dezenas_sorteadas">Dezenas Sorteadas</string>
+    <string name="hint_search_sorteio">NºConcurso ou Data</string>
+    <string name="label_ver_outros_sorteios">Em Outros Sorteios</string>
+    <string name="label_suas_dezenas">Sua Dezenas</string>
 
 </resources>

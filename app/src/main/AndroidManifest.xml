@@ -43,6 +43,7 @@
         <activity
             android:name=".sorteio.SorteioListActivity"
             android:label="@string/title_activity_sorteio_list"
+            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
@@ -56,6 +57,11 @@
             android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".confiraseujogo.ResultadoSeuJogoActivity"
+            android:label="@string/title_activity_resultado_seu_jogo"
+            android:windowSoftInputMode="adjustPan"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".dezemasmaissorteadas.GeraJogosActivity"
             android:label="@string/title_activity_gera_jogos"
@@ -96,11 +102,6 @@
                 </activity>
         -->
 
-        <activity
-            android:name=".confiraseujogo.ResultadoSeuJogoActivity"
-            android:label="@string/title_activity_resultado_seu_jogo"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
