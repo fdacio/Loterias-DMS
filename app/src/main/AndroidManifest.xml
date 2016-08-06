@@ -43,9 +43,9 @@
         <activity
             android:name=".sorteio.SorteioListActivity"
             android:label="@string/title_activity_sorteio_list"
-            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".processaarquivo.ProcessaArquivoActivity"
             android:label="@string/title_activity_processar_arquivo"
@@ -54,14 +54,14 @@
         <activity
             android:name=".confiraseujogo.ConfiraSeuJogoActivity"
             android:label="@string/title_activity_confira_seu_jogo"
-            android:windowSoftInputMode="adjustPan"
             android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".confiraseujogo.ResultadoSeuJogoActivity"
             android:label="@string/title_activity_resultado_seu_jogo"
-            android:windowSoftInputMode="adjustPan"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".dezemasmaissorteadas.GeraJogosActivity"
             android:label="@string/title_activity_gera_jogos"
@@ -76,6 +76,12 @@
             android:name=".configuracoes.ConfiguracoesActivity"
             android:label="@string/title_activity_configuracoes"
             android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity android:name=".confiraseujogo.OCRResultFormActivity"
+            android:label="@string/title_activity_ocrresult_form"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
      App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -83,24 +89,6 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
-        <!--
-                <activity
-                    android:name="com.google.zxing.client.android.CaptureActivity"
-                    android:screenOrientation="landscape"
-                    android:configChanges="orientation|keyboardHidden"
-                    android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
-                    android:windowSoftInputMode="stateAlwaysHidden">
-                    <intent-filter>
-                        <action android:name="android.intent.action.MAIN"/>
-                        <category android:name="android.intent.category.DEFAULT"/>
-                    </intent-filter>
-                    <intent-filter>
-                        <action android:name="com.google.zxing.client.android.SCAN"/>
-                        <category android:name="android.intent.category.DEFAULT"/>
-                    </intent-filter>
-                </activity>
-        -->
 
     </application>
 

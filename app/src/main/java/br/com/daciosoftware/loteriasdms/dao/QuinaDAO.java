@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
+import br.com.daciosoftware.loteriasdms.processaarquivo.MyHtmlParse;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
@@ -110,7 +112,35 @@ public class QuinaDAO extends SorteioDAO {
     }
 
     @Override
-    public Quina getEntityDezenasCrescente(Sorteio sorteio) {
+    public Long insertSorteioFromTrow(List<String> tds) throws NumberFormatException, ParseException{
+        int numero = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(0)));
+        if (findByNumber(numero) == null) {
+            Calendar data = MyDateUtil.dateBrToCalendar(MyHtmlParse.getTextTag(tds.get(1)));
+            int d1 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(2)));
+            int d2 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(3)));
+            int d3 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(4)));
+            int d4 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(5)));
+            int d5 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(6)));
+            String local = MyHtmlParse.getTextTag(tds.get(9)) + " " + MyHtmlParse.getTextTag(tds.get(10));
+
+            Quina quina = getInstanciaEntity();
+            quina.setNumero(numero);
+            quina.setData(data);
+            quina.setLocal(local);
+            quina.setD1(d1);
+            quina.setD2(d2);
+            quina.setD3(d3);
+            quina.setD4(d4);
+            quina.setD5(d5);
+            return save(quina);
+        } else {
+            return null;
+        }
+
+    }
+
+    @Override
+    public Quina sortDezenasCrescente(Sorteio sorteio) {
         Quina quinaDezenasCrescente = (Quina) sorteio;
 
         int[] arrayDezendas = sorteio.getDezenas();

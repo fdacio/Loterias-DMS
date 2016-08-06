@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
+import br.com.daciosoftware.loteriasdms.processaarquivo.MyHtmlParse;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
@@ -85,7 +87,35 @@ public class MegasenaDAO extends SorteioDAO {
         } else {
             return null;
         }
+    }
 
+    @Override
+    public Long insertSorteioFromTrow(List<String> tds) throws NumberFormatException, ParseException {
+        int numero = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(0)));
+        if (findByNumber(numero) == null) {
+            Calendar data = MyDateUtil.dateBrToCalendar(MyHtmlParse.getTextTag(tds.get(1)));
+            int d1 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(2)));
+            int d2 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(3)));
+            int d3 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(4)));
+            int d4 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(5)));
+            int d5 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(6)));
+            int d6 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(7)));
+            String local = MyHtmlParse.getTextTag(tds.get(10)) + " " + MyHtmlParse.getTextTag(tds.get(11));
+
+            Megasena megasena = getInstanciaEntity();
+            megasena.setNumero(numero);
+            megasena.setData(data);
+            megasena.setLocal(local);
+            megasena.setD1(d1);
+            megasena.setD2(d2);
+            megasena.setD3(d3);
+            megasena.setD4(d4);
+            megasena.setD5(d5);
+            megasena.setD6(d6);
+            return save(megasena);
+        } else {
+            return null;
+        }
 
     }
 
@@ -115,7 +145,7 @@ public class MegasenaDAO extends SorteioDAO {
     }
 
     @Override
-    public Megasena getEntityDezenasCrescente(Sorteio sorteio) {
+    public Megasena sortDezenasCrescente(Sorteio sorteio) {
 
         Megasena megasenaDezenasCrescente = (Megasena) sorteio;
 

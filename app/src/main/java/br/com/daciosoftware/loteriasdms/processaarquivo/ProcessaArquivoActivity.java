@@ -16,28 +16,23 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.File;
 import java.io.IOException;
-import java.text.DecimalFormat;
 import java.text.ParseException;
+import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.DecompressFile;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DownloadFile;
-import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.LogProcessamento;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
+import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.filedialog.FileDialog;
 
 public class ProcessaArquivoActivity extends AppCompatActivity {
@@ -231,40 +226,36 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
      * em um outra Thread que não seja a Main Thread
      */
     private class BaixarArquivoZipTask extends AsyncTask<String, String, String> {
-        private boolean running = true;
+
         private String pathFileHtml;
 
         @Override
         protected String doInBackground(String... params) {
 
-            while (running) {
-
-                String url = params[0];
-                String outFile = params[1];
-                try {
-                    downloadFile.downloadFileBinary(url, outFile);
-                } catch (IOException e) {
-                    return "Erro ao baixar o arquivo: " + e.getMessage();
-                }
-
-                try {
-                    publishProgress("Descomprimindo arquivo. Aguarde...");
-                    String inFileDecompress = outFile;
-                    String outFileHtml = new File(outFile).getParent() + "/" + getNomeArquivoHtml(typeSorteio);
-                    pathFileHtml = decompressFile.unzip(inFileDecompress, outFileHtml);
-
-                } catch (IOException e2) {
-                    return "Erro ao descomprimir o aquivo:" + e2.getMessage();
-                }
-
-
-                if (isCancelled()) {
-                    return "Processo cancelado.";
-                }
-
-                return "Processo concluído com sucesso.";
+            String url = params[0];
+            String outFile = params[1];
+            try {
+                downloadFile.downloadFileBinary(url, outFile);
+            } catch (IOException e) {
+                return "Erro ao baixar o arquivo: " + e.getMessage();
             }
-            return "Processo cancelado.";
+
+            try {
+                publishProgress("Descomprimindo arquivo. Aguarde...");
+                String inFileDecompress = outFile;
+                String outFileHtml = new File(outFile).getParent() + "/" + getNomeArquivoHtml(typeSorteio);
+                pathFileHtml = decompressFile.unzip(inFileDecompress, outFileHtml);
+
+            } catch (IOException e2) {
+                return "Erro ao descomprimir o aquivo:" + e2.getMessage();
+            }
+
+
+            if (isCancelled()) {
+                return "Processo cancelado.";
+            }
+
+            return "Processo concluído com sucesso.";
         }
 
         @Override
@@ -295,9 +286,8 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
-            Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
-            running = false;
             super.onCancelled();
+            Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -368,8 +358,6 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
     private class ProcessarArquivoHtml extends AsyncTask<String, String, String> {
 
-        private boolean running = true;
-
         @Override
         protected String doInBackground(String... params) {
             String pathFileHtml = params[0];
@@ -377,35 +365,39 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
             try {
 
-                File fileHtml = new File(pathFileHtml);
+                MyHtmlParse doc = MyHtmlParse.getInstance(pathFileHtml);
 
-                float fileSize = MyFileUtil.getSizeMBytes(fileHtml);
-                publishProgress(new DecimalFormat("0.00").format(fileSize)+"MB");
-
-                Document doc = Jsoup.parse(fileHtml, "ISO-8859-1");
-
-                String titleDoc = doc.title();
+                String titleDoc = doc.getTitleHtml();
                 String titleJogo = getTituloArquivoHtml(typeSorteio);
-
                 if (!titleDoc.toLowerCase().contains(titleJogo.substring(0, 4))) {
                     return "Arquivo de outro Jogo: " + titleDoc;
                 }
 
-                Element table = doc.select("table").first();
-                Elements trows = table.select("tr");
+                float fileSize = MyFileUtil.getSizeMBytes(new File(pathFileHtml));
+                String label = getResources().getString(R.string.label_informe_arquivo);
+                String msg = label + "(%.2f MB)";
+                publishProgress(String.format(msg, fileSize));
+
+
+                List<String> trows = doc.getTrowsTable();
                 trows.remove(0);
-                for (Element row : trows) {
-                    Elements tds = row.select("td");
-                    String valueTd = row.child(0).text();
+                for (String trow : trows) {
+                    List<String> tds = MyHtmlParse.getTdsInTrow(trow);
+                    String valueTd = MyHtmlParse.getTextTag(tds.get(0));
                     if (isRowValid(valueTd)) {
-                        LogProcessamento.registraLog(tds.html());
                         try {
+                            msg = "Processando arquivo\n"+
+                                    "Concurso %d\n"+
+                                    "Aguarde";
+                            publishProgress(String.format(msg,valueTd));
                             sorteioDAO.insertSorteioFromTrow(tds);
                         } catch (ParseException e) {
-                            LogProcessamento.registraLog(e.getMessage());                        }
-                    }
-                    if (!running) {
-                        return "Processamento cancelado";
+                            LogProcessamento.registraLog(trow + ":" + e.getMessage());
+                        }
+
+                        if (isCancelled()) {
+                            return "Processamento cancelado";
+                        }
                     }
                 }
 
@@ -436,16 +428,14 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
         @Override
         protected void onCancelled() {
-            running = false;
-            Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
             super.onCancelled();
-
+            Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
         protected void onProgressUpdate(String... msgs) {
-            String sizeFile = msgs[0];
-            textViewLabelFile.setText(textViewLabelFile.getText().toString()+"("+String.valueOf(sizeFile)+")");
+            String msg = msgs[0];
+            textViewLabelFile.setText(msg);
         }
 
 

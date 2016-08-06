@@ -11,9 +11,11 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.db.ContractDatabase;
 import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
+import br.com.daciosoftware.loteriasdms.processaarquivo.MyHtmlParse;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
@@ -115,6 +117,53 @@ public class LotofacilDAO extends SorteioDAO {
 
     }
 
+    @Override
+    public Long insertSorteioFromTrow(List<String> tds) throws NumberFormatException, ParseException {
+        int numero = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(0)));
+        if (findByNumber(numero) == null) {
+            Calendar data = MyDateUtil.dateBrToCalendar(MyHtmlParse.getTextTag(tds.get(1)));
+            int d1 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(2)));
+            int d2 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(3)));
+            int d3 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(4)));
+            int d4 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(5)));
+            int d5 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(6)));
+            int d6 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(7)));
+            int d7 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(8)));
+            int d8 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(9)));
+            int d9 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(10)));
+            int d10 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(11)));
+            int d11 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(12)));
+            int d12 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(13)));
+            int d13 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(14)));
+            int d14 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(15)));
+            int d15 = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(16)));
+            String local = MyHtmlParse.getTextTag(tds.get(19)) + " " + MyHtmlParse.getTextTag(tds.get(20));
+
+            Lotofacil lotofacil = getInstanciaEntity();
+            lotofacil.setNumero(numero);
+            lotofacil.setData(data);
+            lotofacil.setLocal(local);
+            lotofacil.setD1(d1);
+            lotofacil.setD2(d2);
+            lotofacil.setD3(d3);
+            lotofacil.setD4(d4);
+            lotofacil.setD5(d5);
+            lotofacil.setD6(d6);
+            lotofacil.setD7(d7);
+            lotofacil.setD8(d8);
+            lotofacil.setD9(d9);
+            lotofacil.setD10(d10);
+            lotofacil.setD11(d11);
+            lotofacil.setD12(d12);
+            lotofacil.setD13(d13);
+            lotofacil.setD14(d14);
+            lotofacil.setD15(d15);
+            return save(lotofacil);
+        } else {
+            return null;
+        }
+    }
+
 
     @Override
     public Lotofacil getEntity(Cursor c) {
@@ -152,7 +201,7 @@ public class LotofacilDAO extends SorteioDAO {
     }
 
     @Override
-    public Lotofacil getEntityDezenasCrescente(Sorteio sorteio) {
+    public Lotofacil sortDezenasCrescente(Sorteio sorteio) {
 
         Lotofacil lotofacilDezenasCrescente = (Lotofacil) sorteio;
 

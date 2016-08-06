@@ -76,9 +76,11 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     public abstract Sorteio getEntity(Cursor c);
 
-    public abstract Sorteio getEntityDezenasCrescente(Sorteio sorteio);
+    public abstract Sorteio sortDezenasCrescente(Sorteio sorteio);
 
     public abstract Long insertSorteioFromTrow(Elements tds) throws NumberFormatException, ParseException, IOException;
+
+    public abstract Long insertSorteioFromTrow(List<String> tds) throws ParseException;
 
     @Override
     public int delete(Sorteio sorteio) throws SQLiteException {
@@ -123,10 +125,10 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     }
 
     @Override
-    public List<Sorteio> dezenasCrescente(List<Sorteio> list) {
+    public List<Sorteio> sortListDezenasCrescente(List<Sorteio> list) {
         List<Sorteio> listDezenasCrescente = new ArrayList<>();
         for(Sorteio sorteio: list){
-            Sorteio sorteioDezenasCrescente = getEntityDezenasCrescente(sorteio);
+            Sorteio sorteioDezenasCrescente = sortDezenasCrescente(sorteio);
             listDezenasCrescente.add(sorteioDezenasCrescente);
         }
          return listDezenasCrescente;

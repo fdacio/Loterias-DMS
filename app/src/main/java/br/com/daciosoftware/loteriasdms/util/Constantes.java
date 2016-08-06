@@ -12,6 +12,7 @@ public abstract class Constantes {
     public static final String ID_INSERT_UPDATE = "ID_INSERT_UPDATE";
     public static final int INSERT_UPDATE = 1;
     public static final String SHARED_PREF = "LoteriasSharedPref";
+    public static final String TEXTO_OCR = "TEXTO_OCR";
 
     public static final String URL_ARQUIVO_RESULTADOS_MEGASENA = "URL_ARQUIVO_RESULTADOS_MEGASENA";
     public static final String URL_RESULTADOS_MEGASENA = "URL_RESULTADOS_MEGASENA";

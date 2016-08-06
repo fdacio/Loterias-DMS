@@ -15,7 +15,6 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -77,12 +76,12 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
 
             public void run() {
                 SorteioDAO sorteioDAO = SorteioDAO.getDAO(ResultadoSeuJogoActivity.this, typeSorteio);
-                Sorteio sorteio = sorteioDAO.getEntityDezenasCrescente(sorteioDAO.findByNumber(seuJogo.getNumeroConcurso()));
-
+                Sorteio sorteioAtual = sorteioDAO.findByNumber(seuJogo.getNumeroConcurso());
                 if (todoSorteio) {
-                    listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteioDAO.listAll());
+                    listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteioAtual, sorteioDAO.sortListDezenasCrescente(sorteioDAO.listAll()));
                 } else {
-                    listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteio);
+
+                    listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteioDAO.sortDezenasCrescente(sorteioAtual));
                 }
 
                 Message msg = new Message();
@@ -208,10 +207,8 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         List<SorteioAcerto> listSorteioAcerto = new ArrayList<>();
         int[] arrayDezenasSeuJogo = seuJogo.getDezenas();
         int[] arrayDezenasSorteio = sorteio.getDezenas();
-        Arrays.sort(arrayDezenasSorteio);
         int[] arrayDezenasAcertos = getDezenasAcertos(arrayDezenasSeuJogo, arrayDezenasSorteio);
         int qtdeAcerto = arrayDezenasAcertos.length;
-
         SorteioAcerto sorteioAcerto = new SorteioAcerto();
         sorteioAcerto.setSorteio(sorteio);
         sorteioAcerto.setQtdeAcertos(qtdeAcerto);
@@ -221,15 +218,13 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         return listSorteioAcerto;
     }
 
-    private List<SorteioAcerto> getListSorteioAcertos(SeuJogo seuJogo, List<Sorteio> listSorteio) {
-        List<SorteioAcerto> listSorteioAcerto = new ArrayList<>();
+    private List<SorteioAcerto> getListSorteioAcertos(SeuJogo seuJogo, Sorteio sorteioAtual, List<Sorteio> listSorteio) {
+        List<SorteioAcerto> listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteioAtual);
         for (Sorteio sorteio : listSorteio) {
             int[] arrayDezenasSeuJogo = seuJogo.getDezenas();
             int[] arrayDezenasSorteio = sorteio.getDezenas();
-            Arrays.sort(arrayDezenasSorteio);
             int[] arrayDezenasAcertos = getDezenasAcertos(arrayDezenasSeuJogo, arrayDezenasSorteio);
             int qtdeAcerto = arrayDezenasAcertos.length;
-
             if (qtdeAcerto >= getQtdeMinimaAcertos(typeSorteio)) {
                 SorteioAcerto sorteioAcerto = new SorteioAcerto();
                 sorteioAcerto.setSorteio(sorteio);

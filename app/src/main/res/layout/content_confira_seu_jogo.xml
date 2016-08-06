@@ -61,16 +61,11 @@
 
                 <EditText
                     android:id="@+id/editTextNumeroConcurso"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number" />
+                    android:inputType="number"
+                    android:ems="4"/>
             </LinearLayout>
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
         </TableRow>
 
         <TableRow
@@ -85,15 +80,6 @@
                 android:layout_span="2"
                 android:text="@string/label_dezenas" />
         </TableRow>
-    </TableLayout>
-
-    <TableLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:stretchColumns="0,1,2"
-        android:visibility="visible"
-        android:id="@+id/tableLayoutButtons"
-        android:layout_below="@+id/tableLayoutHeader">
 
         <TableRow
             android:layout_width="match_parent"
@@ -103,19 +89,8 @@
                 android:id="@+id/buttonNumberPiker"
                 style="@style/smallButton"
                 android:layout_column="0"
-                android:layout_span="2"
-                android:text="@string/zero" />
-
-            <ImageButton
-                android:id="@+id/imageButtonDigitalizar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="3"
                 android:layout_span="1"
-                android:background="@drawable/bg_button_paused"
-                android:contentDescription="@string/label_digitalizar_seu_jogo"
-                android:padding="5dp"
-                android:src="@drawable/ic_photo_camera_white_24dp" />
+                android:text="@string/zero" />
 
         </TableRow>
     </TableLayout>
@@ -123,8 +98,8 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tableLayoutButtons"
-        android:id="@+id/scrollEdits">
+        android:id="@+id/scrollEdits"
+        android:layout_below="@+id/tableLayoutHeader">
 
         <TableLayout
             android:id="@+id/tableLayoutDezenas"
@@ -164,12 +139,6 @@
         </TableLayout>
 
     </ScrollView>
-
-    <EditText
-        android:id="@+id/editTextoOCR"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/scrollEdits" />
 
     <Button
         android:id="@+id/buttonConferir"

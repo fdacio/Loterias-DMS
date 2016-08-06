@@ -57,6 +57,7 @@
     <string name="delete_all">Excluir Tudo</string>
     <string name="msg_delete_todos">Todos Sorteios</string>
     <string name="codigo_barras">Codigo de Barras</string>
+    <string name="tirar_foto">Foto da Aposta</string>
 
     <string name="title_file_dialog">Arquivo/Diretorio</string>
     <string name="location">Localização</string>
@@ -112,6 +113,7 @@
     <string name="title_activity_configuracoes">Configurações</string>
     <string name="label_url_arquivo_resultados">URL do Arquivo de Resultados</string>
     <string name="label_url_resultados">URL dos Resultados</string>
+    <string name="title_activity_ocrresult_form">Resultado do OCR</string>
 
     <string name="msg_salvar_configuracoes">Deseja salvar as configurações?</string>
     <string name="msg_restaurar_config">Restuarar configurações padrão?</string>
@@ -132,5 +134,6 @@
     <string name="hint_search_sorteio">NºConcurso ou Data</string>
     <string name="label_ver_outros_sorteios">Em Outros Sorteios</string>
     <string name="label_suas_dezenas">Sua Dezenas</string>
+    <string name="label_0vezes">0 vezes</string>
 
 </resources>

@@ -139,7 +139,7 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
                         listSorteio = sorteioDAO.listAllDecrescente();
                         break;
                     case ORDENAR_DEZENAS:
-                        listSorteio = sorteioDAO.dezenasCrescente(listSorteio);
+                        listSorteio = sorteioDAO.sortListDezenasCrescente(listSorteio);
                         break;
                     case POR_NUMERO:
                         listSorteio = listarPorNumero(sorteioDAO, param);

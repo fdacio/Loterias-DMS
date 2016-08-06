@@ -15,7 +15,7 @@ public interface InterfaceDAO<E, L> {
     int deleteAll() throws SQLiteException;
     List<E> listAll();
     List<E> listAllDecrescente();
-    List<E> dezenasCrescente(List<E> list);
+    List<E> sortListDezenasCrescente(List<E> list);
     E findById(L id);
     E findByNumber(Integer number);
     E findFirst();

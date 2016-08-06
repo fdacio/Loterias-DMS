@@ -3,7 +3,6 @@ package br.com.daciosoftware.loteriasdms.confiraseujogo;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TableRow;
 import android.widget.Toast;
@@ -26,7 +24,6 @@ import android.widget.Toast;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -38,14 +35,11 @@ import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogNumber;
-import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
-import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 
 public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
     private static final int CAMERA_REQUEST = 200;
-    private static final int CROP_FROM_CAMERA = 201;
     private TypeSorteio typeSorteio;
     private List<String> fieldsValidate;
     private EditText editTextNumeroConcurso;
@@ -68,14 +62,8 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         Button buttonNumberPiker = (Button) findViewById(R.id.buttonNumberPiker);
         buttonNumberPiker.setOnClickListener(new DialogNumberPickerOnClickListener());
 
-        ImageButton imageButtonDigitalizar = (ImageButton) findViewById(R.id.imageButtonDigitalizar);
-        imageButtonDigitalizar.setOnClickListener(new DigitalizarOnClickListener());
-
         Button buttonConferir = (Button) findViewById(R.id.buttonConferir);
         buttonConferir.setOnClickListener(new ConferirOnClickListener());
-
-
-
 
         switch (typeSorteio) {
             case MEGASENA:
@@ -179,14 +167,13 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             edtDezena.setId(ViewIdGenerator.generateViewId());
             edtDezena.setLayoutParams(tableRowLayoutParam);
             edtDezena.setInputType(InputType.TYPE_CLASS_NUMBER);
-            edtDezena.setFilters(new InputFilter[] {new InputFilter.LengthFilter(2)});
-            if(editTextFocu != null) {
+            edtDezena.setFilters(new InputFilter[]{new InputFilter.LengthFilter(2)});
+            if (editTextFocu != null) {
                 editTextFocu.addTextChangedListener(new EditDezenaNextFocus(edtDezena));
             }
             editTextFocu = edtDezena;
 
             listaEditDezenas.add(edtDezena);
-
 
 
             if (i < 5) {
@@ -212,21 +199,25 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     private class EditDezenaNextFocus implements TextWatcher {
 
         private EditText nextEdit;
-        private EditDezenaNextFocus(EditText nextEdit){
+
+        private EditDezenaNextFocus(EditText nextEdit) {
             this.nextEdit = nextEdit;
         }
+
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-           if(s.length() == 2){
+            if (s.length() == 2) {
                 this.nextEdit.requestFocus();
-           }
+            }
         }
 
         @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
 
         @Override
-        public void afterTextChanged(Editable s) {}
+        public void afterTextChanged(Editable s) {
+        }
     }
 
     private SeuJogo getSeuJogoFromForm() {
@@ -249,7 +240,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         String numero = editTextNumeroConcurso.getText().toString();
 
         if (numero.equals("")) {
-            fieldsValidate.add("Número");
+            fieldsValidate.add("Concurso");
         }
 
         for (int i = 0; i < listaEditDezenas.size(); i++) {
@@ -267,30 +258,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         }
     }
 
-    private class DigitalizarOnClickListener implements View.OnClickListener {
-
-        @Override
-        public void onClick(View v) {
-            try {
-                Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                File imagesFolder = new File(MyFileUtil.getDefaultDirectoryApp(), "images");
-                imagesFolder.mkdirs();
-                MyFileUtil.removeFilesInDirectory(imagesFolder);
-                File image = new File(imagesFolder, "image_" + MyDateUtil.timeToString() + ".jpg");
-                Uri uriSavedImage = Uri.fromFile(image);
-                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, uriSavedImage);
-                startActivityForResult(cameraIntent, CAMERA_REQUEST);
-
-            } catch (ActivityNotFoundException anfe) {
-                //display an error message
-                String errorMessage = "Seu dispositivo não suporta captura de imagens!";
-                Toast toast = Toast.makeText(ConfiraSeuJogoActivity.this, errorMessage, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-
-        }
-    }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -300,64 +267,45 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
         if (result != null) {
             if (result.getContents() != null) {
-                EditText editTextOCR = (EditText) findViewById(R.id.editTextoOCR);
-                editTextOCR.setText(result.getContents());
+                Intent intent = new Intent(ConfiraSeuJogoActivity.this, OCRResultFormActivity.class);
+                intent.putExtra(Constantes.TEXTO_OCR, result.getContents());
+                startActivity(intent);
             }
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
 
         /*
-        Caputura a foto e passa para o crop
+        Caputura a foto e passa pro OCR
          */
         if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            try {
-                Intent cropIntent = new Intent("com.android.camera.action.CROP");
-                //Uri uriSavedImage = (Uri) data.getData();
-                Uri uriSavedImage = (Uri) data.getParcelableExtra(MediaStore.EXTRA_OUTPUT);
-                cropIntent.setDataAndType(uriSavedImage, "image/*");
-                cropIntent.putExtra("crop", "true");
-                cropIntent.putExtra("aspectX", 0);
-                cropIntent.putExtra("aspectY", 0);
-                cropIntent.putExtra("outputX", 256);
-                cropIntent.putExtra("outputY", 256);
-                cropIntent.putExtra("return-data", true);
-                startActivityForResult(cropIntent, CROP_FROM_CAMERA);
-            } catch (ActivityNotFoundException anfe) {
-                String errorMessage = "Seu dispositivo não suporta ajuste imagens!";
-                Toast toast = Toast.makeText(ConfiraSeuJogoActivity.this, errorMessage, Toast.LENGTH_SHORT);
-                toast.show();
-            }
-        }
-
-        /*
-        Apos o crop feito, passa a imagem para o processo de OCR
-         */
-        if (requestCode == CROP_FROM_CAMERA && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            Bitmap bmpCrop = extras.getParcelable("data");
+            Bitmap bmp = (Bitmap) data.getExtras().get("data");
             OCRTask ocr = new OCRTask(ConfiraSeuJogoActivity.this);
-            ocr.execute(bmpCrop);
+            ocr.execute(bmp);
             try {
                 setOCRInForm(ocr.get());
             } catch (InterruptedException | ExecutionException ignored) {
             }
+
         }
 
-    }
-
-    private void performCrop() {
     }
 
     private void setOCRInForm(String textoOCR) {
 
         char[] sequencia = textoOCR.toCharArray();
+
         String novoTextoOCR = "";
         for (int i = 0; i < textoOCR.length(); i++) {
             if (((int) sequencia[i] != 10) && (sequencia[i] != ' ')) {
                 novoTextoOCR += "" + sequencia[i];
             }
         }
+        Intent intent = new Intent(ConfiraSeuJogoActivity.this, OCRResultFormActivity.class);
+        intent.putExtra(Constantes.TEXTO_OCR, novoTextoOCR);
+        startActivity(intent);
+
+        /*
         String textoForSplit = "";
         char ch;
         for (int i = 0; i < novoTextoOCR.length(); i++) {
@@ -380,6 +328,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
                 }
             }
         }
+        */
     }
 
     @Override
@@ -396,6 +345,18 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+
+            case R.id.tirarFoto:
+                try {
+                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                } catch (ActivityNotFoundException anfe) {
+                    String errorMessage = "Seu dispositivo não suporta captura de imagens!";
+                    Toast toast = Toast.makeText(ConfiraSeuJogoActivity.this, errorMessage, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+                return true;
+
             case R.id.lerCodigoBarras:
                 IntentIntegrator integrator = new IntentIntegrator(ConfiraSeuJogoActivity.this);
                 integrator.setPrompt("Posicione o leitor no código de barras");
