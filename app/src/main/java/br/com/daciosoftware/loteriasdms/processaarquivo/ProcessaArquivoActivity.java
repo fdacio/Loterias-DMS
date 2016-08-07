@@ -210,10 +210,17 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void setSizeFileInLabel(String filePath){
+        float fileSize = MyFileUtil.getSizeMBytes(new File(filePath));
+        String label = getResources().getString(R.string.label_informe_arquivo);
+        textViewLabelFile.setText(String.format(label + "(%.2f MB)", fileSize));
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == FileDialog.FILE_DIALOG && resultCode == RESULT_OK) {
             String filePath = intent.getStringExtra(FileDialog.RESULT_PATH);
+            setSizeFileInLabel(filePath);
             editTextArquivo.setText(filePath);
         }
     }
@@ -273,6 +280,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String retorno) {
             progressDialog.dismiss();
+            setSizeFileInLabel(pathFileHtml);
             editTextArquivo.setText(pathFileHtml);
             try {
                 downloadFile.closeResources();
@@ -373,11 +381,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                     return "Arquivo de outro Jogo: " + titleDoc;
                 }
 
-                float fileSize = MyFileUtil.getSizeMBytes(new File(pathFileHtml));
-                String label = getResources().getString(R.string.label_informe_arquivo);
-                String msg = label + "(%.2f MB)";
-                publishProgress(String.format(msg, fileSize));
-
+                String msg = "Processando Arquivo. \nConcurso %d \nAguarde...";
 
                 List<String> trows = doc.getTrowsTable();
                 trows.remove(0);
@@ -386,10 +390,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                     String valueTd = MyHtmlParse.getTextTag(tds.get(0));
                     if (isRowValid(valueTd)) {
                         try {
-                            msg = "Processando arquivo\n"+
-                                    "Concurso %d\n"+
-                                    "Aguarde";
-                            publishProgress(String.format(msg,valueTd));
+                            publishProgress(String.format(msg,Integer.parseInt(valueTd)));
                             sorteioDAO.insertSorteioFromTrow(tds);
                         } catch (ParseException e) {
                             LogProcessamento.registraLog(trow + ":" + e.getMessage());
@@ -411,7 +412,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(ProcessaArquivoActivity.this);
-            progressDialog.setMessage("Processando arquivo. Aguarde...");
+            progressDialog.setMessage("Processando Arquivo. Aguarde...");
             progressDialog.setCancelable(true);
             progressDialog.setIndeterminate(true);
             progressDialog.setOnCancelListener(new cancelTaskProcessamentoHtml(this));
@@ -421,6 +422,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String retorno) {
             progressDialog.dismiss();
+            textViewLabelFile.setText(getResources().getString(R.string.label_informe_arquivo));
             editTextArquivo.setText("");
             new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Processar Arquivo", retorno).show();
 
@@ -435,10 +437,8 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         @Override
         protected void onProgressUpdate(String... msgs) {
             String msg = msgs[0];
-            textViewLabelFile.setText(msg);
+            progressDialog.setMessage(msg);
         }
-
-
     }
 
 

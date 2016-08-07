@@ -173,7 +173,7 @@ public abstract class Sorteio implements Comparable<Sorteio>, Serializable {
 
     @Override
     public int compareTo(Sorteio another) {
-        return new Integer(numero).compareTo(another.getNumero());
+        return new Integer(numero).compareTo(new Integer(another.getNumero()));
     }
 
     public abstract int[] getDezenas();

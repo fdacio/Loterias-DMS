@@ -18,10 +18,12 @@ import br.com.daciosoftware.loteriasdms.R;
 public class DezenasMaisSorteadasAdapter extends BaseAdapter {
     private Context context;
     private List<MaisSorteada> list;
+    private DezenasMaisSorteadasClickable dezenasMaisSorteadasClickable;
 
-    public DezenasMaisSorteadasAdapter(Context context, List<MaisSorteada> list) {
+    public DezenasMaisSorteadasAdapter(Context context, List<MaisSorteada> list, DezenasMaisSorteadasClickable dezenasMaisSorteadasClickable) {
         this.context = context;
         this.list = list;
+        this.dezenasMaisSorteadasClickable = dezenasMaisSorteadasClickable;
     }
 
     @Override
@@ -57,8 +59,18 @@ public class DezenasMaisSorteadasAdapter extends BaseAdapter {
             holder.textViewDezena = (TextView) view.findViewById(R.id.textViewDezena);
             holder.textViewQtdeVezes = (TextView) view.findViewById(R.id.textViewQtdeVezes);
             holder.checkBoxSelecionada = (CheckBox) view.findViewById(R.id.checkBoxSelecionada);
-
             view.setTag(holder);
+
+            holder.checkBoxSelecionada.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CheckBox checkBox = (CheckBox) v;
+                    MaisSorteada maisSorteada = (MaisSorteada) checkBox.getTag();
+                    maisSorteada.setSelecionada(checkBox.isChecked());
+                }
+            });
+
+
         } else {
             holder = (ViewHolder) view.getTag();
         }
@@ -66,9 +78,17 @@ public class DezenasMaisSorteadasAdapter extends BaseAdapter {
         MaisSorteada maisSorteada = getItem(position);
 
         holder.textViewDezena.setText(String.valueOf(maisSorteada.getDezena()));
-        holder.textViewQtdeVezes.setText(maisSorteada.getQtdeVezes());
-        holder.checkBoxSelecionada.setChecked(maisSorteada.isSelecionada());
+        int qtdeVezes = maisSorteada.getQtdeVezes();
+        String textoVezes;
+        if(qtdeVezes != 1){
+            textoVezes = " Vezes";
+        }else{
+            textoVezes = " Vez";
+        }
 
+        holder.textViewQtdeVezes.setText(String.valueOf(qtdeVezes)+textoVezes);
+        holder.checkBoxSelecionada.setChecked(maisSorteada.isSelecionada());
+        holder.checkBoxSelecionada.setTag(maisSorteada);
 
         return view;
 

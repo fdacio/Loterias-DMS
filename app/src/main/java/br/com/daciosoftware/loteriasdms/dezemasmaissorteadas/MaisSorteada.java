@@ -39,6 +39,6 @@ public class MaisSorteada implements Comparable<MaisSorteada>{
 
     @Override
     public int compareTo(MaisSorteada another) {
-        return new Integer(qtdeVezes).compareTo(another.getQtdeVezes());
+        return new Integer(qtdeVezes).compareTo(new Integer(another.getQtdeVezes()));
     }
 }

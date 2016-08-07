@@ -7,8 +7,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -29,12 +32,14 @@ import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 
-public class DezenasMaisSorteadasActivity extends AppCompatActivity {
+public class DezenasMaisSorteadasActivity extends AppCompatActivity implements DezenasMaisSorteadasClickable{
 
     private TypeSorteio typeSorteio;
     private ProgressDialog progressDialog;
     private List<MaisSorteada> listMaisSorteadas;
     private ListView listViewDezenasMaisSorteadas;
+    private DezenasMaisSorteadasAdapter adapter;
+    private TextView textViewQtdeSelecionada;
 
     private int qtdeDezenasSelecionadas = 18;
     private int qtdeMinimaDezenasSelecionadas = 0;
@@ -73,15 +78,28 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
         listViewDezenasMaisSorteadas = (ListView) findViewById(R.id.listViewDezenasMaisSorteadas);
         listViewDezenasMaisSorteadas.setEmptyView(findViewById(R.id.emptyElement));
 
+        textViewQtdeSelecionada = (TextView) findViewById(R.id.textViewQtdeSelecionada);
         Button btnGerarJogos = (Button) findViewById(R.id.btnGerarJogos);
         btnGerarJogos.setOnClickListener(new OnClickListenerGerarJogos(typeSorteio));
 
         listarMaisSorteadas(null);
         new StyleOfActivity(this, findViewById(R.id.layout_dezenas_mais_sorteadas)).setStyleInViews(typeSorteio);
 
+    }
 
+    @Override
+    public void clicked() {
+        qtdeDezenasSelecionadas = 0;
+        for(MaisSorteada maisSorteada: listMaisSorteadas){
+            if(maisSorteada.isSelecionada()){
+                qtdeDezenasSelecionadas++;
+            }
+        }
+
+        textViewQtdeSelecionada.setText(qtdeDezenasSelecionadas+" dezenas selecionadas");
 
     }
+
 
     private class Param{
 
@@ -89,7 +107,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
 
     private void listarMaisSorteadas(Param param) {
 
-        progressDialog = ProgressDialog.show(this, "", "Aguarde...", true, false);
+        progressDialog = ProgressDialog.show(this, "", "Calculando. Aguarde...", true, false);
 
         new Thread() {
 
@@ -108,7 +126,8 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == 100) {
-                listViewDezenasMaisSorteadas.setAdapter(new DezenasMaisSorteadasAdapter(DezenasMaisSorteadasActivity.this, listMaisSorteadas));
+                adapter = new DezenasMaisSorteadasAdapter(DezenasMaisSorteadasActivity.this, listMaisSorteadas, DezenasMaisSorteadasActivity.this);
+                listViewDezenasMaisSorteadas.setAdapter(adapter);
             }
             progressDialog.dismiss();
         }
@@ -152,6 +171,12 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_dezenas_mais_sorteadas, menu);
+        return true;
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -160,35 +185,33 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
+            case R.id.filtrar:
+                //Chamar Filtro dos concursos
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    private int getQtdeVezes(int dezena, int[] arrayDezenasSorteio) {
-        int qtdeVezes = 0;
-        for (int anArrayDezenasSorteio : arrayDezenasSorteio) {
-            if (dezena == anArrayDezenasSorteio) {
-                qtdeVezes++;
-            }
-
-        }
-        return qtdeVezes;
-    }
-
     private List<MaisSorteada> getListMaisSortedas(List<Sorteio> listSorteio) {
         List<MaisSorteada> listMaisSorteadas = new ArrayList<>();
-
+        int qtdeVezes = 0;
         for (int dezena = 1; dezena <= totalDezenasPorJogo; dezena++) {
             for (Sorteio sorteio : listSorteio) {
                 int[] arrayDezenasSorteio = sorteio.getDezenas();
-                int qtdeVezes = getQtdeVezes(dezena, arrayDezenasSorteio);
-                MaisSorteada maisSorteada = new MaisSorteada();
-                maisSorteada.setDezena(dezena);
-                maisSorteada.setQtdeVezes(qtdeVezes);
-                listMaisSorteadas.add(maisSorteada);
+                for (int anArrayDezenasSorteio : arrayDezenasSorteio) {
+                    if (dezena == anArrayDezenasSorteio) {
+                        qtdeVezes ++;
+                    }
+                }
+
             }
+            MaisSorteada maisSorteada = new MaisSorteada();
+            maisSorteada.setDezena(dezena);
+            maisSorteada.setQtdeVezes(qtdeVezes);
+            listMaisSorteadas.add(maisSorteada);
+            qtdeVezes = 0;
         }
+        Collections.sort(listMaisSorteadas);
         Collections.reverse(listMaisSorteadas);
         return listMaisSorteadas;
    }

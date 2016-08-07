@@ -16,12 +16,58 @@
         layout="@layout/header_type_sorteio"
         android:id="@+id/linearLayouLogoLabel" />
 
-    <ListView
+    <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/tableLayoutFilter"
+        android:layout_below="@+id/linearLayouLogoLabel">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/label_filtro_concursos"
+                android:id="@+id/textView16" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/label_filtro_todos"
+                android:id="@+id/textViewFiltroConcursos" />
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/label_filtro_periodo"
+                android:id="@+id/textView18"
+                android:gravity="right" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:text="@string/label_filtro_todos"
+                android:id="@+id/textViewFiltroPeriodo" />
+        </TableRow>
+    </TableLayout>
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:id="@+id/listViewDezenasMaisSorteadas"
-        android:headerDividersEnabled="true"
-        android:layout_below="@+id/linearLayouLogoLabel" />
+        android:layout_below="@+id/tableLayoutFilter"
+        android:layout_above="@+id/linearLayoutBottom" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -31,23 +77,28 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/zero"
-        android:id="@+id/textViewQtdeSelecionada"
-        android:textColor="@color/colorPrimary"
-        android:textStyle="bold"
-        android:gravity="right"
-        android:layout_above="@+id/btnGerarJogos" />
+        android:id="@+id/linearLayoutBottom"
+        android:layout_alignParentBottom="true">
 
-    <Button
-        android:id="@+id/btnGerarJogos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/label_gerar_jogos"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentBottom="true" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/label_qtde_dezenas_selecionadas"
+            android:id="@+id/textViewQtdeSelecionada"
+            android:textColor="@color/colorPrimary"
+            android:textStyle="bold"
+            android:gravity="right" />
+
+        <Button
+            android:id="@+id/btnGerarJogos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/label_gerar_jogos" />
+    </LinearLayout>
 
 </RelativeLayout>

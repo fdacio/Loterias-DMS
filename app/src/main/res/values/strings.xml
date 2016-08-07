@@ -5,7 +5,6 @@
     <string name="menu_processar_arquivo">Processar Arquivo</string>
     <string name="menu_confira_seu_jogo">Confira Seu Jogo</string>
     <string name="subtitle_dezenas_mais_sorteadas">Dezenas Mais Sorteadas</string>
-    <string name="title_dezenas_mais_sorteadas">Dezenas Mais Sorteadas</string>
     <string name="title_sorteios">Sorteios</string>
     <string name="title_concuros">Conscuros</string>
     <string name="title_processar_arquivo">Processar Arquivo</string>
@@ -28,7 +27,7 @@
     <string name="label_configuracoes">Configurações</string>
     <string name="msg_sair_app">Sair da Aplicação?</string>
     <string name="label_qtde_dezenas_por_jogo">Qtde. de dezenas por jogo:</string>
-    <string name="label_qtde_dezenas_selecionadas">dezenas selecionadas</string>
+    <string name="label_qtde_dezenas_selecionadas">0 dezenas selecionadas</string>
     <string name="label_dezenas_selecionadas">Dezenas selecionadas</string>
     <string name="label_numero_concurso">Concurso:</string>
     <string name="label_numero">Número</string>
@@ -58,7 +57,7 @@
     <string name="msg_delete_todos">Todos Sorteios</string>
     <string name="codigo_barras">Codigo de Barras</string>
     <string name="tirar_foto">Foto da Aposta</string>
-
+    <string name="filtrar_concuros">Filtrar Concursos</string>
     <string name="title_file_dialog">Arquivo/Diretorio</string>
     <string name="location">Localização</string>
     <string name="file_name">Nome do Arquivo</string>
@@ -71,7 +70,7 @@
     <string name="title_open_file">Abrir Arquivo</string>
     <string name="title_select_directory">Selecionar Pasta</string>
     <string name="msg_erro_name_file">Informe o nome do arquivo</string>
-    <string name="title_activity_dezenas_mais_sorteadas">Dezenas Mais Sorteadas</string>
+    <string name="title_activity_dezenas_mais_sorteadas">As Mais Sorteadas</string>
     <string name="title_activity_sorteio_list">Sorteios</string>
     <string name="title_activity_processar_arquivo">Processar Arquivo</string>
     <string name="title_activity_confira_seu_jogo">Confira Seu Jogo</string>
@@ -135,5 +134,8 @@
     <string name="label_ver_outros_sorteios">Em Outros Sorteios</string>
     <string name="label_suas_dezenas">Sua Dezenas</string>
     <string name="label_0vezes">0 vezes</string>
+    <string name="label_filtro_concursos">Concursos:</string>
+    <string name="label_filtro_periodo">Período:</string>
+    <string name="label_filtro_todos">Todos</string>
 
 </resources>
