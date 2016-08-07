@@ -67,6 +67,7 @@ public class DezenasMaisSorteadasAdapter extends BaseAdapter {
                     CheckBox checkBox = (CheckBox) v;
                     MaisSorteada maisSorteada = (MaisSorteada) checkBox.getTag();
                     maisSorteada.setSelecionada(checkBox.isChecked());
+                    dezenasMaisSorteadasClickable.clicked();
                 }
             });
 
