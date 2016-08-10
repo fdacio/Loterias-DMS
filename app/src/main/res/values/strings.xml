@@ -132,10 +132,14 @@
     <string name="label_dezenas_sorteadas">Dezenas Sorteadas</string>
     <string name="hint_search_sorteio">NºConcurso ou Data</string>
     <string name="label_ver_outros_sorteios">Em Outros Sorteios</string>
-    <string name="label_suas_dezenas">Sua Dezenas</string>
+    <string name="label_suas_dezenas">Suas Dezenas</string>
     <string name="label_0vezes">0 vezes</string>
     <string name="label_filtro_concursos">Concursos:</string>
     <string name="label_filtro_periodo">Período:</string>
     <string name="label_filtro_todos">Todos</string>
+    <string name="title_activity_dezenas_mais_sorteadas_filtro">Filtro</string>
+    <string name="subtitle_activity_dezenas_mais_sorteadas_filtro">As Mais Sorteadas</string>
+    <string name="label_a">a</string>
+    <string name="label_0_ultimos_concuros">0 últimos concursos</string>
 
 </resources>

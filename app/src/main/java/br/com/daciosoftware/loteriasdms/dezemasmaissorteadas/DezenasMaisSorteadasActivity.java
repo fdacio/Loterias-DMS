@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,6 +32,7 @@ import br.com.daciosoftware.loteriasdms.confiraseujogo.SorteioAcerto;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 public class DezenasMaisSorteadasActivity extends AppCompatActivity implements DezenasMaisSorteadasClickable{
 
@@ -39,12 +41,19 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
     private List<MaisSorteada> listMaisSorteadas;
     private ListView listViewDezenasMaisSorteadas;
     private DezenasMaisSorteadasAdapter adapter;
+    private TextView textViewFiltroPeriodo;
+    private TextView textViewFiltroConcursos;
     private TextView textViewQtdeSelecionada;
 
     private int qtdeDezenasSelecionadas = 18;
     private int qtdeMinimaDezenasSelecionadas = 0;
     private int qtdeMaximaDezenasSelecionadas = 0;
     private int totalDezenasPorJogo = 80;
+
+    public static final int FILTRO_DMS = 150;
+    private Calendar data1Filter = null;
+    private Calendar data2Filter = null;
+    private int numeroConcursosFilter = 0;
 
 
     @Override
@@ -75,12 +84,20 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
                 break;
         }
 
+        textViewFiltroPeriodo = (TextView) findViewById(R.id.textViewFiltroPeriodo);
+        textViewFiltroConcursos = (TextView) findViewById(R.id.textViewFiltroConcursos);
+
+        textViewFiltroPeriodo.setText("Todos");
+        textViewFiltroConcursos.setText("Todos");
+
         listViewDezenasMaisSorteadas = (ListView) findViewById(R.id.listViewDezenasMaisSorteadas);
         listViewDezenasMaisSorteadas.setEmptyView(findViewById(R.id.emptyElement));
 
         textViewQtdeSelecionada = (TextView) findViewById(R.id.textViewQtdeSelecionada);
         Button btnGerarJogos = (Button) findViewById(R.id.btnGerarJogos);
         btnGerarJogos.setOnClickListener(new OnClickListenerGerarJogos(typeSorteio));
+
+
 
         listarMaisSorteadas(null);
         new StyleOfActivity(this, findViewById(R.id.layout_dezenas_mais_sorteadas)).setStyleInViews(typeSorteio);
@@ -95,9 +112,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
                 qtdeDezenasSelecionadas++;
             }
         }
-
         textViewQtdeSelecionada.setText(qtdeDezenasSelecionadas+" dezenas selecionadas");
-
     }
 
 
@@ -186,7 +201,17 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
                 finish();
                 return true;
             case R.id.filtrar:
-                //Chamar Filtro dos concursos
+                Intent intent = new Intent(DezenasMaisSorteadasActivity.this, DezenasMaisSorteadasFiltroActivity.class);
+                intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
+                if((data1Filter != null)&&(data2Filter != null)) {
+                    intent.putExtra(Constantes.FILTRO_DMS_DATA1, data1Filter.getTimeInMillis());
+                    intent.putExtra(Constantes.FILTRO_DMS_DATA2, data2Filter.getTimeInMillis());
+                }else{
+                    intent.putExtra(Constantes.FILTRO_DMS_DATA1, data1Filter);
+                    intent.putExtra(Constantes.FILTRO_DMS_DATA2, data2Filter);
+                }
+                intent.putExtra(Constantes.FILTRO_DMS_CONCURSOS, numeroConcursosFilter);
+                startActivityForResult(intent, FILTRO_DMS);
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -215,5 +240,31 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
         Collections.reverse(listMaisSorteadas);
         return listMaisSorteadas;
    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data){
+
+        if((requestCode == FILTRO_DMS)&&(resultCode == RESULT_OK)){
+            data1Filter = Calendar.getInstance();
+            data2Filter = Calendar.getInstance();
+            data1Filter.setTimeInMillis(data.getExtras().getLong(Constantes.FILTRO_DMS_DATA1,0));
+            data2Filter.setTimeInMillis(data.getExtras().getLong(Constantes.FILTRO_DMS_DATA2,0));
+            numeroConcursosFilter = data.getExtras().getInt(Constantes.FILTRO_DMS_CONCURSOS, 0);
+            if((data1Filter == null)&&(data2Filter == null)){
+                textViewFiltroPeriodo.setText("Todos");
+            }else{
+                textViewFiltroPeriodo.setText(MyDateUtil.calendarToShortDateBr(data1Filter)+" a "+MyDateUtil.calendarToShortDateBr(data2Filter));
+            }
+
+            if(numeroConcursosFilter == 0){
+                textViewFiltroConcursos.setText("Todos");
+            }else{
+                textViewFiltroConcursos.setText(String.valueOf(numeroConcursosFilter)+" últimos concuros");
+            }
+
+        }
+
+    }
 
 }

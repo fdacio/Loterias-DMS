@@ -32,4 +32,6 @@
 
     </style>
 
+    <style name="numberpicker" parent="android:Theme.Holo" />
+
 </resources>

@@ -2,9 +2,11 @@ package br.com.daciosoftware.loteriasdms.util;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
+import android.view.View;
 import android.widget.DatePicker;
 import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +20,7 @@ import java.util.Locale;
 public class DialogDate {
 
     private TextView textView;
+    private boolean onlyMonthAndYear = false;
 
     /**
      * @param textView View que receberá a data vinda do DatePicker
@@ -27,6 +30,17 @@ public class DialogDate {
         this.textView = textView;
     }
 
+    /**
+     *
+     * @param textView View que receberá a data vinda do DatePicker
+     *                 Parametros aceitaveis do tipo TextView, EditText, Button
+     * @param onlyMonthAndYear True Exibe somente mes e ano no date picker
+     */
+    public DialogDate(TextView textView, boolean onlyMonthAndYear) {
+        this.textView = textView;
+        this.onlyMonthAndYear = onlyMonthAndYear;
+    }
+
     public void show() {
         if (textView != null) {
             int dia;
@@ -34,7 +48,7 @@ public class DialogDate {
             int ano;
 
             try {
-                Calendar dateOfTextView = dateBrToCalendar(textView.getText().toString());
+                Calendar dateOfTextView = dateShortBrToCalendar(textView.getText().toString());
                 dia = dateOfTextView.get(Calendar.DAY_OF_MONTH);
                 mes = dateOfTextView.get(Calendar.MONTH);
                 ano = dateOfTextView.get(Calendar.YEAR);
@@ -47,6 +61,34 @@ public class DialogDate {
             }
 
             Dialog datePickerDialog = new DatePickerDialog(textView.getContext(), new OnDateSetSorteioListener(), ano, mes, dia);
+            if(onlyMonthAndYear){
+
+                try {
+
+                    Field[] datePickerDialogFields = datePickerDialog.getClass().getDeclaredFields();
+                    for (Field datePickerDialogField : datePickerDialogFields) {
+                        if (datePickerDialogField.getName().equals("mDatePicker")) {
+                            datePickerDialogField.setAccessible(true);
+                            DatePicker datePicker = (DatePicker) datePickerDialogField.get(datePickerDialog);
+                            Field datePickerFields[] = datePickerDialogField.getType().getDeclaredFields();
+                            for (Field datePickerField : datePickerFields) {
+                                if ("mDayPicker".equals(datePickerField.getName())
+                                        || "mDaySpinner".equals(datePickerField
+                                        .getName())) {
+                                    datePickerField.setAccessible(true);
+                                    Object dayPicker = new Object();
+                                    dayPicker = datePickerField.get(datePicker);
+                                    ((View) dayPicker).setVisibility(View.GONE);
+                                }
+                            }
+                        }
+
+                    }
+
+                }catch (Exception e){}
+
+
+            }
             datePickerDialog.show();
         }
     }
@@ -56,7 +98,11 @@ public class DialogDate {
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             Calendar calendar = Calendar.getInstance();
             calendar.set(year, monthOfYear, dayOfMonth);
-            textView.setText(calendarToDateBr(calendar));
+            if(onlyMonthAndYear) {
+                textView.setText(calendarToShortDateBr(calendar));
+            }else {
+                textView.setText(calendarToDateBr(calendar));
+            }
         }
     }
 
@@ -73,6 +119,18 @@ public class DialogDate {
     private String calendarToDateBr(Calendar data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return sdf.format(data.getTime());
+    }
+
+    private String calendarToShortDateBr(Calendar data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy", Locale.getDefault());
+        return sdf.format(data.getTime());
+    }
+    private Calendar dateShortBrToCalendar(String data) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy", Locale.getDefault());
+        Date date = sdf.parse(data);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
     }
 
 }

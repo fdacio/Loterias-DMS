@@ -30,6 +30,14 @@ public class MyDateUtil {
         return calendar;
     }
 
+    public static Calendar dateShortBrToCalendar(String data) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy", Locale.getDefault());
+        Date date = sdf.parse(data);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        return calendar;
+    }
+
     public static String calendarToDateBr(Calendar data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
         return sdf.format(data.getTime());
@@ -47,5 +55,9 @@ public class MyDateUtil {
         return sdf.format(data.getTime());
     }
 
+    public static String calendarToShortDateBr(Calendar data) {
+        SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy", Locale.getDefault());
+        return sdf.format(data.getTime());
+    }
 
 }

@@ -19,7 +19,7 @@ public class DialogNumber {
 
     private Context context;
     private NumberPicker numberPicker;
-    private NumberPicker.OnValueChangeListener onValueChangeListener;
+    private DialogInterface.OnClickListener onClickOKListener;
     private String title = "";
     private int startValue = 0;
     private int maxValue = 1000;
@@ -38,8 +38,8 @@ public class DialogNumber {
         this.title = title;
     }
 
-    public void setOnValueChangeListener(NumberPicker.OnValueChangeListener onValueChangeListener) {
-        this.onValueChangeListener = onValueChangeListener;
+    public void setOnClickOKListener(DialogInterface.OnClickListener onClickOKListener) {
+        this.onClickOKListener = onClickOKListener;
     }
 
     public void setStartValue(int startValue) {
@@ -66,21 +66,17 @@ public class DialogNumber {
         numberPicker.setMaxValue(maxValue);
         numberPicker.setValue(startValue);
         numberPicker.setWrapSelectorWheel(true);
-        if (onValueChangeListener != null) {
-            numberPicker.setOnValueChangedListener(onValueChangeListener);
-        }
-
+        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+                valueReturn  = newVal;
+            }
+        });
+        valueReturn = startValue;
         Dialog numberPickerDialog = new AlertDialog.Builder(this.context)
                 .setView(npView)
                 .setTitle(title)
-                .setPositiveButton(R.string.btn_ok,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                valueReturn = numberPicker.getValue();
-                                dialog.dismiss();
-
-                            }
-                        })
+                .setPositiveButton(R.string.btn_ok,onClickOKListener)
                 .setNegativeButton(R.string.btn_cancel,
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {

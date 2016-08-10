@@ -92,6 +92,10 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
             }
 
             for (TextView textView : getTextViews()) {
+                textView.setBackgroundResource(0);
+            }
+
+            for (TextView textView : getTextViews()) {
                 int dezena = Integer.valueOf(textView.getText().toString());
                 int[] arrayDezenasAcertos = sorteioacerto.getDezenasAcertos();
                 for (int j = 0; j < arrayDezenasAcertos.length; j++) {

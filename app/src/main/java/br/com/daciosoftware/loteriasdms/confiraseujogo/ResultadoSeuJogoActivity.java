@@ -1,6 +1,8 @@
 package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
 import android.app.ProgressDialog;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -8,6 +10,7 @@ import android.os.Message;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
@@ -138,10 +141,13 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
             TextView textViewDezena = new TextView(this);
             textViewDezena.setId(ViewIdGenerator.generateViewId());
             textViewDezena.setLayoutParams(tableRowLayoutParam);
-            textViewDezena.setTextSize(20);
-            textViewDezena.setTypeface(null, Typeface.BOLD);
-            textViewDezena.setPadding(2, 2, 2, 2);
+            textViewDezena.setTextColor(ColorStateList.valueOf(Color.BLACK));
+            textViewDezena.setTextSize(22);
+            textViewDezena.setGravity(Gravity.RIGHT);
+            textViewDezena.setPadding(4, 4, 4, 4);
             textViewDezena.setText(String.valueOf(arrayDezenas[i]));
+
+
 
             if (i < 5) {
                 tableRow1.addView(textViewDezena);
@@ -233,6 +239,7 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
                 listSorteioAcerto.add(sorteioAcerto);
             }
         }
+        Collections.sort(listSorteioAcerto);
         Collections.reverse(listSorteioAcerto);
         return listSorteioAcerto;
     }

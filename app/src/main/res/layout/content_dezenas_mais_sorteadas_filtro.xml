@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="br.com.daciosoftware.loteriasdms.dezemasmaissorteadas.DezenasMaisSorteadasFiltroActivity"
+    tools:showIn="@layout/activity_dezenas_mais_sorteadas_filtro" >
+
+    <include
+        layout="@layout/header_type_sorteio"
+        android:id="@+id/linearLayouLogoLabel" />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_filtro_periodo"
+        android:id="@+id/textView17"
+        android:layout_below="@+id/linearLayouLogoLabel"
+        android:layout_marginTop="25dp" />
+
+    <Button
+        style="@style/smallButton"
+        android:text="@string/label_data_zero"
+        android:id="@+id/buttonData1"
+        android:layout_below="@+id/textView17"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_a"
+        android:id="@+id/textView19"
+        android:layout_alignBottom="@+id/buttonData1"
+        android:layout_toRightOf="@+id/buttonData1"
+        android:layout_toEndOf="@+id/buttonData1"
+        android:layout_margin="10dp" />
+
+    <Button
+        style="@style/smallButton"
+        android:text="@string/label_data_zero"
+        android:id="@+id/buttonData2"
+        android:layout_alignBottom="@+id/buttonData1"
+        android:layout_toRightOf="@+id/textView19"
+        android:layout_toEndOf="@+id/textView19" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/label_filtro_concursos"
+        android:id="@+id/textView20"
+        android:layout_below="@+id/textView19"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="25dp" />
+
+    <Button
+        style="@style/smallButton"
+        android:text="@string/label_0_ultimos_concuros"
+        android:id="@+id/buttonConcursos"
+        android:layout_below="@+id/textView20"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_width="wrap_content"
+        android:paddingRight="15dp"
+        android:paddingLeft="15dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="45dp"
+        android:layout_alignParentBottom="true"
+        android:padding="10dp">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_cancel"
+            android:id="@+id/buttonCancelar"
+            android:layout_weight="0.5"
+            android:layout_marginRight="5dp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/btn_ok"
+            android:id="@+id/buttonOK"
+            android:layout_weight="0.5" />
+    </LinearLayout>
+</RelativeLayout>

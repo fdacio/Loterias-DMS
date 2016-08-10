@@ -20,7 +20,8 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD1"
                 android:layout_column="0"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:gravity="right" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -29,7 +30,8 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD2"
                 android:layout_column="1"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:gravity="right" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -38,7 +40,8 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD3"
                 android:layout_column="2"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:gravity="right" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,7 +50,8 @@
                 android:text="@string/label_00"
                 android:id="@+id/textViewD4"
                 android:layout_column="3"
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:gravity="right" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -57,7 +61,8 @@
                 android:id="@+id/textViewD5"
                 android:layout_column="4"
 
-                android:padding="4dp" />
+                android:padding="4dp"
+                android:gravity="right" />
 
         </TableRow>
 

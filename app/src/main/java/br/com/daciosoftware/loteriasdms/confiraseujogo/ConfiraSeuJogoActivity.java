@@ -1,6 +1,7 @@
 package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -86,11 +87,10 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     }
 
     private class DialogNumberPickerOnClickListener implements View.OnClickListener {
-
         @Override
         public void onClick(View view) {
             DialogNumber dialogNumber = new DialogNumber(ConfiraSeuJogoActivity.this);
-            dialogNumber.setOnValueChangeListener(new DialogNumberPickerOnValueChangeListener((Button) view));
+            dialogNumber.setOnClickOKListener(new DialogNumberPickerOnClickOKListener(dialogNumber, (Button) view));
             dialogNumber.setTitle("Quantidade de Dezenas");
             dialogNumber.setStartValue(qtdeEdit);
             dialogNumber.setMinValue(5);
@@ -99,18 +99,21 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         }
     }
 
-    private class DialogNumberPickerOnValueChangeListener implements NumberPicker.OnValueChangeListener {
+    private class DialogNumberPickerOnClickOKListener implements DialogInterface.OnClickListener {
+        private DialogNumber dialogNumber;
         private Button button;
 
-        public DialogNumberPickerOnValueChangeListener(Button button) {
+        public DialogNumberPickerOnClickOKListener(DialogNumber dialogNumber, Button button){
+            this.dialogNumber = dialogNumber;
             this.button = button;
         }
 
         @Override
-        public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-            this.button.setText(String.valueOf(newVal) + " dezenas");
-            qtdeEdit = newVal;
-            buildEdits(newVal);
+        public void onClick(DialogInterface dialog, int which) {
+            this.button.setText(String.valueOf(dialogNumber.getValueReturn()) + " dezenas");
+            qtdeEdit = dialogNumber.getValueReturn();
+            buildEdits(dialogNumber.getValueReturn());
+            dialog.dismiss();
         }
     }
 
