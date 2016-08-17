@@ -5,8 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 
-import org.jsoup.select.Elements;
-
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
@@ -56,36 +54,6 @@ public class MegasenaDAO extends SorteioDAO {
             return Long.valueOf(this.getDb().update(ContractDatabase.Megasena.NOME_TABELA, values, where, whereArgs));
         } else {
             return this.getDb().insertOrThrow(ContractDatabase.Megasena.NOME_TABELA, "", values);
-        }
-    }
-
-    @Override
-    public Long insertSorteioFromTrow(Elements tds) throws NumberFormatException, ParseException, IOException {
-
-        int numero = Integer.parseInt(tds.get(0).text());
-        if (findByNumber(numero) == null) {
-            Calendar data = MyDateUtil.dateBrToCalendar(tds.get(1).text());
-            int d1 = Integer.parseInt(tds.get(2).text());
-            int d2 = Integer.parseInt(tds.get(3).text());
-            int d3 = Integer.parseInt(tds.get(4).text());
-            int d4 = Integer.parseInt(tds.get(5).text());
-            int d5 = Integer.parseInt(tds.get(6).text());
-            int d6 = Integer.parseInt(tds.get(7).text());
-            String local = tds.get(10).text() + " " + tds.get(11).text();
-
-            Megasena megasena = getInstanciaEntity();
-            megasena.setNumero(numero);
-            megasena.setData(data);
-            megasena.setLocal(local);
-            megasena.setD1(d1);
-            megasena.setD2(d2);
-            megasena.setD3(d3);
-            megasena.setD4(d4);
-            megasena.setD5(d5);
-            megasena.setD6(d6);
-            return save(megasena);
-        } else {
-            return null;
         }
     }
 

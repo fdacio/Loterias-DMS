@@ -99,7 +99,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollEdits"
-        android:layout_below="@+id/tableLayoutHeader">
+        android:layout_below="@+id/tableLayoutHeader"
+        android:layout_above="@+id/buttonConferir">
 
         <TableLayout
             android:id="@+id/tableLayoutDezenas"
@@ -149,7 +150,6 @@
         android:background="@drawable/bg_button_paused"
         android:text="@string/label_confirir"
         android:textColor="@color/colorWhite"
-        android:layout_alignParentEnd="false"
         android:layout_alignParentBottom="true" />
 
 </RelativeLayout>

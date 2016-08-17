@@ -60,7 +60,7 @@ public class DialogDate {
                 ano = calendar.get(Calendar.YEAR);
             }
 
-            Dialog datePickerDialog = new DatePickerDialog(textView.getContext(), new OnDateSetSorteioListener(), ano, mes, dia);
+            Dialog datePickerDialog = new DatePickerDialog(textView.getContext(), new OnDateSetInTextViewListener(), ano, mes, dia);
             if(onlyMonthAndYear){
 
                 try {
@@ -93,7 +93,7 @@ public class DialogDate {
         }
     }
 
-    private class OnDateSetSorteioListener implements DatePickerDialog.OnDateSetListener {
+    private class OnDateSetInTextViewListener implements DatePickerDialog.OnDateSetListener {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
             Calendar calendar = Calendar.getInstance();

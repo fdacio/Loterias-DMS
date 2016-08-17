@@ -1,6 +1,6 @@
 package br.com.daciosoftware.loteriasdms.dezemasmaissorteadas;
 
-import java.util.Comparator;
+import android.support.annotation.NonNull;
 
 /**
  * Created by Dácio Braga on 05/08/2016.
@@ -38,7 +38,10 @@ public class MaisSorteada implements Comparable<MaisSorteada>{
     }
 
     @Override
-    public int compareTo(MaisSorteada another) {
-        return new Integer(qtdeVezes).compareTo(new Integer(another.getQtdeVezes()));
+    public int compareTo(@NonNull MaisSorteada another) {
+        if(this.getQtdeVezes() > another.getQtdeVezes()) return 1;
+        else if(this.getQtdeVezes() < another.getQtdeVezes()) return -1;
+        else return 0;
+        //return new Integer(qtdeVezes).compareTo(new Integer(another.getQtdeVezes()));
     }
 }

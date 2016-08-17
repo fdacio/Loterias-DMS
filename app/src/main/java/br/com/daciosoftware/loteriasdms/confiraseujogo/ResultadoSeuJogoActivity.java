@@ -3,7 +3,6 @@ package br.com.daciosoftware.loteriasdms.confiraseujogo;
 import android.app.ProgressDialog;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -145,7 +144,7 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
             textViewDezena.setTextSize(22);
             textViewDezena.setGravity(Gravity.RIGHT);
             textViewDezena.setPadding(4, 4, 4, 4);
-            textViewDezena.setText(String.valueOf(arrayDezenas[i]));
+            textViewDezena.setText(String.format("%02d",arrayDezenas[i]));
 
 
 

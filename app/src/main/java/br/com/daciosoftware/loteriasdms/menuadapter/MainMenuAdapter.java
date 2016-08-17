@@ -11,7 +11,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.TypeSorteio;
 
 /**
  * Created by Dácio Braga on 17/07/2016.

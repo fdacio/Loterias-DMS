@@ -1,7 +1,5 @@
 package br.com.daciosoftware.loteriasdms.dao;
 
-import java.util.Arrays;
-
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**

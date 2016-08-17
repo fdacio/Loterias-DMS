@@ -1,7 +1,6 @@
 package br.com.daciosoftware.loteriasdms;
 
 import android.content.Intent;
-import android.database.SQLException;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,15 +11,12 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import java.text.ParseException;
-
 import br.com.daciosoftware.loteriasdms.confiraseujogo.ConfiraSeuJogoActivity;
 import br.com.daciosoftware.loteriasdms.dezemasmaissorteadas.DezenasMaisSorteadasActivity;
 import br.com.daciosoftware.loteriasdms.menuadapter.SecundaryMenuAdapter;
 import br.com.daciosoftware.loteriasdms.processaarquivo.ProcessaArquivoActivity;
 import br.com.daciosoftware.loteriasdms.sorteio.SorteioListActivity;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DialogBox;
 
 public class SecundaryMenuActivity extends AppCompatActivity implements AdapterView.OnItemClickListener{
 

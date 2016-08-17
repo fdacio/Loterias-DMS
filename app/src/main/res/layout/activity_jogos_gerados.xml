@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".dezemasmaissorteadas.GeraJogosActivity"
+    tools:context=".dezemasmaissorteadas.JogosGeradosActivity"
     android:id="@+id/layout_activity_gera_jogos">
 
     <android.support.design.widget.AppBarLayout
@@ -22,7 +22,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_gera_jogos" />
+    <include layout="@layout/content_jogos_gerados" />
 
 
 </android.support.design.widget.CoordinatorLayout>

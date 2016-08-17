@@ -8,22 +8,16 @@ import java.util.List;
 
 public class MyHtmlParse {
 
-    private String fileHtml;
-    private static MyHtmlParse instance;
+    private String fileHtmlParser;
 
-    private MyHtmlParse(String fileHtml) {
-        this.fileHtml = fileHtml;
-    }
+    private MyHtmlParse(String fileHtml) { this.fileHtmlParser = fileHtml;}
 
     /**
      * @param fileHtml - path from html file e.g: /home/user/myfile.htm
      * @return a instance from MyHtmlParse
      */
     public static MyHtmlParse getInstance(String fileHtml) {
-        if (instance == null) {
-            instance = new MyHtmlParse(fileHtml);
-        }
-        return instance;
+        return new MyHtmlParse(fileHtml);
     }
 
     /**
@@ -34,7 +28,7 @@ public class MyHtmlParse {
 
         List<String> listHtml = new ArrayList<>();
 
-        FileReader fileHtml = new FileReader(this.fileHtml);
+        FileReader fileHtml = new FileReader(this.fileHtmlParser);
 
         BufferedReader reader = new BufferedReader(fileHtml);
         String line;

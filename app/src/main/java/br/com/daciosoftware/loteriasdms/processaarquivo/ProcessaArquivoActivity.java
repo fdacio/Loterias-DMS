@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,9 +62,15 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         Button buttonBaixarArquivo = (Button) findViewById(R.id.buttonBaixarArquivo);
 
 
-        imageButtonArquivo.setOnClickListener(new OnClickListenerButtonArquivo());
-        buttonProcessarArquivo.setOnClickListener(new OnClickListenerButtonProcessarArquivo());
-        buttonBaixarArquivo.setOnClickListener(new OnClickListenerBaixaArquivo());
+        if (imageButtonArquivo != null) {
+            imageButtonArquivo.setOnClickListener(new OnClickListenerButtonArquivo());
+        }
+        if (buttonProcessarArquivo != null) {
+            buttonProcessarArquivo.setOnClickListener(new OnClickListenerButtonProcessarArquivo());
+        }
+        if (buttonBaixarArquivo != null) {
+            buttonBaixarArquivo.setOnClickListener(new OnClickListenerBaixaArquivo());
+        }
 
 
         new StyleOfActivity(this, findViewById(R.id.layout_processar_arquivo)).setStyleInViews(typeSorteio);
@@ -99,7 +104,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                 new BaixarArquivoZipTask().execute(getLinkBaixar(typeSorteio), outFile);
             } else {
                 new DialogBox(ProcessaArquivoActivity.this,
-                        DialogBox.DialogBoxType.INFORMATION, "Error",
+                        DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error),
                         getResources().getString(R.string.error_conexao)
                 ).show();
             }
@@ -115,13 +120,13 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
             String filePath = editTextArquivo.getText().toString();
             if (filePath.equals("")) {
-                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", getResources().getString(R.string.error_informe_arquivo)).show();
+                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error), getResources().getString(R.string.error_informe_arquivo)).show();
                 return;
             }
 
             File file = new File(filePath);
             if (!file.exists()) {
-                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Error", getResources().getString(R.string.error_arquivo_invalido)).show();
+                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error), getResources().getString(R.string.error_arquivo_invalido)).show();
                 return;
             }
 
@@ -244,32 +249,31 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
             try {
                 downloadFile.downloadFileBinary(url, outFile);
             } catch (IOException e) {
-                return "Erro ao baixar o arquivo: " + e.getMessage();
+                return getResources().getString(R.string.erro_baixar_arquivo) + e.getMessage();
             }
 
             try {
-                publishProgress("Descomprimindo arquivo. Aguarde...");
-                String inFileDecompress = outFile;
+                publishProgress(getResources().getString(R.string.descomprimindo));
                 String outFileHtml = new File(outFile).getParent() + "/" + getNomeArquivoHtml(typeSorteio);
-                pathFileHtml = decompressFile.unzip(inFileDecompress, outFileHtml);
+                pathFileHtml = decompressFile.unzip(outFile, outFileHtml);
 
             } catch (IOException e2) {
-                return "Erro ao descomprimir o aquivo:" + e2.getMessage();
+                return getResources().getString(R.string.erro_descomprimir) + e2.getMessage();
             }
 
 
             if (isCancelled()) {
-                return "Processo cancelado.";
+                return getResources().getString(R.string.processo_cancelado);
             }
 
-            return "Processo concluído com sucesso.";
+            return getResources().getString(R.string.processo_concluido);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(ProcessaArquivoActivity.this);
-            progressDialog.setMessage("Baixando arquivo. Aguarde...");
+            progressDialog.setMessage(getResources().getString(R.string.baixando));
             progressDialog.setCancelable(true);
             progressDialog.setIndeterminate(true);
             progressDialog.setOnCancelListener(new cancelTaskBaixarArquivoZip(this));
@@ -288,14 +292,14 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Baixar Arquivo", retorno).show();
+            new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.baixar_arquivo), retorno).show();
 
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
+
         }
 
         @Override
@@ -327,8 +331,8 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         public void onCancel(DialogInterface dialog) {
             new DialogBox(ProcessaArquivoActivity.this,
                     DialogBox.DialogBoxType.QUESTION,
-                    "Processar Arquivo",
-                    "Deseja cancelar o processo?",
+                    getResources().getString(R.string.processar_arquivo),
+                    getResources().getString(R.string.deseja_cancelar_processo),
                     new DialogInterface.OnClickListener() {//Resposta SIM do DialogBox Question
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -378,10 +382,10 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                 String titleDoc = doc.getTitleHtml();
                 String titleJogo = getTituloArquivoHtml(typeSorteio);
                 if (!titleDoc.toLowerCase().contains(titleJogo.substring(0, 4))) {
-                    return "Arquivo de outro Jogo: " + titleDoc;
+                    return getResources().getString(R.string.error_arquivo_outro_jogo) + titleDoc;
                 }
 
-                String msg = "Processando Arquivo. \nConcurso %d \nAguarde...";
+                String msg = getResources().getString(R.string.processando_arquivo_concurso);
 
                 List<String> trows = doc.getTrowsTable();
                 trows.remove(0);
@@ -391,28 +395,30 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                     if (isRowValid(valueTd)) {
                         try {
                             publishProgress(String.format(msg,Integer.parseInt(valueTd)));
-                            sorteioDAO.insertSorteioFromTrow(tds);
+                            if (sorteioDAO != null) {
+                                sorteioDAO.insertSorteioFromTrow(tds);
+                            }
                         } catch (ParseException e) {
                             LogProcessamento.registraLog(trow + ":" + e.getMessage());
                         }
 
                         if (isCancelled()) {
-                            return "Processamento cancelado";
+                            return getResources().getString(R.string.processo_cancelado);
                         }
                     }
                 }
 
             } catch (NumberFormatException | IOException | OutOfMemoryError e) {
-                return "Erro ao processar arquivo: " + e.getMessage();
+                return getResources().getString(R.string.erro_processar_arquivo) + e.getMessage();
             }
-            return "Processamento concluído com sucesso";
+            return getResources().getString(R.string.processo_concluido);
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
             progressDialog = new ProgressDialog(ProcessaArquivoActivity.this);
-            progressDialog.setMessage("Processando Arquivo. Aguarde...");
+            progressDialog.setMessage(getResources().getString(R.string.processando));
             progressDialog.setCancelable(true);
             progressDialog.setIndeterminate(true);
             progressDialog.setOnCancelListener(new cancelTaskProcessamentoHtml(this));
@@ -424,14 +430,13 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
             progressDialog.dismiss();
             textViewLabelFile.setText(getResources().getString(R.string.label_informe_arquivo));
             editTextArquivo.setText("");
-            new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, "Processar Arquivo", retorno).show();
+            new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.processar_arquivo), retorno).show();
 
         }
 
         @Override
         protected void onCancelled() {
             super.onCancelled();
-            Toast.makeText(ProcessaArquivoActivity.this, "Processo cancelado!", Toast.LENGTH_SHORT).show();
         }
 
         @Override
@@ -454,8 +459,8 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         public void onCancel(DialogInterface dialog) {
             new DialogBox(ProcessaArquivoActivity.this,
                     DialogBox.DialogBoxType.QUESTION,
-                    "Processar Arquivo",
-                    "Deseja cancelar o processo?",
+                    getResources().getString(R.string.processar_arquivo),
+                    getResources().getString(R.string.deseja_cancelar_processo),
                     new DialogInterface.OnClickListener() {//Resposta SIM do DialogBox Question
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

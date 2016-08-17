@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.view.ContextThemeWrapper;
 
 import br.com.daciosoftware.loteriasdms.R;
 
@@ -37,6 +38,7 @@ public class DialogBox {
      */
     public DialogBox(Context context, DialogBoxType dialogBoxType, String title, String message) {
         this.context = context;
+
         dialogBox = new AlertDialog.Builder(context);
         dialogBox.setTitle(title);
         dialogBox.setMessage(message);

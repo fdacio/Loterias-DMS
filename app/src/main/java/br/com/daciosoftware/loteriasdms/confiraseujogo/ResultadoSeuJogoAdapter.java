@@ -29,7 +29,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         this.typeSorteio = typeSorteio;
     }
 
-
     @Override
     public int getCount() {
         return list.size();
@@ -76,7 +75,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
             return textViews;
         }
 
-
         public void setBackgroundMarcacao(SorteioAcerto sorteioacerto, TypeSorteio typeSorteio) {
             int resourceBackground = 0;
             switch (typeSorteio) {
@@ -98,8 +96,8 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
             for (TextView textView : getTextViews()) {
                 int dezena = Integer.valueOf(textView.getText().toString());
                 int[] arrayDezenasAcertos = sorteioacerto.getDezenasAcertos();
-                for (int j = 0; j < arrayDezenasAcertos.length; j++) {
-                    if (dezena == arrayDezenasAcertos[j]) {
+                for (int nDezenasAcerto : arrayDezenasAcertos) {
+                    if (dezena == nDezenasAcerto) {
                         textView.setBackgroundResource(resourceBackground);
                     }
                 }
@@ -135,13 +133,13 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         public void setValue(SorteioAcerto sorteioacerto) {
             textViewNumero.setText(String.valueOf(sorteioacerto.getSorteio().getNumero()));
             textViewData.setText(MyDateUtil.calendarToDateBr(sorteioacerto.getSorteio().getData()));
-            textViewD1.setText(String.valueOf(sorteioacerto.getSorteio().getD1()));
-            textViewD2.setText(String.valueOf(sorteioacerto.getSorteio().getD2()));
-            textViewD3.setText(String.valueOf(sorteioacerto.getSorteio().getD3()));
-            textViewD4.setText(String.valueOf(sorteioacerto.getSorteio().getD4()));
-            textViewD5.setText(String.valueOf(sorteioacerto.getSorteio().getD5()));
-            textViewD6.setText(String.valueOf(sorteioacerto.getSorteio().getD6()));
-            textViewQtdeAcertos.setText(String.valueOf(sorteioacerto.getQtdeAcertos() + " Acerto(s)"));
+            textViewD1.setText(String.format("%02d",sorteioacerto.getSorteio().getD1()));
+            textViewD2.setText(String.format("%02d",sorteioacerto.getSorteio().getD2()));
+            textViewD3.setText(String.format("%02d",sorteioacerto.getSorteio().getD3()));
+            textViewD4.setText(String.format("%02d",sorteioacerto.getSorteio().getD4()));
+            textViewD5.setText(String.format("%02d",sorteioacerto.getSorteio().getD5()));
+            textViewD6.setText(String.format("%02d",sorteioacerto.getSorteio().getD6()));
+            textViewQtdeAcertos.setText(String.format("%d Acerto(s)",sorteioacerto.getQtdeAcertos()));
 
         }
 
@@ -167,17 +165,17 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         public void setValue(SorteioAcerto sorteioacerto) {
             textViewNumero.setText(String.valueOf(sorteioacerto.getSorteio().getNumero()));
             textViewData.setText(MyDateUtil.calendarToDateBr(sorteioacerto.getSorteio().getData()));
-            textViewD1.setText(String.valueOf(sorteioacerto.getSorteio().getD1()));
-            textViewD2.setText(String.valueOf(sorteioacerto.getSorteio().getD2()));
-            textViewD3.setText(String.valueOf(sorteioacerto.getSorteio().getD3()));
-            textViewD4.setText(String.valueOf(sorteioacerto.getSorteio().getD4()));
-            textViewD5.setText(String.valueOf(sorteioacerto.getSorteio().getD5()));
-            textViewQtdeAcertos.setText(String.valueOf(sorteioacerto.getQtdeAcertos() + " Acerto(s)"));
+            textViewD1.setText(String.format("%02d",sorteioacerto.getSorteio().getD1()));
+            textViewD2.setText(String.format("%02d",sorteioacerto.getSorteio().getD2()));
+            textViewD3.setText(String.format("%02d",sorteioacerto.getSorteio().getD3()));
+            textViewD4.setText(String.format("%02d",sorteioacerto.getSorteio().getD4()));
+            textViewD5.setText(String.format("%02d",sorteioacerto.getSorteio().getD5()));
+            textViewQtdeAcertos.setText(String.format("%d Acerto(s)",sorteioacerto.getQtdeAcertos()));
         }
 
     }
 
-    private class ViewHolderLotofacil extends ViewHolder {
+    private static class ViewHolderLotofacil extends ViewHolder {
         private TextView textViewD1, textViewD2, textViewD3, textViewD4, textViewD5,
                 textViewD6, textViewD7, textViewD8, textViewD9, textViewD10,
                 textViewD11, textViewD12, textViewD13, textViewD14, textViewD15;
@@ -207,26 +205,25 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         public void setValue(SorteioAcerto sorteioacerto) {
             textViewNumero.setText(String.valueOf(sorteioacerto.getSorteio().getNumero()));
             textViewData.setText(MyDateUtil.calendarToDateBr(sorteioacerto.getSorteio().getData()));
-            textViewD1.setText(String.valueOf(sorteioacerto.getSorteio().getD1()));
-            textViewD2.setText(String.valueOf(sorteioacerto.getSorteio().getD2()));
-            textViewD3.setText(String.valueOf(sorteioacerto.getSorteio().getD3()));
-            textViewD4.setText(String.valueOf(sorteioacerto.getSorteio().getD4()));
-            textViewD5.setText(String.valueOf(sorteioacerto.getSorteio().getD5()));
-            textViewD6.setText(String.valueOf(sorteioacerto.getSorteio().getD6()));
-            textViewD7.setText(String.valueOf(sorteioacerto.getSorteio().getD7()));
-            textViewD8.setText(String.valueOf(sorteioacerto.getSorteio().getD8()));
-            textViewD9.setText(String.valueOf(sorteioacerto.getSorteio().getD9()));
-            textViewD10.setText(String.valueOf(sorteioacerto.getSorteio().getD10()));
-            textViewD11.setText(String.valueOf(sorteioacerto.getSorteio().getD11()));
-            textViewD12.setText(String.valueOf(sorteioacerto.getSorteio().getD12()));
-            textViewD13.setText(String.valueOf(sorteioacerto.getSorteio().getD13()));
-            textViewD14.setText(String.valueOf(sorteioacerto.getSorteio().getD14()));
-            textViewD15.setText(String.valueOf(sorteioacerto.getSorteio().getD15()));
-            textViewQtdeAcertos.setText(String.valueOf(sorteioacerto.getQtdeAcertos() + " Acerto(s)"));
+            textViewD1.setText(String.format("%02d",sorteioacerto.getSorteio().getD1()));
+            textViewD2.setText(String.format("%02d",sorteioacerto.getSorteio().getD2()));
+            textViewD3.setText(String.format("%02d",sorteioacerto.getSorteio().getD3()));
+            textViewD4.setText(String.format("%02d",sorteioacerto.getSorteio().getD4()));
+            textViewD5.setText(String.format("%02d",sorteioacerto.getSorteio().getD5()));
+            textViewD6.setText(String.format("%02d",sorteioacerto.getSorteio().getD6()));
+            textViewD7.setText(String.format("%02d",sorteioacerto.getSorteio().getD7()));
+            textViewD8.setText(String.format("%02d",sorteioacerto.getSorteio().getD8()));
+            textViewD9.setText(String.format("%02d",sorteioacerto.getSorteio().getD9()));
+            textViewD10.setText(String.format("%02d",sorteioacerto.getSorteio().getD10()));
+            textViewD11.setText(String.format("%02d",sorteioacerto.getSorteio().getD11()));
+            textViewD12.setText(String.format("%02d",sorteioacerto.getSorteio().getD12()));
+            textViewD13.setText(String.format("%02d",sorteioacerto.getSorteio().getD13()));
+            textViewD14.setText(String.format("%02d",sorteioacerto.getSorteio().getD14()));
+            textViewD15.setText(String.format("%02d",sorteioacerto.getSorteio().getD15()));
+            textViewQtdeAcertos.setText(String.format("%d Acerto(s)",sorteioacerto.getQtdeAcertos()));
         }
 
     }
-
 
     public int getLayoutRow(TypeSorteio typeSorteio) {
         switch (typeSorteio) {
@@ -253,7 +250,6 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
                 return null;
         }
     }
-
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {

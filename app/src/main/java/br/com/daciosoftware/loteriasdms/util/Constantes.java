@@ -9,6 +9,9 @@ public abstract class Constantes {
     public static final String TYPE_SORTEIO = "TYPE_SORTEIO";
     public static final String SEU_JOGO = "SEU_JOGO";
     public static final String DEZENAS_SELECIONADAS = "DEZENAS_SELECIONADAS";
+    public static final String QTDE_MIN_DEZENAS_JOGO = "QTDE_MIN_DEZENAS_JOGO";
+    public static final String QTDE_MAX_DEZENAS_JOGO = "QTDE_MAX_DEZENAS_JOGO";
+
     public static final String ID_INSERT_UPDATE = "ID_INSERT_UPDATE";
     public static final int INSERT_UPDATE = 1;
     public static final String SHARED_PREF = "LoteriasSharedPref";

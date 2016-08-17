@@ -13,32 +13,36 @@
     tools:showIn="@layout/activity_dezenas_mais_sorteadas">
 
     <include
-        layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel" />
+        android:id="@+id/linearLayouLogoLabel"
+        layout="@layout/header_type_sorteio" />
 
     <TableLayout
+        android:id="@+id/tableLayoutFilter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tableLayoutFilter"
-        android:layout_below="@+id/linearLayouLogoLabel">
+        android:layout_below="@+id/linearLayouLogoLabel"
+        android:orientation="horizontal">
+
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textView16"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/label_filtro_concursos"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/label_filtro_periodo"
-                android:id="@+id/textView18"
-                android:gravity="right" />
+                android:layout_column="0" />
 
             <TextView
+                android:id="@+id/textViewFiltroConcursos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:text="@string/label_filtro_todos"
-                android:id="@+id/textViewFiltroPeriodo" />
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="1" />
         </TableRow>
 
         <TableRow
@@ -46,56 +50,61 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/label_filtro_concursos"
-                android:id="@+id/textView16" />
+                android:layout_column="0"
+                android:gravity="right"
+                android:text="@string/label_filtro_periodo"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
             <TextView
+                android:id="@+id/textViewFiltroPeriodo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="1"
                 android:text="@string/label_filtro_todos"
-                android:id="@+id/textViewFiltroConcursos" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+
         </TableRow>
 
     </TableLayout>
 
     <ListView
+        android:id="@+id/listViewDezenasMaisSorteadas"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/listViewDezenasMaisSorteadas"
+        android:layout_above="@+id/linearLayoutBottom"
         android:layout_below="@+id/tableLayoutFilter"
-        android:layout_above="@+id/linearLayoutBottom" />
+        android:layout_marginTop="4dp" />
 
     <TextView
+        android:id="@+id/emptyElement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nao_ha_dados"
-        android:id="@+id/emptyElement"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/nao_ha_dados" />
 
     <LinearLayout
-        android:orientation="vertical"
+        android:id="@+id/linearLayoutBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/linearLayoutBottom"
-        android:layout_alignParentBottom="true">
+        android:layout_alignParentBottom="true"
+        android:orientation="vertical">
 
         <TextView
+            android:id="@+id/textViewQtdeSelecionada"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:gravity="right"
             android:text="@string/label_qtde_dezenas_selecionadas"
-            android:id="@+id/textViewQtdeSelecionada"
+            android:textAppearance="?android:attr/textAppearanceMedium"
             android:textColor="@color/colorPrimary"
-            android:textStyle="bold"
-            android:gravity="right" />
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btnGerarJogos"
+            android:id="@+id/buttonDezenasPorJogo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/label_gerar_jogos" />

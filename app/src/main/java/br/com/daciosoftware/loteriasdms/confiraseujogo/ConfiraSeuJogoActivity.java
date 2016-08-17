@@ -1,7 +1,6 @@
 package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
 import android.content.ActivityNotFoundException;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -18,8 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.NumberPicker;
 import android.widget.TableRow;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
@@ -36,6 +35,7 @@ import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogNumber;
+import br.com.daciosoftware.loteriasdms.util.NumberPickerDialog;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 
 public class ConfiraSeuJogoActivity extends AppCompatActivity {
@@ -46,6 +46,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     private EditText editTextNumeroConcurso;
     private List<EditText> listaEditDezenas;
     private int qtdeEdit;
+    private int qtdeMin;
 
 
     @Override
@@ -69,53 +70,64 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         switch (typeSorteio) {
             case MEGASENA:
                 qtdeEdit = 6;
+                qtdeMin = 6;
                 break;
             case LOTOFACIL:
                 qtdeEdit = 15;
+                qtdeMin = 15;
                 break;
             case QUINA:
                 qtdeEdit = 5;
+                qtdeMin = 5;
                 break;
             default:
                 qtdeEdit = 0;
                 break;
         }
-        buttonNumberPiker.setText(String.valueOf(qtdeEdit) + " dezenas");
+        String label = String.format(getResources().getString(R.string.qtde_dezenas),qtdeEdit);
+        buttonNumberPiker.setText(label);
         buildEdits(qtdeEdit);
 
         new StyleOfActivity(this, findViewById(R.id.layout_confira_seu_jogo)).setStyleInViews(typeSorteio);
     }
 
+
     private class DialogNumberPickerOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            DialogNumber dialogNumber = new DialogNumber(ConfiraSeuJogoActivity.this);
-            dialogNumber.setOnClickOKListener(new DialogNumberPickerOnClickOKListener(dialogNumber, (Button) view));
-            dialogNumber.setTitle("Quantidade de Dezenas");
+            DialogNumber dialogNumber = new DialogNumber((Button)view,
+                    R.layout.dialog_number_picker,
+                    new OnNumberSetListener((Button)view)
+            );
+            dialogNumber.setTitle(getResources().getString(R.string.quantidade_dezenas));
             dialogNumber.setStartValue(qtdeEdit);
-            dialogNumber.setMinValue(5);
+            dialogNumber.setMinValue(qtdeMin);
             dialogNumber.setMaxValue(30);
             dialogNumber.show();
         }
     }
 
-    private class DialogNumberPickerOnClickOKListener implements DialogInterface.OnClickListener {
-        private DialogNumber dialogNumber;
-        private Button button;
+    /**
+     * Classe interna para implementar o retorno do DialogNumber
+     *
+     */
+    private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
 
-        public DialogNumberPickerOnClickOKListener(DialogNumber dialogNumber, Button button){
-            this.dialogNumber = dialogNumber;
-            this.button = button;
+        private TextView textView;
+        public OnNumberSetListener(TextView textView){
+            this.textView = textView;
+
         }
 
         @Override
-        public void onClick(DialogInterface dialog, int which) {
-            this.button.setText(String.valueOf(dialogNumber.getValueReturn()) + " dezenas");
-            qtdeEdit = dialogNumber.getValueReturn();
-            buildEdits(dialogNumber.getValueReturn());
-            dialog.dismiss();
+        public void onNumberSet(int number) {
+            String label = String.format(getResources().getString(R.string.qtde_dezenas),number);
+            textView.setText(label);
+            qtdeEdit = number;
+            buildEdits(number);
         }
     }
+
 
     private class ConferirOnClickListener implements View.OnClickListener {
         @Override

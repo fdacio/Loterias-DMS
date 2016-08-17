@@ -26,9 +26,9 @@ import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogDate;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 
 public class SorteioEditActivity extends AppCompatActivity {
@@ -48,7 +48,9 @@ public class SorteioEditActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sorteio_edit);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
         sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
@@ -107,13 +109,13 @@ public class SorteioEditActivity extends AppCompatActivity {
             edtDezena.setInputType(InputType.TYPE_CLASS_NUMBER);
             listaEditDezenas.add(edtDezena);
 
-            if (i < 5) {
+            if (i < 5 && tableRow1 != null) {
                 tableRow1.addView(edtDezena);
-            } else if ((i == 5) && (qtdeEdit == 6)) {
+            } else if ((i == 5) && (qtdeEdit == 6) && tableRow1 != null) {
                 tableRow1.addView(edtDezena);
-            } else if (i >= 5 && i < 10) {
+            } else if (i >= 5 && i < 10 && tableRow2 != null) {
                 tableRow2.addView(edtDezena);
-            } else {
+            } else if(tableRow3 != null){
                 tableRow3.addView(edtDezena);
             }
 

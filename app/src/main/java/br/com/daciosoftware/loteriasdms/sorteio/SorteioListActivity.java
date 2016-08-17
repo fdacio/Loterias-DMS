@@ -73,7 +73,7 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
                         new AtualizaSorteiosTask(SorteioListActivity.this, typeSorteio, SorteioListActivity.this).execute();
                     } else {
                         new DialogBox(SorteioListActivity.this,
-                                DialogBox.DialogBoxType.INFORMATION, "Error",
+                                DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error),
                                 getResources().getString(R.string.error_conexao)
                         ).show();
                     }
@@ -124,7 +124,7 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
 
     private void listarSorteios(final TypeSorteio typeSorteio, final TipoListagem tipoListagem, final Param param) {
 
-        progressDialog = ProgressDialog.show(this, "", "Listando. Aguarde...", true, false);
+        progressDialog = ProgressDialog.show(this, "", getResources().getString(R.string.listando), true, false);
 
         new Thread() {
 
@@ -187,7 +187,7 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
     }
 
     private List<Sorteio> listarPorDatas(SorteioDAO sorteioDAO, Param param) {
-        return sorteioDAO.findByBetweenDate(param.getData(), param.getData2());
+        return sorteioDAO.listBetweenDate(param.getData(), param.getData2());
     }
 
     @Override

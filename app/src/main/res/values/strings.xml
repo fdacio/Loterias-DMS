@@ -14,7 +14,7 @@
     <string name="error_arquivo_invalido">Arquivo inválido</string>
     <string name="error_informe_arquivo">Informe o arquivo HTML com todos os resultados!</string>
     <string name="error_conexao">Verifique sua conexão!</string>
-    <string name="msg_aguarde">Aguarde...</string>
+    <string name="msg_aguarde">Aguarde ...</string>
     <string name="title_submenu">Menu</string>
     <string name="action_exit">SAIR</string>
     <string name="nao_ha_dados">NÃO HÁ DADOS</string>
@@ -26,7 +26,7 @@
     <string name="label_instrucoes">Instruções</string>
     <string name="label_configuracoes">Configurações</string>
     <string name="msg_sair_app">Sair da Aplicação?</string>
-    <string name="label_qtde_dezenas_por_jogo">Qtde. de dezenas por jogo:</string>
+    <string name="label_qtde_dezenas_por_jogo">Qtde. de Dezenas por Jogo</string>
     <string name="label_qtde_dezenas_selecionadas">0 dezenas selecionadas</string>
     <string name="label_dezenas_selecionadas">Dezenas selecionadas</string>
     <string name="label_numero_concurso">Concurso:</string>
@@ -42,10 +42,10 @@
     <string name="excluir">Excluir</string>
     <string name="alterar">Alterar</string>
     <string name="pesquisar">Pesquisar</string>
-    <string name="pesquisar_data_numero">Data ou Número </string>
-    <string name="pesquisarV11">PesquisarV11</string>
+    <string name="pesquisar_data_numero">Data ou Número</string>
     <string name="search_hint">Pesquisar</string>
     <string name="desfazer">Desfazer</string>
+    <string name="compartilhar">Compartilhar</string>
     <string name="restaurar">Restaurar Padrão</string>
     <string name="recarregar">Recarregar</string>
     <string name="atualizar_sorteios">Atualizar Sorteios</string>
@@ -57,7 +57,8 @@
     <string name="msg_delete_todos">Todos Sorteios</string>
     <string name="codigo_barras">Codigo de Barras</string>
     <string name="tirar_foto">Foto da Aposta</string>
-    <string name="filtrar_concuros">Filtrar Concursos</string>
+    <string name="filtrar_concursos">Filtrar Concursos</string>
+    <string name="remover_filtro">Remover Filtro</string>
     <string name="title_file_dialog">Arquivo/Diretorio</string>
     <string name="location">Localização</string>
     <string name="file_name">Nome do Arquivo</string>
@@ -105,7 +106,7 @@
         <item>7 dezenas por jogo</item>
     </string-array>
 
-    <string name="title_activity_gera_jogos">Gera Jogos</string>
+    <string name="title_activity_gera_jogos">Jogos Gerados</string>
     <string name="title_activity_sorteio_edit">Editar Sorteio</string>
     <string name="label_processar_arquivo">Processar Arquivo</string>
     <string name="label_baixar_arquivo">Baixar Arquivo</string>
@@ -130,7 +131,7 @@
     <string name="label_acertos">Acertos</string>
     <string name="label_digitalizar_seu_jogo">Digitalizar seu jogo</string>
     <string name="label_dezenas_sorteadas">Dezenas Sorteadas</string>
-    <string name="hint_search_sorteio">NºConcurso ou Data</string>
+    <string name="hint_search_sorteio">Concurso ou Data</string>
     <string name="label_ver_outros_sorteios">Em Outros Sorteios</string>
     <string name="label_suas_dezenas">Suas Dezenas</string>
     <string name="label_0vezes">0 vezes</string>
@@ -140,6 +141,42 @@
     <string name="title_activity_dezenas_mais_sorteadas_filtro">Filtro</string>
     <string name="subtitle_activity_dezenas_mais_sorteadas_filtro">As Mais Sorteadas</string>
     <string name="label_a">a</string>
-    <string name="label_0_ultimos_concuros">0 últimos concursos</string>
+    <string name="label_0_ultimos_concursos">0 últimos concursos</string>
+    <string name="ultimos_concursos">%d últimos concursos</string>
+    <string name="qtde_dezenas">%d dezenas</string>
+    <string name="todos">Todos</string>
+    <string name="dezenas_selecionadas">%d dezenas selecionadas</string>
+    <string name="quantidade_concursos">Quantidade de Concursos</string>
+    <string name="quantidade_dezenas">Quantidade de Dezenas</string>
+    <string name="calculando">Calculando. Aguarde...</string>
+    <string name="selecione_minimo">Selecione no mínimo %d dezenas</string>
+    <string name="selecione_maximo">Selecione no máximo %d dezenas</string>
+    <string name="processando">Processando. Aguarde...</string>
+    <string name="listando">Listando. Aguarde...</string>
+    <string name="erro_baixar_arquivo">Erro ao baixar o arquivo:</string>
+    <string name="erro_processar_arquivo">Erro ao processar o arquivo:</string>
+    <string name="descomprimindo">Descomprimindo arquivo. Aguarde...</string>
+    <string name="baixando">Baixando arquivo. Aguarde...</string>
+    <string name="erro_descomprimir">Erro ao descomprimir o aquivo:</string>
+    <string name="processo_cancelado">Processo cancelado</string>
+    <string name="processo_concluido">Processo concluido com sucesso</string>
+    <string name="baixar_arquivo">Baixar Arquivo</string>
+    <string name="processar_arquivo">Processar Arquivo</string>
+    <string name="deseja_cancelar_processo">Deseja cancelar processo?</string>
+    <string name="processando_arquivo_concurso">"Processando Arquivo\nConcurso: %d \nAguarde..."</string>
+    <string name="calculando_jogo">"Calculando Jogo: %1$d de %2$d \nAguarde..."</string>
+    <string name="error_arquivo_outro_jogo">Arquivo de outro Jogo: </string>
+    <string name="error">Erro</string>
+    <string name="atualizando_sorteio">Atualizando Sorteios\nAguarde...</string>
+    <string name="atualizando_sorteio_concurso">Atualizando Sorteios\n %1$s Concurso: %2$d \nAguarde...</string>
+    <string name="atualizacao_cancelado">Atualização cancelada</string>
+    <string name="atualizacao_sorteios">Atualização de Sorteios</string>
+    <string name="atualizacao_concluido">Atualização concluida com sucesso</string>
+    <string name="erro_web_service">Erro ao obter dados do Web Service: </string>
+    <string name="erro_gerar_sorteio">Erro ao gerar o sorteio: </string>
+    <string name="label_dezenas_por_jogo">%d Dezenas por Jogo</string>
+    <string name="label_ordem">%dº</string>
+    <string name="label_total_jogos">Total de Jogos: %d jogo(s)</string>
+    <string name="label_ordens">0000º</string>
 
 </resources>

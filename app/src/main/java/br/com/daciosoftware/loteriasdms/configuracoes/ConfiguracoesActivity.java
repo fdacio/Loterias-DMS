@@ -30,7 +30,9 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configuracoes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if(getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         editTextUrlWebService = (EditText) findViewById(R.id.editTextUrlWebService);
         editTextUrlArquivoResultadoMegasena = (EditText) findViewById(R.id.editTextUrlArquivoResultadoMegasena);

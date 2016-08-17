@@ -1,15 +1,6 @@
 package br.com.daciosoftware.loteriasdms.util;
 
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.support.v7.app.AlertDialog;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.NumberPicker;
-import android.widget.Toast;
-
-import br.com.daciosoftware.loteriasdms.R;
+import android.widget.TextView;
 
 /**
  * Created by Dácio Braga on 21/07/2016.
@@ -17,29 +8,29 @@ import br.com.daciosoftware.loteriasdms.R;
  */
 public class DialogNumber {
 
-    private Context context;
-    private NumberPicker numberPicker;
-    private DialogInterface.OnClickListener onClickOKListener;
-    private String title = "";
+    private int layoutInflater;
+    private TextView textView;
+    private NumberPickerDialog.OnNumberSetListener numberSetListener;
+    private String title = "NumberPickerDialog";
     private int startValue = 0;
-    private int maxValue = 1000;
     private int minValue = 0;
-    private int valueReturn;
+    private int maxValue = 1000;
 
 
     /**
-     * @param context da Aplicacao
+     *
+     * @param textView View que recebera no seu texto o numero(TextView, Button, EditText)
+     * @param numberSetListener - implementacao para oa retorno do numberpicker
+     * @param layoutInflater Layout contendo um widget NumberPicker
      */
-    public DialogNumber(Context context) {
-        this.context = context;
+    public DialogNumber(TextView textView, int layoutInflater, NumberPickerDialog.OnNumberSetListener numberSetListener ) {
+        this.layoutInflater = layoutInflater;
+        this.textView = textView;
+        this.numberSetListener = numberSetListener;
     }
 
     public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setOnClickOKListener(DialogInterface.OnClickListener onClickOKListener) {
-        this.onClickOKListener = onClickOKListener;
     }
 
     public void setStartValue(int startValue) {
@@ -54,39 +45,19 @@ public class DialogNumber {
         this.minValue = minValue;
     }
 
-    public int getValueReturn() {
-        return valueReturn;
-    }
-
     public void show() {
-        LayoutInflater inflater = (LayoutInflater) this.context.getApplicationContext().getSystemService(this.context.LAYOUT_INFLATER_SERVICE);
-        View npView = inflater.inflate(R.layout.dialog_number_picker, null);
-        numberPicker = (NumberPicker) npView.findViewById(R.id.numberPicker);
-        numberPicker.setMinValue(minValue);
-        numberPicker.setMaxValue(maxValue);
-        numberPicker.setValue(startValue);
-        numberPicker.setWrapSelectorWheel(true);
-        numberPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-                valueReturn  = newVal;
-            }
-        });
-        valueReturn = startValue;
-        Dialog numberPickerDialog = new AlertDialog.Builder(this.context)
-                .setView(npView)
-                .setTitle(title)
-                .setPositiveButton(R.string.btn_ok,onClickOKListener)
-                .setNegativeButton(R.string.btn_cancel,
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                dialog.dismiss();
-                            }
-                        })
-                .create();
+        new NumberPickerDialog(this.textView.getContext(),
+                this.layoutInflater,
+                this.numberSetListener,
+                this.title,
+                this.startValue,
+                this.minValue,
+                this.maxValue)
+                .show();
 
-        numberPickerDialog.show();
     }
+
+
 }
 
 

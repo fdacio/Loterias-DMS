@@ -5,9 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -81,35 +78,6 @@ public class QuinaDAO extends SorteioDAO {
 
     }
 
-    @Override
-    public Long insertSorteioFromTrow(Elements tds) throws NumberFormatException, ParseException, IOException {
-
-        int numero = Integer.parseInt(tds.get(0).text());
-        if (findByNumber(numero) == null) {
-            Calendar data = MyDateUtil.dateBrToCalendar(tds.get(1).text());
-            int d1 = Integer.parseInt(tds.get(2).text());
-            int d2 = Integer.parseInt(tds.get(3).text());
-            int d3 = Integer.parseInt(tds.get(4).text());
-            int d4 = Integer.parseInt(tds.get(5).text());
-            int d5 = Integer.parseInt(tds.get(6).text());
-            String local = tds.get(9).text() + " " + tds.get(10).text();
-
-            Quina quina = getInstanciaEntity();
-            quina.setNumero(numero);
-            quina.setData(data);
-            quina.setLocal(local);
-            quina.setD1(d1);
-            quina.setD2(d2);
-            quina.setD3(d3);
-            quina.setD4(d4);
-            quina.setD5(d5);
-
-            return save(quina);
-        } else {
-            return null;
-        }
-
-    }
 
     @Override
     public Long insertSorteioFromTrow(List<String> tds) throws NumberFormatException, ParseException{

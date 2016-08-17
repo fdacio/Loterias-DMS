@@ -19,9 +19,9 @@ import java.util.Calendar;
 import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.HttpConnection;
+import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
  * Created by Dácio Braga on 28/07/2016.
@@ -33,9 +33,8 @@ import br.com.daciosoftware.loteriasdms.util.HttpConnection;
 public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
 
     private Context context;
-    private boolean running = true;
     private ProgressDialog progressDialog;
-    private String msg = "Atualizando Sorteios.\nAguarde...";
+
 
     public AtualizaUltimoSorteioTask(Context context) {
         this.context = context;
@@ -88,60 +87,44 @@ public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
                 JSONArray jsonArray = jsonObject.optJSONArray("Sorteios");
                 JSONObject jsonObject2 = jsonArray.getJSONObject(0);
                 String numeros = jsonObject2.getString("Numeros");
-                String[] dezenas = numeros.replace("[", "").replace("]", "").split(",");
+                String[] dezenasWS = numeros.replace("[", "").replace("]", "").split(",");
+                int[] dezenas = new int[dezenasWS.length];
+                for (int i = 0; i < dezenas.length; i++) {
+                    dezenas[i] = Integer.parseInt(dezenasWS[i]);
+                }
 
-                msg = "Atualizando Sorteios.\n" +
-                        nomeSorteio + " Concurso:" + numero + "\n" +
-                        "Aguarde...";
+
+                String msg = String.format(context.getResources().getString(R.string.atualizando_sorteio_concurso), nomeSorteio, numero);
                 publishProgress(msg);
 
                 Sorteio sorteio = sorteioDAO.getInstanciaEntity();
                 sorteio.setNumero(numero);
                 sorteio.setData(data);
                 sorteio.setLocal(local);
-
-                java.lang.reflect.Method methodGet = null;
-                for (int i = 0; i < dezenas.length; i++) {
-                    int dezena = Integer.parseInt(dezenas[i]);
-
-                    String methodName = "setD" + String.valueOf(i + 1);
-                    try {
-                        methodGet = sorteio.getClass().getMethod(methodName, Integer.TYPE);
-                    } catch (SecurityException | NoSuchMethodException e) {
-                        return "Erro ao obter dados do Web Service: " + e.getMessage();
-                    }
-
-                    if (methodGet != null) {
-                        try {
-                            methodGet.invoke(sorteio, dezena);
-                        } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                            return "Erro ao obter dados do Web Service: " + e.getMessage();
-                        }
-                    }
-                }
+                sorteio.setDezenas(dezenas);
                 if (sorteioDAO.findByNumber(numero) == null) {
                     sorteioDAO.save(sorteio);
                 }
 
 
             } catch (IOException | JSONException | ParseException e) {
-                return "Erro ao obter dados do Web Service: " + e.getMessage();
+                return context.getResources().getString(R.string.erro_web_service) + e.getMessage();
             }
 
             jogo++;
 
-            if(!running) return "Atualização cancelada";
+            if(isCancelled()) return context.getResources().getString(R.string.atualizacao_cancelado);
 
         }//Fim do while
 
-        return "Atualização realizada com sucesso.";
+        return context.getResources().getString(R.string.atualizacao_concluido);
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
         progressDialog = new ProgressDialog(context);
-        progressDialog.setMessage(msg);
+        progressDialog.setMessage(context.getResources().getString(R.string.atualizando_sorteio));
         progressDialog.setCancelable(true);
         progressDialog.setIndeterminate(true);
         progressDialog.setOnCancelListener(new cancelTaskAtualizarSorteio(this));
@@ -152,16 +135,13 @@ public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
     @Override
     protected void onPostExecute(String retorno) {
         progressDialog.dismiss();
-        new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, "Atualização de Sorteios", retorno).show();
+        new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, context.getResources().getString(R.string.atualizacao_sorteios), retorno).show();
 
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        Toast.makeText(context, "Atualização cancelado!", Toast.LENGTH_SHORT).show();
-        running = false;
-
     }
 
     @Override
@@ -183,8 +163,8 @@ public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
         public void onCancel(DialogInterface dialog) {
             new DialogBox(context,
                     DialogBox.DialogBoxType.QUESTION,
-                    "Processar Arquivo",
-                    "Deseja cancelar o processo?",
+                    context.getResources().getString(R.string.atualizar_sorteios),
+                    context.getResources().getString(R.string.deseja_cancelar_processo),
                     new DialogInterface.OnClickListener() {//Resposta SIM do DialogBox Question
                         @Override
                         public void onClick(DialogInterface dialog, int which) {

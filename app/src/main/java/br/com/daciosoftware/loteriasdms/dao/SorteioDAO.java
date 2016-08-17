@@ -6,7 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -77,8 +76,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     public abstract Sorteio getEntity(Cursor c);
 
     public abstract Sorteio sortDezenasCrescente(Sorteio sorteio);
-
-    public abstract Long insertSorteioFromTrow(Elements tds) throws NumberFormatException, ParseException, IOException;
 
     public abstract Long insertSorteioFromTrow(List<String> tds) throws ParseException;
 
@@ -227,7 +224,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     }
 
 
-    public List<Sorteio> findByBetweenDate(Calendar date1, Calendar date2) {
+    public List<Sorteio> listBetweenDate(Calendar date1, Calendar date2) {
         List<Sorteio> list = new ArrayList<>();
         try {
             String where = this.colunaData + " between ? and ?";
@@ -246,5 +243,20 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
         return list;
     }
+
+
+    public List<Sorteio> listCountLast(int count, List<Sorteio> listSorteio) {
+        List<Sorteio> list = new ArrayList<>();
+        Collections.reverse(listSorteio);
+        int i = 0;
+        for(Sorteio sorteio: listSorteio){
+            list.add(sorteio);
+            i++;
+            if(i == count) break;
+        }
+
+        return list;
+    }
+
 
 }

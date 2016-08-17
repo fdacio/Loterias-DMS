@@ -6,7 +6,7 @@
         android:layout_width="40dp"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="0"
+        android:text="@string/label_00"
         android:id="@+id/textViewDezena"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"

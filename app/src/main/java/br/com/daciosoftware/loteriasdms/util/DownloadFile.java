@@ -1,7 +1,5 @@
 package br.com.daciosoftware.loteriasdms.util;
 
-import android.util.Log;
-
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

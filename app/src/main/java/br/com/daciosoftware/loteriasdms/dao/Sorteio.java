@@ -1,7 +1,8 @@
 package br.com.daciosoftware.loteriasdms.dao;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -172,10 +173,14 @@ public abstract class Sorteio implements Comparable<Sorteio>, Serializable {
     }
 
     @Override
-    public int compareTo(Sorteio another) {
-        return new Integer(numero).compareTo(new Integer(another.getNumero()));
+    public int compareTo(@NonNull Sorteio another) {
+        if(this.getNumero() > another.getNumero()) return 1;
+        else if(this.getNumero() < another.getNumero()) return -1;
+        else return 0;
+        //return new Integer(numero).compareTo(new Integer(another.getNumero()));
     }
 
     public abstract int[] getDezenas();
+
     public abstract void setDezenas(int[] arrayDezenas);
 }

@@ -3,7 +3,6 @@ package br.com.daciosoftware.loteriasdms;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -15,18 +14,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Element;
-
-import java.io.IOException;
-
 import br.com.daciosoftware.loteriasdms.configuracoes.ConfiguracoesActivity;
 import br.com.daciosoftware.loteriasdms.db.Database;
 import br.com.daciosoftware.loteriasdms.menuadapter.MainMenuAdapter;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
-import br.com.daciosoftware.loteriasdms.util.HttpConnection;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -55,13 +48,15 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
 
         Button buttonConfig = (Button) findViewById(R.id.buttonConfig);
-        buttonConfig.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, ConfiguracoesActivity.class);
-                startActivity(intent);
-            }
-        });
+        if(buttonConfig != null) {
+            buttonConfig.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MainActivity.this, ConfiguracoesActivity.class);
+                    startActivity(intent);
+                }
+            });
+        }
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         if (fab != null) {
@@ -160,7 +155,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         System.exit(0);
     }
 
-
+/*
     private String getLinkSorteios(TypeSorteio typeSorteio) {
         SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF, MODE_PRIVATE);
 
@@ -196,5 +191,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         return Integer.parseInt(numero);
 
     }
+*/
 
 }
