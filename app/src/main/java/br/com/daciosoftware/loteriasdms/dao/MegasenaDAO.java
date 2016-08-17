@@ -5,7 +5,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteException;
 
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Calendar;

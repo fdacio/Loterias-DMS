@@ -6,8 +6,6 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
-
-import java.io.IOException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
