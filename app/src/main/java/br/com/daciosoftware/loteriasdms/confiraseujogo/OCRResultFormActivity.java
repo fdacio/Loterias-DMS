@@ -1,15 +1,18 @@
 package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 
 public class OCRResultFormActivity extends AppCompatActivity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +23,12 @@ public class OCRResultFormActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         EditText editTextOCR = (EditText) findViewById(R.id.editTextOCR);
-        String textoOCR  = getIntent().getStringExtra(Constantes.TEXTO_OCR);
+        ImageView imageViewOCR = (ImageView) findViewById(R.id.imageViewOCR);
+
+        String textoOCR = getIntent().getStringExtra(Constantes.TEXTO_OCR);
+        Bitmap bmp = (Bitmap) getIntent().getExtras().getParcelable(Constantes.IMAGE_OCR);
+        imageViewOCR.setImageBitmap(bmp);
+
         editTextOCR.setText(textoOCR);
 
     }
@@ -35,5 +43,6 @@ public class OCRResultFormActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
 
 }

@@ -2,9 +2,13 @@ package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -23,7 +27,13 @@ import android.widget.Toast;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
+import com.googlecode.tesseract.android.TessBaseAPI;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -35,6 +45,7 @@ import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogNumber;
+import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.NumberPickerDialog;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 
@@ -91,7 +102,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         new StyleOfActivity(this, findViewById(R.id.layout_confira_seu_jogo)).setStyleInViews(typeSorteio);
     }
 
-
     private class DialogNumberPickerOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
@@ -127,7 +137,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             buildEdits(number);
         }
     }
-
 
     private class ConferirOnClickListener implements View.OnClickListener {
         @Override
@@ -210,7 +219,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         }
     }
 
-
     private class EditDezenaNextFocus implements TextWatcher {
 
         private EditText nextEdit;
@@ -273,7 +281,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         /*
@@ -298,7 +305,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             OCRTask ocr = new OCRTask(ConfiraSeuJogoActivity.this);
             ocr.execute(bmp);
             try {
-                setOCRInForm(ocr.get());
+                setOCRInForm(ocr.get(), bmp);
             } catch (InterruptedException | ExecutionException ignored) {
             }
 
@@ -306,7 +313,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
     }
 
-    private void setOCRInForm(String textoOCR) {
+    private void setOCRInForm(String textoOCR, Bitmap bmp) {
 
         char[] sequencia = textoOCR.toCharArray();
 
@@ -318,6 +325,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         }
         Intent intent = new Intent(ConfiraSeuJogoActivity.this, OCRResultFormActivity.class);
         intent.putExtra(Constantes.TEXTO_OCR, novoTextoOCR);
+        intent.putExtra(Constantes.IMAGE_OCR, bmp);
         startActivity(intent);
 
         /*
@@ -363,8 +371,26 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
             case R.id.tirarFoto:
                 try {
+                    /*
                     Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_REQUEST);
+                    */
+                    Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.jogo);
+                    //bmp = resizeBitmap(bmp, bmp.getWidth(), bmp.getHeight()/5);
+                    String textoOCR = doOCR(bmp);
+                    setOCRInForm(textoOCR, bmp);
+
+                    /*
+                    OCRTask ocr = new OCRTask(ConfiraSeuJogoActivity.this);
+                    ocr.execute(bmp);
+                    try {
+                        setOCRInForm(ocr.get(),bmp);
+                    } catch (InterruptedException | ExecutionException ignored) {
+                    }
+                    */
+
+
+
                 } catch (ActivityNotFoundException anfe) {
                     String errorMessage = "Seu dispositivo não suporta captura de imagens!";
                     Toast toast = Toast.makeText(ConfiraSeuJogoActivity.this, errorMessage, Toast.LENGTH_SHORT);
@@ -383,5 +409,90 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+    private String doOCR(Bitmap bmp) {
+
+        bmp = resizeBitmap(bmp, bmp.getWidth(), bmp.getHeight() / 5);
+
+        String datapath = MyFileUtil.getDefaultDirectoryApp() + "/tesseract/";
+        checkFile(new File(datapath + "tessdata/"));
+        String language = "eng";
+
+        TessBaseAPI baseApi = new TessBaseAPI();
+        //baseApi.init("/storage/sdcard0/tesseract/", "eng");
+        baseApi.init(datapath, language);
+        baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "1234567890");
+        baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "!@#$%^&*  ()_+=-[]}{" + ";:'\"\\|~`,./<>?");
+        baseApi.setDebug(true);
+        baseApi.setImage(bmp);
+
+        String recognizedText = baseApi.getUTF8Text();
+
+        baseApi.end();
+
+        return recognizedText;
+
+    }
+
+    private void checkFile(File dir) {
+        //directory does not exist, but we can successfully create it
+        if (!dir.exists() && dir.mkdirs()) {
+            String datafilepath = dir.getAbsolutePath() + "/eng.traineddata";
+            copyFiles(datafilepath);
+        }
+        //The directory exists, but there is no data file in it
+        if (dir.exists()) {
+            String datafilepath = dir.getAbsolutePath() + "/eng.traineddata";
+            File datafile = new File(datafilepath);
+            if (!datafile.exists()) {
+                copyFiles(datafilepath);
+            }
+        }
+    }
+
+    private void copyFiles(String datafilepath) {
+        try {
+            //location we want the file to be at
+
+            //get access to AssetManager
+            AssetManager assetManager = getAssets();
+
+            //open byte streams for reading/writing
+            InputStream instream = assetManager.open("tessdata/eng.traineddata");
+            OutputStream outstream = new FileOutputStream(datafilepath);
+
+            //copy the file to the location specified by filepath
+            byte[] buffer = new byte[1024];
+            int read;
+            while ((read = instream.read(buffer)) != -1) {
+                outstream.write(buffer, 0, read);
+            }
+            outstream.flush();
+            outstream.close();
+            instream.close();
+
+        } catch (IOException ioe) {
+            ioe.printStackTrace();
+        }
+    }
+
+    private Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight) {
+        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
+
+        float ratioX = newWidth / (float) bitmap.getWidth();
+        float ratioY = newHeight / (float) bitmap.getHeight();
+        float middleX = newWidth / 2.0f;
+        float middleY = newHeight / 2.0f;
+
+        Matrix scaleMatrix = new Matrix();
+        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
+
+        Canvas canvas = new Canvas(scaledBitmap);
+        canvas.setMatrix(scaleMatrix);
+        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
+
+        return scaledBitmap;
+
+    }
 
 }

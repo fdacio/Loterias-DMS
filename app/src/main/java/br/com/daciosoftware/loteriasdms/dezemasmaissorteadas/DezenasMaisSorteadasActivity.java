@@ -41,7 +41,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
 
     private int qtdeDezenasSelecionadas = 0;
     private int qtdeMinimaDezenasSelecionadas = 0;
-    private int qtdeMaximaDezenasSelecionadas = 0;
+    private int qtdeMaximaDezenasPorJogo = 0;
     private int totalDezenasPorJogo = 0;
 
     public static final int FILTRO_DMS = 150;
@@ -66,17 +66,17 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
         switch (typeSorteio) {
             case MEGASENA:
                 qtdeMinimaDezenasSelecionadas = 6;
-                qtdeMaximaDezenasSelecionadas = 15;
+                qtdeMaximaDezenasPorJogo = 15;
                 totalDezenasPorJogo = 60;
                 break;
             case LOTOFACIL:
                 qtdeMinimaDezenasSelecionadas = 15;
-                qtdeMaximaDezenasSelecionadas = 18;
+                qtdeMaximaDezenasPorJogo = 18;
                 totalDezenasPorJogo = 25;
                 break;
             case QUINA:
                 qtdeMinimaDezenasSelecionadas = 5;
-                qtdeMaximaDezenasSelecionadas = 7;
+                qtdeMaximaDezenasPorJogo = 7;
                 totalDezenasPorJogo = 80;
                 break;
         }
@@ -224,17 +224,19 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
                 return;
             }
 
+            /*
             if (qtdeDezenasSelecionadas > qtdeMaximaDezenasSelecionadas) {
                 String msg = String.format(getResources().getString(R.string.selecione_maximo),qtdeMaximaDezenasSelecionadas);
                 Toast.makeText(DezenasMaisSorteadasActivity.this, msg, Toast.LENGTH_SHORT).show();
                 return;
             }
+            */
 
             Intent intent = new Intent(DezenasMaisSorteadasActivity.this, JogosGeradosActivity.class);
             intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
             intent.putExtra(Constantes.DEZENAS_SELECIONADAS, getDezenasSelecionads());
             intent.putExtra(Constantes.QTDE_MIN_DEZENAS_JOGO, qtdeMinimaDezenasSelecionadas);
-            intent.putExtra(Constantes.QTDE_MAX_DEZENAS_JOGO, getDezenasSelecionads().length);
+            intent.putExtra(Constantes.QTDE_MAX_DEZENAS_JOGO, qtdeMaximaDezenasPorJogo);
             startActivity(intent);
         }
     }
@@ -268,10 +270,6 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
                 startActivityForResult(intent, FILTRO_DMS);
                 return true;
 
-            case R.id.removerFiltro:
-                removerFiltro();
-                listarMaisSorteadas(null);
-                return true;
         }
 
         return super.onOptionsItemSelected(item);

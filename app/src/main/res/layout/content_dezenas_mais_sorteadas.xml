@@ -28,28 +28,6 @@
             android:layout_height="match_parent">
 
             <TextView
-                android:id="@+id/textView16"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="right"
-                android:text="@string/label_filtro_concursos"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_column="0" />
-
-            <TextView
-                android:id="@+id/textViewFiltroConcursos"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_filtro_todos"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_column="1" />
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
                 android:id="@+id/textView18"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -66,6 +44,28 @@
                 android:text="@string/label_filtro_todos"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
 
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/textView16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:text="@string/label_filtro_concursos"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="0" />
+
+            <TextView
+                android:id="@+id/textViewFiltroConcursos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_filtro_todos"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="1" />
         </TableRow>
 
     </TableLayout>

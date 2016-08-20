@@ -9,12 +9,4 @@
 
     </item>
 
-    <item
-        android:id="@+id/removerFiltro"
-        android:title="@string/remover_filtro"
-        android:icon="@drawable/ic_filter_remove_white_24dp"
-        app:showAsAction="ifRoom">
-
-    </item>
-
 </menu>

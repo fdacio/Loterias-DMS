@@ -24,6 +24,9 @@ public class JogosGeradosAdapter extends BaseAdapter {
         this.list = list;
     }
 
+    public List<JogoGerado> getList() {
+        return list;
+    }
     @Override
     public int getCount() {
         return list.size();

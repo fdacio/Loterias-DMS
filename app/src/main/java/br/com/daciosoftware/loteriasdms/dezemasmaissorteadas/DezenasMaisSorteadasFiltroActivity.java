@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,6 +34,10 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
     private String labelButtonConcursos;
     private int maxValue;
 
+    private Button buttonData1;
+    private Button buttonData2;
+    private Button buttonConcursos;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,7 +54,7 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
 
         setParamFromIntent();
 
-        Button buttonData1 = (Button) findViewById(R.id.buttonData1);
+        buttonData1 = (Button) findViewById(R.id.buttonData1);
         if(buttonData1 != null){
             buttonData1.setText(labelButtonData1);
             buttonData1.setOnClickListener(new View.OnClickListener() {
@@ -60,7 +66,7 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
 
         }
 
-        Button buttonData2 = (Button) findViewById(R.id.buttonData2);
+        buttonData2 = (Button) findViewById(R.id.buttonData2);
         if(buttonData2 != null){
             buttonData2.setText(labelButtonData2);
             buttonData2.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +77,7 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
             });
         }
 
-        Button buttonConcursos = (Button) findViewById(R.id.buttonConcursos);
+        buttonConcursos = (Button) findViewById(R.id.buttonConcursos);
         if (buttonConcursos != null) {
             buttonConcursos.setText(labelButtonConcursos);
             buttonConcursos.setOnClickListener(new View.OnClickListener() {
@@ -206,11 +212,32 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
 
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_dezenas_mais_sorteadas_filtro, menu);
+        return true;
+    }
+
+    private void removerFiltro() {
+        buttonData1.setText(getResources().getString(R.string.todos));
+        buttonData2.setText(getResources().getString(R.string.todos));
+        buttonConcursos.setText(getResources().getString(R.string.todos));
+        data1 = null;
+        data2 = null;
+        numeroConcursos = 0;
+
+    }
+
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             // Respond to the action bar's Up/Home button
             case android.R.id.home:
                 finish();
+                return true;
+            case R.id.removerFiltro:
+                removerFiltro();
                 return true;
         }
         return super.onOptionsItemSelected(item);

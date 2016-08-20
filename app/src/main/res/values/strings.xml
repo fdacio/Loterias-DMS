@@ -162,6 +162,7 @@
     <string name="processo_concluido">Processo concluido com sucesso</string>
     <string name="baixar_arquivo">Baixar Arquivo</string>
     <string name="processar_arquivo">Processar Arquivo</string>
+    <string name="processando_imagem">Processando Imagem. Aguarde...</string>
     <string name="deseja_cancelar_processo">Deseja cancelar processo?</string>
     <string name="processando_arquivo_concurso">"Processando Arquivo\nConcurso: %d \nAguarde..."</string>
     <string name="calculando_jogo">"Calculando Jogo: %1$d de %2$d \nAguarde..."</string>
@@ -178,5 +179,7 @@
     <string name="label_ordem">%dº</string>
     <string name="label_total_jogos">Total de Jogos: %d jogo(s)</string>
     <string name="label_ordens">0000º</string>
+    <string name="erro_numero_invalido">Erro: Número inválido</string>
+    <string name="erro_data_invalida">Erro: Data inválida</string>
 
 </resources>

@@ -72,7 +72,7 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
         }
 
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences(Constantes.SHARED_PREF, context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(Constantes.SHARED_PREF, Context.MODE_PRIVATE);
         String urlWebServiceRoot = sharedPreferences.getString(Constantes.URL_WEB_SERVICE, Constantes.URL_WEB_SERVICE_DEFAULT);
         SorteioDAO sorteioDAO = SorteioDAO.getDAO(context, typeSorteio);
 
@@ -83,7 +83,7 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
             String jsonWebServiceUS = HttpConnection.getContentJSON(urlWebServicePrimeiroSorteio);
             JSONObject jsonObjectUS = new JSONObject(jsonWebServiceUS);
             int numeroUltimoSorteioWS = jsonObjectUS.getInt("NumeroConcurso");
-            Sorteio sorteio = sorteioDAO.findFirst();
+            Sorteio sorteio = sorteioDAO != null ? sorteioDAO.findLast() : null;
             int numeroUltimoSorteioBD = (sorteio != null) ? sorteio.getNumero() : 0;
             int numeroSorteio = (numeroUltimoSorteioBD == 0) ? numeroUltimoSorteioWS : numeroUltimoSorteioBD - 1;
 
@@ -101,7 +101,7 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
 
                      String status = jsonObject.getString("Status");
                      if (status.equals("end")) {
-                          return context.getResources().getString(R.string.atualizacao_concluido);// "Atualização realizada com sucesso.";
+                         return "OK";
                      }
 
                     int numero = jsonObject.getInt("NumeroConcurso");
@@ -121,14 +121,16 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
 
                     publishProgress(msg);
 
-                    Sorteio sorteioAdd = sorteioDAO.getInstanciaEntity();
-                    sorteioAdd.setNumero(numero);
-                    sorteioAdd.setData(data);
-                    sorteioAdd.setLocal(local);
-                    sorteioAdd.setDezenas(dezenas);
+                    Sorteio sorteioAdd = sorteioDAO != null ? sorteioDAO.getInstanciaEntity() : null;
+                    if (sorteioAdd != null) {
+                        sorteioAdd.setNumero(numero);
+                        sorteioAdd.setData(data);
+                        sorteioAdd.setLocal(local);
+                        sorteioAdd.setDezenas(dezenas);
 
-                    if (sorteioDAO.findByNumber(numero) == null) {
-                        sorteioDAO.save(sorteioAdd);
+                        if (sorteioDAO.findByNumber(numero) == null) {
+                            sorteioDAO.save(sorteioAdd);
+                        }
                     }
 
                     numeroSorteio--;
@@ -148,8 +150,7 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
             return context.getResources().getString(R.string.erro_web_service) + urlWebServicePrimeiroSorteio;
         }
 
-
-        return context.getResources().getString(R.string.atualizacao_concluido);
+        return "OK";
     }
 
     @Override
@@ -163,13 +164,16 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
         progressDialog.show();
     }
 
-
     @Override
     protected void onPostExecute(String retorno) {
         progressDialog.dismiss();
-        new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, context.getResources().getString(R.string.atualizacao_sorteios), retorno).show();
-        if(this.atualizacaoSorteioInterface != null) {
-            this.atualizacaoSorteioInterface.executarAposAtualizacao();
+        if (retorno.equals("OK")) {
+            new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, context.getResources().getString(R.string.atualizacao_sorteios), context.getResources().getString(R.string.atualizacao_concluido)).show();
+            if (this.atualizacaoSorteioInterface != null) {
+                this.atualizacaoSorteioInterface.executarAposAtualizacao();
+            }
+        } else {
+            new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, context.getResources().getString(R.string.atualizacao_sorteios), retorno).show();
         }
     }
 
@@ -188,7 +192,6 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
 
 
     }
-
 
     private class cancelTaskAtualizarSorteio implements DialogInterface.OnCancelListener {
 

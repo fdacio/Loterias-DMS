@@ -16,6 +16,7 @@ public abstract class Constantes {
     public static final int INSERT_UPDATE = 1;
     public static final String SHARED_PREF = "LoteriasSharedPref";
     public static final String TEXTO_OCR = "TEXTO_OCR";
+    public static final String IMAGE_OCR = "IMAGE_OCR";
     public static final String FILTRO_DMS_DATA1 = "FILTRO_DMS_DATA1";
     public static final String FILTRO_DMS_DATA2 = "FILTRO_DMS_DATA2";
     public static final String FILTRO_DMS_CONCURSOS = "FILTRO_DMS_CONCURSOS";

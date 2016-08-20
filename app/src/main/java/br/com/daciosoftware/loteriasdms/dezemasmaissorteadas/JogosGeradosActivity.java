@@ -37,7 +37,7 @@ import br.com.daciosoftware.loteriasdms.util.NumberPickerDialog;
 
 public class JogosGeradosActivity extends AppCompatActivity {
 
-    private List<JogoGerado> listJogoGerado = new ArrayList<>();
+
     private ListView listViewGeraJogos;
     private TextView textViewTotalJogos;
     private int[] dezenasSelecionadas;
@@ -105,11 +105,10 @@ public class JogosGeradosActivity extends AppCompatActivity {
 
     private class GeraJogosTask extends AsyncTask<Integer, String, Void> {
 
-
-        private String msg = getResources().getString(R.string.calculando_jogo);
-
+        private List<JogoGerado> listJogoGerado = new ArrayList<>();
         @Override
         protected Void doInBackground(Integer... params) {
+
             int qtdeDezenasPorJogo = params[0];
             long qtdeJogosPossiveis = getQtdeJogosPossiveis(qtdeDezenasPorJogo, dezenasSelecionadas.length);
 
@@ -117,6 +116,7 @@ public class JogosGeradosActivity extends AppCompatActivity {
                 JogoGerado jogoGerado = new JogoGerado(getArrayCandidato(qtdeDezenasPorJogo));
                 if (!inList(listJogoGerado, jogoGerado)) {
                     listJogoGerado.add(jogoGerado);
+                    String msg = getResources().getString(R.string.calculando_jogo);
                     publishProgress(String.format(msg, listJogoGerado.size(), qtdeJogosPossiveis));
                 }
                 if (isCancelled()) break;
@@ -272,6 +272,16 @@ public class JogosGeradosActivity extends AppCompatActivity {
     }
 
     /**
+     * Obtém um indice radômico dentro de um limite(bound)
+     *
+     * @param bound limite a ser gerado o indice
+     * @return indice dentro do limite
+     */
+    private int getIndiceRandomico(int bound) {
+        return new Random().nextInt(bound);
+    }
+
+    /**
      * Monta um array candidato de dezenas para
      * compor a lista de jogos
      *
@@ -284,7 +294,7 @@ public class JogosGeradosActivity extends AppCompatActivity {
         int dezena;
         int i = 0;
         while (i < qtdeDezenasPorJogo) {
-            indiceRandomico = getIndiceRandomico(dezenasSelecionadas.length, i);
+            indiceRandomico = getIndiceRandomico(dezenasSelecionadas.length);
             dezena = dezenasSelecionadas[indiceRandomico];
             if (!inArray(arrayDezenasJogoGerado, dezena)) {
                 arrayDezenasJogoGerado[i] = dezena;
@@ -328,6 +338,9 @@ public class JogosGeradosActivity extends AppCompatActivity {
         return true;
     }
 
+    private List<JogoGerado> getLisJogoGerado() {
+        return ((JogosGeradosAdapter) listViewGeraJogos.getAdapter()).getList();
+    }
     private String geraFileJogos(List<JogoGerado> listJogoGerado) throws IOException {
         String filePath = MyFileUtil.getDefaultDirectoryApp() + "/jogos-gerados.txt";
         File fileJogosGerado = new File(filePath);
@@ -352,7 +365,7 @@ public class JogosGeradosActivity extends AppCompatActivity {
             case R.id.compartilhar:
                 Intent intentShareFile = new Intent(Intent.ACTION_SEND);
                 try {
-                    String myFilePath = geraFileJogos(listJogoGerado);
+                    String myFilePath = geraFileJogos(getLisJogoGerado());
                     File fileWithinMyDir = new File(myFilePath);
                     if (fileWithinMyDir.exists()) {
                         intentShareFile.setType("text/plain");
