@@ -37,7 +37,6 @@ import br.com.daciosoftware.loteriasdms.util.NumberPickerDialog;
 
 public class JogosGeradosActivity extends AppCompatActivity {
 
-
     private ListView listViewGeraJogos;
     private TextView textViewTotalJogos;
     private int[] dezenasSelecionadas;
@@ -101,7 +100,6 @@ public class JogosGeradosActivity extends AppCompatActivity {
         new GeraJogosTask().execute(qtdeDezenasPorJogo);
 
     }
-
 
     private class GeraJogosTask extends AsyncTask<Integer, String, Void> {
 
@@ -330,7 +328,6 @@ public class JogosGeradosActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -341,6 +338,7 @@ public class JogosGeradosActivity extends AppCompatActivity {
     private List<JogoGerado> getLisJogoGerado() {
         return ((JogosGeradosAdapter) listViewGeraJogos.getAdapter()).getList();
     }
+
     private String geraFileJogos(List<JogoGerado> listJogoGerado) throws IOException {
         String filePath = MyFileUtil.getDefaultDirectoryApp() + "/jogos-gerados.txt";
         File fileJogosGerado = new File(filePath);

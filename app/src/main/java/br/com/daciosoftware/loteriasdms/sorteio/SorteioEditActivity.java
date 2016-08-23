@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableRow;
 
-import java.lang.reflect.InvocationTargetException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -127,35 +126,15 @@ public class SorteioEditActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             id = extras.getLong(Constantes.ID_INSERT_UPDATE);
-            if (id != null) {
-                this.sorteio = sorteioDAO.findById(id);
-                if (this.sorteio != null) {
-                    editTextNumero.setText(String.valueOf(this.sorteio.getNumero()));
-                    buttonData.setText(MyDateUtil.calendarToDateBr(this.sorteio.getData()));
-                    editTextLocal.setText(this.sorteio.getLocal());
-
-                    java.lang.reflect.Method methodGet = null;
-                    for (int i = 0; i < listaEditDezenas.size(); i++) {
-                        EditText edtDezena = listaEditDezenas.get(i);
-
-                        String methodName = "getD" + String.valueOf(i + 1);
-                        try {
-                            methodGet = this.sorteio.getClass().getMethod(methodName);
-                        } catch (SecurityException | NoSuchMethodException e) {}
-
-                        if (methodGet != null) {
-                            try {
-                                /* Aqui que acontece a mágica, as dezenas sao setadas nos editsText
-                                *  conforme a envocação dos métodos getD1(), getD2(), getD3()....
-                                */
-                                Integer valorDezena = (Integer) methodGet.invoke(this.sorteio);
-                                edtDezena.setText(String.valueOf(valorDezena.intValue()));
-
-                            } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
+            this.sorteio = sorteioDAO.findById(id);
+            if (this.sorteio != null) {
+                editTextNumero.setText(String.valueOf(this.sorteio.getNumero()));
+                buttonData.setText(MyDateUtil.calendarToDateBr(this.sorteio.getData()));
+                editTextLocal.setText(this.sorteio.getLocal());
+                int[] dezenas = this.sorteio.getDezenas();
+                for (int i = 0; i < listaEditDezenas.size(); i++) {
+                    EditText edtDezena = listaEditDezenas.get(i);
+                    edtDezena.setText(String.valueOf(dezenas[i]));
                 }
             }
         }
@@ -173,24 +152,14 @@ public class SorteioEditActivity extends AppCompatActivity {
         this.sorteio.setData(data);
         this.sorteio.setLocal(local);
 
-        java.lang.reflect.Method methodSet = null;
+        int[] dezenas = new int[listaEditDezenas.size()];
+
         for (int i = 0; i < listaEditDezenas.size(); i++) {
             EditText edtDezena = listaEditDezenas.get(i);
             int dezena = Integer.parseInt(edtDezena.getText().toString());
-            String methodName = "setD" + String.valueOf(i + 1);
-            try {
-                Class clazz = this.sorteio.getClass().getSuperclass();
-                methodSet = clazz.getMethod(methodName, Integer.TYPE);
-            } catch (SecurityException | NoSuchMethodException e) {}
-            if (methodSet != null) {
-                /*
-                Aqui seta os valores dos editsText das dezenas no objeto this.sorteio.
-                 */
-                try {
-                    methodSet.invoke(this.sorteio, dezena);
-                } catch (IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {}
-            }
+            dezenas[i] = dezena;
         }
+        this.sorteio.setDezenas(dezenas);
     }
 
 
@@ -214,11 +183,7 @@ public class SorteioEditActivity extends AppCompatActivity {
             }
         }
 
-        if(fieldsValidate.size() > 0){
-            return false;
-        }else {
-            return true;
-        }
+        return fieldsValidate.size() <= 0;
     }
 
     @Override

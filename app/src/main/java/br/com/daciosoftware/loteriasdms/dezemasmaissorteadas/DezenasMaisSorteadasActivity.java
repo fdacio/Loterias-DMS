@@ -136,7 +136,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
     private class Param {
         private Calendar data1;
         private Calendar data2;
-        private int numeroConcursos;
+        private int qtdeConcursos;
         public Param(){ }
 
         public Calendar getData1() {
@@ -155,12 +155,12 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
             this.data2 = data2;
         }
 
-        public int getNumeroConcursos() {
-            return numeroConcursos;
+        public int getQtdeConcursos() {
+            return qtdeConcursos;
         }
 
-        public void setNumeroConcursos(int numeroConcursos) {
-            this.numeroConcursos = numeroConcursos;
+        public void setQtdeConcursos(int qtdeConcursos) {
+            this.qtdeConcursos = qtdeConcursos;
         }
     }
 
@@ -178,13 +178,13 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
                     listSorteio = sorteioDAO != null ? sorteioDAO.listAll() : null;
                 }else{
                     if(param.getData1() != null && param.getData2() != null) {
-                        listSorteio = sorteioDAO != null ? sorteioDAO.listBetweenDate(param.getData1(), param.getData2()) : null;
+                        listSorteio = sorteioDAO != null ? sorteioDAO.listEntreDatas(param.getData1(), param.getData2()) : null;
                     }else{
                         listSorteio = sorteioDAO != null ? sorteioDAO.listAll() : null;
                     }
 
-                    if(param.getNumeroConcursos() > 0){
-                        listSorteio = sorteioDAO != null ? sorteioDAO.listCountLast(param.getNumeroConcursos(), listSorteio) : null;
+                    if (param.getQtdeConcursos() > 0) {
+                        listSorteio = sorteioDAO != null ? sorteioDAO.listQtdeConcursos(param.getQtdeConcursos(), listSorteio) : null;
                     }
                 }
 
@@ -204,6 +204,8 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
             if (msg.what == 100) {
                 DezenasMaisSorteadasAdapter adapter = new DezenasMaisSorteadasAdapter(DezenasMaisSorteadasActivity.this, listMaisSorteadas, DezenasMaisSorteadasActivity.this);
                 listViewDezenasMaisSorteadas.setAdapter(adapter);
+                String label = String.format(getResources().getString(R.string.dezenas_selecionadas), 0);
+                textViewQtdeSelecionada.setText(label);
             }
             progressDialog.dismiss();
         }
@@ -335,7 +337,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
                     this.numeroConcursos = numeroConcursos;
                     labelConcursos = String.format(getResources().getString(R.string.ultimos_concursos),numeroConcursos);
                     if (param == null)param = new Param();
-                    param.setNumeroConcursos(numeroConcursos);
+                    param.setQtdeConcursos(numeroConcursos);
 
                 } else {
                     this.numeroConcursos = 0;

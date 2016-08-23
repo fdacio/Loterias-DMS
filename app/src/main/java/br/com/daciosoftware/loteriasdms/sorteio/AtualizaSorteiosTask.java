@@ -83,10 +83,9 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
             String jsonWebServiceUS = HttpConnection.getContentJSON(urlWebServicePrimeiroSorteio);
             JSONObject jsonObjectUS = new JSONObject(jsonWebServiceUS);
             int numeroUltimoSorteioWS = jsonObjectUS.getInt("NumeroConcurso");
-            Sorteio sorteio = sorteioDAO != null ? sorteioDAO.findLast() : null;
+            Sorteio sorteio = sorteioDAO != null ? sorteioDAO.findFirst() : null;
             int numeroUltimoSorteioBD = (sorteio != null) ? sorteio.getNumero() : 0;
             int numeroSorteio = (numeroUltimoSorteioBD == 0) ? numeroUltimoSorteioWS : numeroUltimoSorteioBD - 1;
-
 
             /*
             Processamento inicia-se do mais rescente sorteio até o mais antigo.

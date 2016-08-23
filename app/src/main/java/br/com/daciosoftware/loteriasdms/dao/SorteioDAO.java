@@ -42,12 +42,11 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         return this.db;
     }
 
-
     /**
      * Padrão Factory
-     * @param context
-     * @param typeSorteio
-     * @return
+     * @param context - Contexto da Aplicação
+     * @param typeSorteio - Tipo de Sorteio
+     * @return DAO para o sorteio do tipo typeSorteio
      */
     public static SorteioDAO getDAO(Context context, TypeSorteio typeSorteio) {
         switch (typeSorteio) {
@@ -65,7 +64,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         }
 
     }
-
 
     public abstract Sorteio getInstanciaEntity();
 
@@ -96,7 +94,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
     public List<Sorteio> listAll() {
         List<Sorteio> listSorteio = new ArrayList<>();
         try {
-            Cursor cursor = getCursor(null, null, null);
+            Cursor cursor = getCursor(null, null);
             if (cursor.moveToFirst()) {
                 do {
                     Sorteio sorteio = getEntity(cursor);
@@ -110,7 +108,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         Collections.sort(listSorteio);
         return listSorteio;
     }
-
 
     @Override
     public List<Sorteio> listAllDecrescente() {
@@ -156,22 +153,28 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         }
     }
 
-
     @Override
     public Sorteio findFirst() {
-        if(count()>0)
-            return listAll().get(0);
-        else
+        String[] columns = new String[]{"min(" + this.colunaNumero + ")"};
+        Cursor cursor = getCursor(columns, null, null);
+        if (cursor.moveToFirst()) {
+            int number = cursor.getInt(0);
+            return findByNumber(number);
+        } else {
             return null;
+        }
     }
-
 
     @Override
     public Sorteio findLast() {
-        if(count()>0)
-            return listAll().get(count()-1);
-        else
+        String[] columns = new String[]{"max(" + this.colunaNumero + ")"};
+        Cursor cursor = getCursor(columns, null, null);
+        if (cursor.moveToFirst()) {
+            int number = cursor.getInt(0);
+            return findByNumber(number);
+        } else {
             return null;
+        }
     }
 
     @Override
@@ -194,12 +197,10 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         return null;
     }
 
-
     @Override
     public int count() {
         return listAll().size();
     }
-
 
     public Cursor getCursor(String where, String[] whereArgs) {
         return db.query(this.tableName,
@@ -221,8 +222,17 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
                 orderBy);
     }
 
+    public Cursor getCursor(String[] columns, String where, String[] whereArgs) {
+        return db.query(this.tableName,
+                columns,
+                where,
+                whereArgs,
+                null,
+                null,
+                null);
+    }
 
-    public List<Sorteio> listBetweenDate(Calendar date1, Calendar date2) {
+    public List<Sorteio> listEntreDatas(Calendar date1, Calendar date2) {
         List<Sorteio> list = new ArrayList<>();
         try {
             String where = this.colunaData + " between ? and ?";
@@ -242,19 +252,17 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         return list;
     }
 
-
-    public List<Sorteio> listCountLast(int count, List<Sorteio> listSorteio) {
+    public List<Sorteio> listQtdeConcursos(int qtde, List<Sorteio> listSorteio) {
         List<Sorteio> list = new ArrayList<>();
         Collections.reverse(listSorteio);
         int i = 0;
         for(Sorteio sorteio: listSorteio){
             list.add(sorteio);
             i++;
-            if(i == count) break;
+            if (i == qtde) break;
         }
 
         return list;
     }
-
 
 }

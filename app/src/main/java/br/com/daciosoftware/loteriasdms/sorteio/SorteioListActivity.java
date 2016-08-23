@@ -164,16 +164,21 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
 
     private List<Sorteio> listarPorNumero(SorteioDAO sorteioDAO, Param param) {
         List<Sorteio> list = new ArrayList<>();
-        list.add(sorteioDAO.findByNumber(param.getNumero()));
+        Sorteio sorteio = sorteioDAO.findByNumber(param.getNumero());
+        if (sorteio != null) {
+            list.add(sorteio);
+        }
         return list;
     }
 
-    private List<Sorteio> listarPorData(SorteioDAO sorteioDAO, Param parama) {
+    private List<Sorteio> listarPorData(SorteioDAO sorteioDAO, Param param) {
         List<Sorteio> list = new ArrayList<>();
-        list.add(sorteioDAO.findByDate(parama.getData()));
+        Sorteio sorteio = sorteioDAO.findByDate(param.getData());
+        if (sorteio != null) {
+            list.add(sorteio);
+        }
         return list;
     }
-
 
     @Override
     public void executarAposAtualizacao() {
@@ -271,8 +276,7 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
     }
 
     @Override
-    public void onCreateContextMenu(ContextMenu menu, View v,
-                                    ContextMenu.ContextMenuInfo menuInfo) {
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_context, menu);
@@ -293,7 +297,6 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
                 return super.onContextItemSelected(item);
         }
     }
-
 
     private void editSorteio(Sorteio sorteio) {
         Intent intent = new Intent(SorteioListActivity.this, SorteioEditActivity.class);

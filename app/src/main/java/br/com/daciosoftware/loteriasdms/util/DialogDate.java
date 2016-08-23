@@ -48,7 +48,12 @@ public class DialogDate {
             int ano;
 
             try {
-                Calendar dateOfTextView = dateShortBrToCalendar(textView.getText().toString());
+                Calendar dateOfTextView;
+                if (onlyMonthAndYear) {
+                    dateOfTextView = dateShortBrToCalendar(textView.getText().toString());
+                } else {
+                    dateOfTextView = dateBrToCalendar(textView.getText().toString());
+                }
                 dia = dateOfTextView.get(Calendar.DAY_OF_MONTH);
                 mes = dateOfTextView.get(Calendar.MONTH);
                 ano = dateOfTextView.get(Calendar.YEAR);

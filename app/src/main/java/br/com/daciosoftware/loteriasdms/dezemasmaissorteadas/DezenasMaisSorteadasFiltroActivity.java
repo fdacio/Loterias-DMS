@@ -33,7 +33,6 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
     private String labelButtonData2;
     private String labelButtonConcursos;
     private int maxValue;
-
     private Button buttonData1;
     private Button buttonData2;
     private Button buttonConcursos;
@@ -210,7 +209,6 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
          }
      }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -227,7 +225,6 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
         numeroConcursos = 0;
 
     }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
