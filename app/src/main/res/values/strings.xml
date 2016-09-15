@@ -1,5 +1,8 @@
 <resources>
     <string name="app_name">Loterias-DMS</string>
+    <string name="mega_sena">MEGA-SENA</string>
+    <string name="quina">QUINA</string>
+    <string name="lotofacil">LOTOFÁCIL</string>
     <string name="menu_dezenas_mais_sorteadas">As Mais Sorteadas</string>
     <string name="menu_sorteios">Sorteios</string>
     <string name="menu_processar_arquivo">Processar Arquivo</string>
@@ -20,9 +23,6 @@
     <string name="nao_ha_dados">NÃO HÁ DADOS</string>
     <string name="nao_ha_jogos">JOGOS</string>
     <string name="title_activity_menu_secundario">Menu</string>
-    <string name="mega_sena">MEGA-SENA</string>
-    <string name="quina">QUINA</string>
-    <string name="lotofacil">LOTOFÁCIL</string>
     <string name="label_instrucoes">Instruções</string>
     <string name="label_configuracoes">Configurações</string>
     <string name="msg_sair_app">Sair da Aplicação?</string>
@@ -66,6 +66,9 @@
     <string name="fd_cant_read_folder">Não pode ler</string>
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Cancelar</string>
+    <string name="valores_aposta">Valores de Aposta</string>
+    <string name="urls">URLs</string>
+    <string name="web_service">Web Service</string>
     <string name="folder">pasta_arquivo</string>
     <string name="title_save_file">Salvar Arquivo</string>
     <string name="title_open_file">Abrir Arquivo</string>
@@ -77,35 +80,6 @@
     <string name="title_activity_confira_seu_jogo">Confira Seu Jogo</string>
     <string name="zero">0 dezenas</string>
     <string name="msg_validade_form">Informe os campos abaixo</string>
-
-
-    <string-array name="array_qtde_dezenas_por_jogo_megasena">
-        <item>6 dezenas por jogo</item>
-        <item>7 dezenas por jogo</item>
-        <item>8 dezenas por jogo</item>
-        <item>9 dezenas por jogo</item>
-        <item>10 dezenas por jogo</item>
-        <item>11 dezenas por jogo</item>
-        <item>12 dezenas por jogo</item>
-        <item>13 dezenas por jogo</item>
-        <item>14 dezenas por jogo</item>
-        <item>15 dezenas por jogo</item>
-
-    </string-array>
-
-    <string-array name="array_qtde_dezenas_por_jogo_lotofacil">
-        <item>15 dezenas por jogo</item>
-        <item>16 dezenas por jogo</item>
-        <item>17 dezenas por jogo</item>
-        <item>18 dezenas por jogo</item>
-    </string-array>
-
-    <string-array name="array_qtde_dezenas_por_jogo_quina">
-        <item>5 dezenas por jogo</item>
-        <item>6 dezenas por jogo</item>
-        <item>7 dezenas por jogo</item>
-    </string-array>
-
     <string name="title_activity_gera_jogos">Jogos Gerados</string>
     <string name="title_activity_sorteio_edit">Editar Sorteio</string>
     <string name="label_processar_arquivo">Processar Arquivo</string>
@@ -114,9 +88,8 @@
     <string name="label_url_arquivo_resultados">URL do Arquivo de Resultados</string>
     <string name="label_url_resultados">URL dos Resultados</string>
     <string name="title_activity_ocrresult_form">Resultado do OCR</string>
-
     <string name="msg_salvar_configuracoes">Deseja salvar as configurações?</string>
-    <string name="msg_restaurar_config">Restuarar configurações padrão?</string>
+    <string name="msg_restaurar_config">Restaurar configurações padrão?</string>
     <string name="label_web_service">Web Service</string>
     <string name="label_url_web_service">URL raiz do Web Service</string>
     <string name="label_informe_arquivo">Informe o arquivo HTML</string>
@@ -141,8 +114,8 @@
     <string name="title_activity_dezenas_mais_sorteadas_filtro">Filtro</string>
     <string name="subtitle_activity_dezenas_mais_sorteadas_filtro">As Mais Sorteadas</string>
     <string name="label_a">a</string>
-    <string name="label_0_ultimos_concursos">0 últimos concursos</string>
-    <string name="ultimos_concursos">%d últimos concursos</string>
+    <string name="label_0_ultimos_concursos">0 últimos sorteios</string>
+    <string name="ultimos_concursos">%d últimos sorteios</string>
     <string name="qtde_dezenas">%d dezenas</string>
     <string name="todos">Todos</string>
     <string name="dezenas_selecionadas">%d dezenas selecionadas</string>
@@ -169,10 +142,11 @@
     <string name="error_arquivo_outro_jogo">Arquivo de outro Jogo: </string>
     <string name="error">Erro</string>
     <string name="atualizando_sorteio">Atualizando Sorteios\nAguarde...</string>
+    <string name="concurso_nao_encontrado">Concurso %d não encontrado</string>
     <string name="atualizando_sorteio_concurso">Atualizando Sorteios\n %1$s Concurso: %2$d \nAguarde...</string>
     <string name="atualizacao_cancelado">Atualização cancelada</string>
     <string name="atualizacao_sorteios">Atualização de Sorteios</string>
-    <string name="atualizacao_concluido">Atualização concluida com sucesso</string>
+    <string name="atualizacao_concluido">Atualização concluída com sucesso</string>
     <string name="erro_web_service">Erro ao obter dados do Web Service: </string>
     <string name="erro_gerar_sorteio">Erro ao gerar o sorteio: </string>
     <string name="label_dezenas_por_jogo">%d Dezenas por Jogo</string>
@@ -181,5 +155,11 @@
     <string name="label_ordens">0000º</string>
     <string name="erro_numero_invalido">Erro: Número inválido</string>
     <string name="erro_data_invalida">Erro: Data inválida</string>
+    <string name="title_activity_valores_aposta">Valores de Aposta</string>
+    <string name="title_activity_urls">URLs</string>
+    <string name="label_jogo">Jogo</string>
+    <string name="title_activity_urls_edit">Editar URL</string>
+    <string name="title_activity_web_service_edit">Editar URL</string>
+    <string name="title_activity_web_service">Web Service</string>
 
 </resources>

@@ -1,28 +1,20 @@
 package br.com.daciosoftware.loteriasdms.configuracoes;
 
-import android.content.DialogInterface;
-import android.content.SharedPreferences;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import br.com.daciosoftware.loteriasdms.R;
-import br.com.daciosoftware.loteriasdms.util.Constantes;
-import br.com.daciosoftware.loteriasdms.util.DialogBox;
+import br.com.daciosoftware.loteriasdms.configuracoes.urls.UrlsActivity;
+import br.com.daciosoftware.loteriasdms.configuracoes.valoresaposta.ValoresApostaActivity;
+import br.com.daciosoftware.loteriasdms.configuracoes.webservice.WebServiceActivity;
 
-public class ConfiguracoesActivity extends AppCompatActivity {
-
-    private EditText editTextUrlWebService;
-    private EditText editTextUrlArquivoResultadoMegasena;
-    private EditText editTextUrlResultadoMegasena;
-    private EditText editTextUrlArquivoResultadoLotofacil;
-    private EditText editTextUrlResultadoLotofacil;
-    private EditText editTextUrlArquivoResultadoQuina;
-    private EditText editTextUrlResultadoQuina;
+public class ConfiguracoesActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,76 +22,16 @@ public class ConfiguracoesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_configuracoes);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        editTextUrlWebService = (EditText) findViewById(R.id.editTextUrlWebService);
-        editTextUrlArquivoResultadoMegasena = (EditText) findViewById(R.id.editTextUrlArquivoResultadoMegasena);
-        editTextUrlResultadoMegasena = (EditText)findViewById(R.id.editTextUrlResultadoMegasena);
-        editTextUrlArquivoResultadoLotofacil = (EditText) findViewById(R.id.editTextUrlArquivoResultadoLotofacil);
-        editTextUrlResultadoLotofacil = (EditText) findViewById(R.id.editTextUrlResultadoLotofacil);
-        editTextUrlArquivoResultadoQuina = (EditText) findViewById(R.id.editTextUrlArquivoResultadoQuina);
-        editTextUrlResultadoQuina = (EditText) findViewById(R.id.editTextUrlResultadoQuina);
+        String[] menuConfig = {
+                getResources().getString(R.string.valores_aposta),
+                getResources().getString(R.string.urls),
+                getResources().getString(R.string.web_service)};
 
-
-        loadUrlInForm();
-
-
-    }
-
-
-    private void loadUrlInForm(){
-        SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF,0);
-
-        editTextUrlWebService.setText(sharedPreferences.getString(Constantes.URL_WEB_SERVICE, Constantes.URL_WEB_SERVICE_DEFAULT));
-
-        editTextUrlArquivoResultadoMegasena.setText(sharedPreferences.getString(Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA, Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA_DEFAULT));
-        editTextUrlResultadoMegasena.setText(sharedPreferences.getString(Constantes.URL_RESULTADOS_MEGASENA, Constantes.URL_RESULTADOS_MEGASENA_DEFAULT));
-
-        editTextUrlArquivoResultadoLotofacil.setText(sharedPreferences.getString(Constantes.URL_ARQUIVO_RESULTADOS_LOTOFACIL,Constantes.URL_ARQUIVO_RESULTADOS_LOTOFACIL_DEFAULT));
-        editTextUrlResultadoLotofacil.setText(sharedPreferences.getString(Constantes.URL_RESULTADOS_LOTOFACIL,Constantes.URL_RESULTADOS_LOTOFACIL_DEFAULT));
-
-        editTextUrlArquivoResultadoQuina.setText(sharedPreferences.getString(Constantes.URL_ARQUIVO_RESULTADOS_QUINA,Constantes.URL_ARQUIVO_RESULTADOS_QUINA_DEFAULT));
-        editTextUrlResultadoQuina.setText(sharedPreferences.getString(Constantes.URL_RESULTADOS_QUINA,Constantes.URL_RESULTADOS_QUINA_DEFAULT));
-    }
-
-    private void saveUrlInPref(){
-        SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF,MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        editor.putString(Constantes.URL_WEB_SERVICE,editTextUrlWebService.getText().toString());
-        editor.putString(Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA,editTextUrlArquivoResultadoMegasena.getText().toString());
-        editor.putString(Constantes.URL_RESULTADOS_MEGASENA,editTextUrlResultadoMegasena.getText().toString());
-
-        editor.putString(Constantes.URL_ARQUIVO_RESULTADOS_LOTOFACIL,editTextUrlArquivoResultadoLotofacil.getText().toString());
-        editor.putString(Constantes.URL_RESULTADOS_LOTOFACIL,editTextUrlResultadoLotofacil.getText().toString());
-
-        editor.putString(Constantes.URL_ARQUIVO_RESULTADOS_QUINA,editTextUrlArquivoResultadoQuina.getText().toString());
-        editor.putString(Constantes.URL_RESULTADOS_QUINA,editTextUrlResultadoQuina.getText().toString());
-
-        editor.commit();
-    }
-
-    private void restoreDefalutInForm(){
-        editTextUrlWebService.setText(Constantes.URL_WEB_SERVICE_DEFAULT);
-
-        editTextUrlArquivoResultadoMegasena.setText(Constantes.URL_ARQUIVO_RESULTADOS_MEGASENA_DEFAULT);
-        editTextUrlResultadoMegasena.setText(Constantes.URL_RESULTADOS_MEGASENA_DEFAULT);
-
-        editTextUrlArquivoResultadoLotofacil.setText(Constantes.URL_ARQUIVO_RESULTADOS_LOTOFACIL_DEFAULT);
-        editTextUrlResultadoLotofacil.setText(Constantes.URL_RESULTADOS_LOTOFACIL_DEFAULT);
-
-        editTextUrlArquivoResultadoQuina.setText(Constantes.URL_ARQUIVO_RESULTADOS_QUINA_DEFAULT);
-        editTextUrlResultadoQuina.setText(Constantes.URL_RESULTADOS_QUINA_DEFAULT);
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_edit_config, menu);
-        return true;
+        ListView listViewMenuConfig = (ListView) findViewById(R.id.listViewMenuConfig);
+        listViewMenuConfig.setAdapter(new MenuConfigAdapter(this, menuConfig));
+        listViewMenuConfig.setOnItemClickListener(this);
     }
 
     @Override
@@ -109,66 +41,25 @@ public class ConfiguracoesActivity extends AppCompatActivity {
             case android.R.id.home:
                 finish();
                 return true;
-
-            case R.id.save:
-                DialogBox dialogBox = new DialogBox(this,
-                        DialogBox.DialogBoxType.QUESTION,
-                        getResources().getString(R.string.msg_salvar_configuracoes),
-                        "",
-                        new OnClickYesDialogSave(),
-                        new OnClickNoDialogSave());
-                dialogBox.show();
-                return true;
-
-            case R.id.restaurar:
-                DialogBox dialogBox2 = new DialogBox(this,
-                        DialogBox.DialogBoxType.QUESTION,
-                        getResources().getString(R.string.msg_restaurar_config),
-                        "",
-                        new OnClickYesDialogRestore(),
-                        new OnClickNoDialogRestore());
-                dialogBox2.show();
-                return true;
-
-            case R.id.desfazer:
-                loadUrlInForm();
-                return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private class OnClickYesDialogSave implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            saveUrlInPref();
-            finish();
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = null;
+        switch (position) {
+            case 0:
+                intent = new Intent(this, ValoresApostaActivity.class);
+                break;
+            case 1:
+                intent = new Intent(this, UrlsActivity.class);
+                break;
+            case 2:
+                intent = new Intent(this, WebServiceActivity.class);
+                break;
         }
-    }
-
-    private class OnClickNoDialogSave implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            loadUrlInForm();
-        }
-    }
-
-    private class OnClickYesDialogRestore implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-            restoreDefalutInForm();
-
-        }
-    }
-
-    private class OnClickNoDialogRestore implements DialogInterface.OnClickListener {
-        @Override
-        public void onClick(DialogInterface dialog, int which) {
-            dialog.dismiss();
-
-        }
+        startActivity(intent);
     }
 
 }

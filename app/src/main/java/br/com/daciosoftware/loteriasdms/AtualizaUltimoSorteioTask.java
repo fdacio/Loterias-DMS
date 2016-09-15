@@ -33,7 +33,6 @@ public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
     private Context context;
     private ProgressDialog progressDialog;
 
-
     public AtualizaUltimoSorteioTask(Context context) {
         this.context = context;
     }
@@ -95,12 +94,12 @@ public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
                 String msg = String.format(context.getResources().getString(R.string.atualizando_sorteio_concurso), nomeSorteio, numero);
                 publishProgress(msg);
 
-                Sorteio sorteio = sorteioDAO.getInstanciaEntity();
-                sorteio.setNumero(numero);
-                sorteio.setData(data);
-                sorteio.setLocal(local);
-                sorteio.setDezenas(dezenas);
                 if (sorteioDAO.findByNumber(numero) == null) {
+                    Sorteio sorteio = sorteioDAO.getInstanciaEntity();
+                    sorteio.setNumero(numero);
+                    sorteio.setData(data);
+                    sorteio.setLocal(local);
+                    sorteio.setDezenas(dezenas);
                     sorteioDAO.save(sorteio);
                 }
 
@@ -129,7 +128,6 @@ public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
         progressDialog.show();
     }
 
-
     @Override
     protected void onPostExecute(String retorno) {
         progressDialog.dismiss();
@@ -147,7 +145,6 @@ public class AtualizaUltimoSorteioTask extends AsyncTask<Void, String, String> {
         String newMsg = msgs[0];
         progressDialog.setMessage(newMsg);
     }
-
 
     private class cancelTaskAtualizarSorteio implements DialogInterface.OnCancelListener {
 

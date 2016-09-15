@@ -19,20 +19,6 @@ public class QuinaContract implements InterfaceContractDatabase {
     }
 
     @Override
-    public String[] getSaveColumns() {
-        String[] saveColumns = {ContractDatabase.Megasena._ID,
-                ContractDatabase.Quina.COLUNA_NUMERO,
-                ContractDatabase.Quina.COLUNA_DATA,
-                ContractDatabase.Quina.COLUNA_LOCAL,
-                ContractDatabase.Quina.COLUNA_D1,
-                ContractDatabase.Quina.COLUNA_D2,
-                ContractDatabase.Quina.COLUNA_D3,
-                ContractDatabase.Quina.COLUNA_D4,
-                ContractDatabase.Quina.COLUNA_D5 };
-        return saveColumns;
-    }
-
-    @Override
     public String getIdColumn() {
         return ContractDatabase.Megasena._ID;
     }

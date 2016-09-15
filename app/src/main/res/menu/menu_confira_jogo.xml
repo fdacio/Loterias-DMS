@@ -1,20 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item
-        android:id="@+id/tirarFoto"
-        android:title="@string/tirar_foto"
-        android:icon="@drawable/ic_photo_camera_white_24dp"
-        app:showAsAction="collapseActionView|ifRoom">
+<menu>
 
-    </item>
+    <!--
+        <item
+            android:id="@+id/tirarFoto"
+            android:title="@string/tirar_foto"
+            android:icon="@drawable/ic_photo_camera_white_24dp"
+            app:showAsAction="collapseActionView|ifRoom">
 
-    <item
-        android:id="@+id/lerCodigoBarras"
-        android:title="@string/codigo_barras"
-        android:icon="@drawable/ic_texture_white_24dp"
-        app:showAsAction="collapseActionView|ifRoom">
+        </item>
 
-    </item>
 
+        <item
+            android:id="@+id/lerCodigoBarras"
+            android:title="@string/codigo_barras"
+            android:icon="@drawable/ic_texture_white_24dp"
+            app:showAsAction="collapseActionView|ifRoom">
+
+        </item>
+    -->
 </menu>

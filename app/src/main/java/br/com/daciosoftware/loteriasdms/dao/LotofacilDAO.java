@@ -64,7 +64,6 @@ public class LotofacilDAO extends SorteioDAO {
         }
     }
 
-
     @Override
     public Long insertSorteioFromTrow(List<String> tds) throws NumberFormatException, ParseException {
         int numero = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(0)));
@@ -111,7 +110,6 @@ public class LotofacilDAO extends SorteioDAO {
             return null;
         }
     }
-
 
     @Override
     public Lotofacil getEntity(Cursor c) {

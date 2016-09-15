@@ -48,7 +48,6 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
         this.atualizacaoSorteioInterface = atulizacaoSorteiointerface;
     }
 
-
     @Override
     protected String doInBackground(Void... v) {
         String nomeSorteio;

@@ -22,7 +22,8 @@ public abstract class Constantes {
     public static final String FILTRO_DMS_CONCURSOS = "FILTRO_DMS_CONCURSOS";
 
 
-
+    public static final String URLS = "URLS";
+    public static final String WEB_SERVICE = "WEB_SERVICE";
     public static final String URL_ARQUIVO_RESULTADOS_MEGASENA = "URL_ARQUIVO_RESULTADOS_MEGASENA";
     public static final String URL_RESULTADOS_MEGASENA = "URL_RESULTADOS_MEGASENA";
     public static final String URL_ARQUIVO_RESULTADOS_LOTOFACIL = "URL_ARQUIVO_RESULTADOS_LOTOFACIL";

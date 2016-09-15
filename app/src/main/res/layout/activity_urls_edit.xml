@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".confiraseujogo.OCRResultFormActivity"
-    android:id="@+id/layout_ocrresult_form">
+    tools:context=".configuracoes.urls.UrlsEditActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -22,7 +21,6 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_ocrresult_form" />
-
+    <include layout="@layout/content_urls_edit" />
 
 </android.support.design.widget.CoordinatorLayout>

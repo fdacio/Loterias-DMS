@@ -1,13 +1,6 @@
 package br.com.daciosoftware.loteriasdms.confiraseujogo;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.res.AssetManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -15,28 +8,15 @@ import android.text.Editable;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextWatcher;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableRow;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
-import com.googlecode.tesseract.android.TessBaseAPI;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
@@ -45,13 +25,11 @@ import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogNumber;
-import br.com.daciosoftware.loteriasdms.util.MyFileUtil;
 import br.com.daciosoftware.loteriasdms.util.NumberPickerDialog;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 
 public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
-    private static final int CAMERA_REQUEST = 200;
     private TypeSorteio typeSorteio;
     private List<String> fieldsValidate;
     private EditText editTextNumeroConcurso;
@@ -95,7 +73,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
                 qtdeEdit = 0;
                 break;
         }
-        String label = String.format(getResources().getString(R.string.qtde_dezenas),qtdeEdit);
+        String label = String.format(getResources().getString(R.string.qtde_dezenas), qtdeEdit);
         buttonNumberPiker.setText(label);
         buildEdits(qtdeEdit);
 
@@ -105,9 +83,9 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
     private class DialogNumberPickerOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            DialogNumber dialogNumber = new DialogNumber((Button)view,
+            DialogNumber dialogNumber = new DialogNumber((Button) view,
                     R.layout.dialog_number_picker,
-                    new OnNumberSetListener((Button)view)
+                    new OnNumberSetListener((Button) view)
             );
             dialogNumber.setTitle(getResources().getString(R.string.quantidade_dezenas));
             dialogNumber.setStartValue(qtdeEdit);
@@ -119,19 +97,19 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
     /**
      * Classe interna para implementar o retorno do DialogNumber
-     *
      */
     private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
 
         private TextView textView;
-        public OnNumberSetListener(TextView textView){
+
+        public OnNumberSetListener(TextView textView) {
             this.textView = textView;
 
         }
 
         @Override
         public void onNumberSet(int number) {
-            String label = String.format(getResources().getString(R.string.qtde_dezenas),number);
+            String label = String.format(getResources().getString(R.string.qtde_dezenas), number);
             textView.setText(label);
             qtdeEdit = number;
             buildEdits(number);
@@ -144,7 +122,7 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
             if (validateForm()) {
                 int numero = Integer.valueOf(editTextNumeroConcurso.getText().toString());
                 if (SorteioDAO.getDAO(ConfiraSeuJogoActivity.this, typeSorteio).findByNumber(Integer.valueOf(numero)) == null) {
-                    new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.title_activity_confira_seu_jogo), "Concuros " + numero + " não encontrado").show();
+                    new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.title_activity_confira_seu_jogo), String.format(getResources().getString(R.string.concurso_nao_encontrado), numero)).show();
                     return;
                 }
 
@@ -274,92 +252,9 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         }
 
 
-        if (fieldsValidate.size() > 0) {
-            return false;
-        } else {
-            return true;
-        }
+        return fieldsValidate.size() <= 0;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        /*
-        Rotina para caputar a leitura do código de barras(opcional, pois não retorna as dezenas da aposta)
-         */
-        IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
-        if (result != null) {
-            if (result.getContents() != null) {
-                Intent intent = new Intent(ConfiraSeuJogoActivity.this, OCRResultFormActivity.class);
-                intent.putExtra(Constantes.TEXTO_OCR, result.getContents());
-                startActivity(intent);
-            }
-        } else {
-            super.onActivityResult(requestCode, resultCode, data);
-        }
-
-        /*
-        Caputura a foto e passa pro OCR
-         */
-        if (requestCode == CAMERA_REQUEST && resultCode == RESULT_OK) {
-            Bitmap bmp = (Bitmap) data.getExtras().get("data");
-            OCRTask ocr = new OCRTask(ConfiraSeuJogoActivity.this);
-            ocr.execute(bmp);
-            try {
-                setOCRInForm(ocr.get(), bmp);
-            } catch (InterruptedException | ExecutionException ignored) {
-            }
-
-        }
-
-    }
-
-    private void setOCRInForm(String textoOCR, Bitmap bmp) {
-
-        char[] sequencia = textoOCR.toCharArray();
-
-        String novoTextoOCR = "";
-        for (int i = 0; i < textoOCR.length(); i++) {
-            if (((int) sequencia[i] != 10) && (sequencia[i] != ' ')) {
-                novoTextoOCR += "" + sequencia[i];
-            }
-        }
-        Intent intent = new Intent(ConfiraSeuJogoActivity.this, OCRResultFormActivity.class);
-        intent.putExtra(Constantes.TEXTO_OCR, novoTextoOCR);
-        intent.putExtra(Constantes.IMAGE_OCR, bmp);
-        startActivity(intent);
-
-        /*
-        String textoForSplit = "";
-        char ch;
-        for (int i = 0; i < novoTextoOCR.length(); i++) {
-            ch = novoTextoOCR.charAt(i);
-            textoForSplit += ch;
-            if (i % 2 != 0) {
-                textoForSplit += '-';
-            }
-        }
-
-
-        EditText editTextOCR = (EditText) findViewById(R.id.editTextoOCR);
-        editTextOCR.setText(textoForSplit);
-        String[] arrayDezenasOCR = textoForSplit.split("-");
-        for (int i = 0; i < arrayDezenasOCR.length; i++) {
-            if (i < listaEditDezenas.size()) {
-                EditText editText = listaEditDezenas.get(i);
-                if (editText != null) {
-                    editText.setText(arrayDezenasOCR[i]);
-                }
-            }
-        }
-        */
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_confira_jogo, menu);
-        return true;
-    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -369,130 +264,9 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
                 finish();
                 return true;
 
-            case R.id.tirarFoto:
-                try {
-                    /*
-                    Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                    startActivityForResult(cameraIntent, CAMERA_REQUEST);
-                    */
-                    Bitmap bmp = BitmapFactory.decodeResource(getResources(), R.drawable.jogo);
-                    //bmp = resizeBitmap(bmp, bmp.getWidth(), bmp.getHeight()/5);
-                    String textoOCR = doOCR(bmp);
-                    setOCRInForm(textoOCR, bmp);
-
-                    /*
-                    OCRTask ocr = new OCRTask(ConfiraSeuJogoActivity.this);
-                    ocr.execute(bmp);
-                    try {
-                        setOCRInForm(ocr.get(),bmp);
-                    } catch (InterruptedException | ExecutionException ignored) {
-                    }
-                    */
-
-
-
-                } catch (ActivityNotFoundException anfe) {
-                    String errorMessage = "Seu dispositivo não suporta captura de imagens!";
-                    Toast toast = Toast.makeText(ConfiraSeuJogoActivity.this, errorMessage, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-                return true;
-
-            case R.id.lerCodigoBarras:
-                IntentIntegrator integrator = new IntentIntegrator(ConfiraSeuJogoActivity.this);
-                integrator.setPrompt("Posicione o leitor no código de barras");
-                integrator.setBeepEnabled(true);
-                integrator.initiateScan();
-                return true;
-
         }
         return super.onOptionsItemSelected(item);
     }
 
-
-    private String doOCR(Bitmap bmp) {
-
-        bmp = resizeBitmap(bmp, bmp.getWidth(), bmp.getHeight() / 5);
-
-        String datapath = MyFileUtil.getDefaultDirectoryApp() + "/tesseract/";
-        checkFile(new File(datapath + "tessdata/"));
-        String language = "eng";
-
-        TessBaseAPI baseApi = new TessBaseAPI();
-        //baseApi.init("/storage/sdcard0/tesseract/", "eng");
-        baseApi.init(datapath, language);
-        baseApi.setVariable(TessBaseAPI.VAR_CHAR_WHITELIST, "1234567890");
-        baseApi.setVariable(TessBaseAPI.VAR_CHAR_BLACKLIST, "!@#$%^&*  ()_+=-[]}{" + ";:'\"\\|~`,./<>?");
-        baseApi.setDebug(true);
-        baseApi.setImage(bmp);
-
-        String recognizedText = baseApi.getUTF8Text();
-
-        baseApi.end();
-
-        return recognizedText;
-
-    }
-
-    private void checkFile(File dir) {
-        //directory does not exist, but we can successfully create it
-        if (!dir.exists() && dir.mkdirs()) {
-            String datafilepath = dir.getAbsolutePath() + "/eng.traineddata";
-            copyFiles(datafilepath);
-        }
-        //The directory exists, but there is no data file in it
-        if (dir.exists()) {
-            String datafilepath = dir.getAbsolutePath() + "/eng.traineddata";
-            File datafile = new File(datafilepath);
-            if (!datafile.exists()) {
-                copyFiles(datafilepath);
-            }
-        }
-    }
-
-    private void copyFiles(String datafilepath) {
-        try {
-            //location we want the file to be at
-
-            //get access to AssetManager
-            AssetManager assetManager = getAssets();
-
-            //open byte streams for reading/writing
-            InputStream instream = assetManager.open("tessdata/eng.traineddata");
-            OutputStream outstream = new FileOutputStream(datafilepath);
-
-            //copy the file to the location specified by filepath
-            byte[] buffer = new byte[1024];
-            int read;
-            while ((read = instream.read(buffer)) != -1) {
-                outstream.write(buffer, 0, read);
-            }
-            outstream.flush();
-            outstream.close();
-            instream.close();
-
-        } catch (IOException ioe) {
-            ioe.printStackTrace();
-        }
-    }
-
-    private Bitmap resizeBitmap(Bitmap bitmap, int newWidth, int newHeight) {
-        Bitmap scaledBitmap = Bitmap.createBitmap(newWidth, newHeight, Bitmap.Config.ARGB_8888);
-
-        float ratioX = newWidth / (float) bitmap.getWidth();
-        float ratioY = newHeight / (float) bitmap.getHeight();
-        float middleX = newWidth / 2.0f;
-        float middleY = newHeight / 2.0f;
-
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, middleX, middleY);
-
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bitmap, middleX - bitmap.getWidth() / 2, middleY - bitmap.getHeight() / 2, new Paint(Paint.FILTER_BITMAP_FLAG));
-
-        return scaledBitmap;
-
-    }
 
 }

@@ -22,7 +22,6 @@
         android:id="@+id/textViewLabelJogo"
         android:textColor="@color/colorMegasena"
         android:textStyle="bold|italic"
-        android:fontFamily="FuturaWeb,sans-serif"
         android:layout_gravity="center"
         android:textSize="32sp"
         android:paddingTop="32dp"

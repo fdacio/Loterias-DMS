@@ -78,7 +78,6 @@ public class QuinaDAO extends SorteioDAO {
 
     }
 
-
     @Override
     public Long insertSorteioFromTrow(List<String> tds) throws NumberFormatException, ParseException{
         int numero = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(0)));

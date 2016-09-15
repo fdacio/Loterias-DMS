@@ -19,21 +19,6 @@ public class MegasenaContract implements InterfaceContractDatabase {
     }
 
     @Override
-    public String[] getSaveColumns() {
-        String[] saveColumns = {ContractDatabase.Megasena._ID,
-                ContractDatabase.Megasena.COLUNA_NUMERO,
-                ContractDatabase.Megasena.COLUNA_DATA,
-                ContractDatabase.Megasena.COLUNA_LOCAL,
-                ContractDatabase.Megasena.COLUNA_D1,
-                ContractDatabase.Megasena.COLUNA_D2,
-                ContractDatabase.Megasena.COLUNA_D3,
-                ContractDatabase.Megasena.COLUNA_D4,
-                ContractDatabase.Megasena.COLUNA_D5,
-                ContractDatabase.Megasena.COLUNA_D6 };
-        return saveColumns;
-    }
-
-    @Override
     public String getIdColumn() {
         return ContractDatabase.Megasena._ID;
     }

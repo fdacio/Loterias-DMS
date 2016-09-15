@@ -78,14 +78,34 @@
             android:label="@string/title_activity_configuracoes"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".confiraseujogo.OCRResultFormActivity"
-            android:label="@string/title_activity_ocrresult_form"
-            android:screenOrientation="portrait"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
             android:name=".dezemasmaissorteadas.DezenasMaisSorteadasFiltroActivity"
             android:label="@string/title_activity_dezenas_mais_sorteadas_filtro"
             android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".configuracoes.valoresaposta.ValoresApostaActivity"
+            android:label="@string/title_activity_valores_aposta"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".configuracoes.urls.UrlsActivity"
+            android:label="@string/title_activity_urls"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".configuracoes.urls.UrlsEditActivity"
+            android:label="@string/title_activity_urls_edit"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".configuracoes.webservice.WebServiceEditActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_web_service_edit"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".configuracoes.webservice.WebServiceActivity"
+            android:screenOrientation="portrait"
+            android:label="@string/title_activity_web_service"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <!--
