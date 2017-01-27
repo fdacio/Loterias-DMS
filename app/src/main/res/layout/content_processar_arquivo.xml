@@ -13,15 +13,15 @@
     tools:showIn="@layout/activity_processar_arquivo">
 
     <include
-        layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel" />
+        android:id="@+id/linearLayouLogoLabel"
+        layout="@layout/header_type_sorteio" />
 
     <TableLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayouLogoLabel"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayouLogoLabel"
         android:stretchColumns="0,1,2,3,4">
 
 
@@ -30,10 +30,10 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textViewLabelFile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_informe_arquivo"
-                android:id="@+id/textViewLabelFile" />
+                android:text="@string/label_informe_arquivo" />
         </TableRow>
 
         <TableRow
@@ -42,22 +42,22 @@
 
             <EditText
                 android:id="@+id/editTextArquivo"
-                android:layout_column="0"
-                android:inputType="text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_span="5" />
+                android:layout_column="0"
+                android:layout_span="5"
+                android:inputType="text" />
 
             <ImageButton
-                android:background="@drawable/bg_button_paused"
+                android:id="@+id/imageButtonArquivo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imageButtonArquivo"
                 android:layout_column="1"
-                android:src="@drawable/ic_search_white_24dp"
                 android:layout_span="1"
+                android:background="@drawable/bg_button_paused"
                 android:contentDescription="@string/label_processar_arquivo"
-                android:padding="5dp" />
+                android:padding="5dp"
+                android:src="@drawable/ic_search_white_24dp" />
 
         </TableRow>
 
@@ -66,22 +66,22 @@
             android:layout_height="match_parent">
 
             <Button
+                android:id="@+id/buttonProcessarArquivo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/label_processar_arquivo"
-                android:id="@+id/buttonProcessarArquivo"
                 android:layout_column="0"
                 android:layout_span="6"
-                android:textColor="@color/colorWhite"
-                android:background="@drawable/bg_button_paused" />
+                android:background="@drawable/bg_button_paused"
+                android:text="@string/label_processar_arquivo"
+                android:textColor="@color/colorWhite" />
         </TableRow>
 
     </TableLayout>
 
     <Button
-        style="@style/smallButton"
-        android:text="@string/label_baixar_arquivo"
         android:id="@+id/buttonBaixarArquivo"
+        style="@style/smallButton"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom|left"
-        android:layout_alignParentBottom="true" />
+        android:text="@string/label_baixar_arquivo" />
 </RelativeLayout>

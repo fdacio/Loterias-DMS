@@ -13,33 +13,33 @@
     tools:showIn="@layout/activity_jogos_gerados">
 
     <include
-        layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel" />
+        android:id="@+id/linearLayouLogoLabel"
+        layout="@layout/header_type_sorteio" />
 
     <Button
         android:id="@+id/buttonDezenasPorJogo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_dezenas_por_jogo"
         android:layout_below="@+id/linearLayouLogoLabel"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="@string/label_dezenas_por_jogo" />
 
     <ListView
+        android:id="@+id/listViewGeraJogos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewGeraJogos"
-        android:layout_marginTop="10dp"
-        android:headerDividersEnabled="true"
+        android:layout_above="@+id/textViewTotalJogos"
         android:layout_below="@+id/buttonDezenasPorJogo"
-        android:layout_above="@+id/textViewTotalJogos" />
+        android:layout_marginTop="10dp"
+        android:headerDividersEnabled="true" />
 
     <TextView
+        android:id="@+id/textViewTotalJogos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_total_jogos"
-        android:id="@+id/textViewTotalJogos"
         android:layout_alignParentBottom="true"
         android:gravity="right"
+        android:text="@string/label_total_jogos"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/colorPrimary" />
 

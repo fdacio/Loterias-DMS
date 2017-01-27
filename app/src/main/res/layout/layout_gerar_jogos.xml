@@ -8,10 +8,10 @@
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/label_qtde_dezenas_por_jogo"
         android:layout_alignBottom="@+id/editTextQtdeDezenas"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:text="@string/label_qtde_dezenas_por_jogo" />
 
     <EditText
         android:id="@+id/editTextQtdeDezenas"
@@ -26,9 +26,9 @@
         android:id="@+id/button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/label_gerar_jogos"
         android:layout_below="@+id/editTextQtdeDezenas"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:text="@string/label_gerar_jogos" />
 
 
 </RelativeLayout>

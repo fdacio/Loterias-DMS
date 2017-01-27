@@ -5,8 +5,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
 
@@ -16,40 +17,22 @@ import br.com.daciosoftware.loteriasdms.R;
 public class MenuConfigAdapter extends BaseAdapter {
 
     private Context context;
-    private String[] list;
+    private List<ItemConfiguracao> list;
 
-    public MenuConfigAdapter(Context context, String[] list) {
+    public MenuConfigAdapter(Context context, List<ItemConfiguracao> list) {
         this.context = context;
         this.list = list;
 
     }
 
-    private int getIcon(int index) {
-        switch (index) {
-            case 0:
-                return R.drawable.ic_coin_grey_36dp;
-            case 1:
-                return R.drawable.ic_web_grey_36dp;
-            case 2:
-                return R.drawable.ic_cloud_check_grey_36dp;
-            default:
-                return 0;
-        }
-    }
-
-    private static class ViewHolder {
-        ImageView imageViewIcon;
-        TextView textViewLabel;
-    }
-
     @Override
     public int getCount() {
-        return list.length;
+        return list.size();
     }
 
     @Override
-    public String getItem(int position) {
-        return list[position];
+    public ItemConfiguracao getItem(int position) {
+        return list.get(position);
     }
 
     @Override
@@ -65,20 +48,25 @@ public class MenuConfigAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.row_configuracoes_menu_adapter, parent, false);
             holder = new ViewHolder();
-            holder.imageViewIcon = (ImageView) view.findViewById(R.id.imageViewIcon);
             holder.textViewLabel = (TextView) view.findViewById(R.id.textViewLabel);
+            holder.textViewSublabel = (TextView) view.findViewById(R.id.textViewSublabel);
             view.setTag(holder);
         } else {
             holder = (ViewHolder) view.getTag();
         }
 
-        String labelJogo = getItem(position);
+        ItemConfiguracao itemConfiguracao = getItem(position);
 
-        holder.imageViewIcon.setImageResource(getIcon(position));
-        holder.textViewLabel.setText(labelJogo);
+        holder.textViewLabel.setText(itemConfiguracao.getLabel());
+        holder.textViewSublabel.setText(itemConfiguracao.getSublabel());
 
         return view;
 
+    }
+
+    private static class ViewHolder {
+        TextView textViewLabel;
+        TextView textViewSublabel;
     }
 
 }

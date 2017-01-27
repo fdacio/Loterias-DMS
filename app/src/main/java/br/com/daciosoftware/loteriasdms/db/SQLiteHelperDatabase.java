@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import br.com.daciosoftware.loteriasdms.db.contract.ContractDatabase;
+
 public class SQLiteHelperDatabase extends SQLiteOpenHelper {
 
     public SQLiteHelperDatabase(Context context) {

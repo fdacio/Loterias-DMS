@@ -24,13 +24,15 @@ import java.util.List;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
-import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAOFactory;
+import br.com.daciosoftware.loteriasdms.pojo.Sorteio;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 public class DezenasMaisSorteadasActivity extends AppCompatActivity implements DezenasMaisSorteadasClickable {
 
+    public static final int FILTRO_DMS = 150;
     private TypeSorteio typeSorteio;
     private ProgressDialog progressDialog;
     private List<MaisSorteada> listMaisSorteadas;
@@ -38,18 +40,27 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
     private TextView textViewFiltroPeriodo;
     private TextView textViewFiltroConcursos;
     private TextView textViewQtdeSelecionada;
-
     private int qtdeDezenasSelecionadas = 0;
     private int qtdeMinimaDezenasSelecionadas = 0;
     private int qtdeMaximaDezenasPorJogo = 0;
     private int totalDezenasPorJogo = 0;
-
-    public static final int FILTRO_DMS = 150;
     private Calendar data1;
     private Calendar data2;
     private int numeroConcursos;
     private String labelPeriodo;
     private String labelConcursos;
+    private Handler handlerListSorteio = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 100) {
+                DezenasMaisSorteadasAdapter adapter = new DezenasMaisSorteadasAdapter(DezenasMaisSorteadasActivity.this, listMaisSorteadas, DezenasMaisSorteadasActivity.this);
+                listViewDezenasMaisSorteadas.setAdapter(adapter);
+                String label = String.format(getResources().getString(R.string.dezenas_selecionadas), 0);
+                textViewQtdeSelecionada.setText(label);
+            }
+            progressDialog.dismiss();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -133,37 +144,6 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
 
     }
 
-    private class Param {
-        private Calendar data1;
-        private Calendar data2;
-        private int qtdeConcursos;
-        public Param(){ }
-
-        public Calendar getData1() {
-            return data1;
-        }
-
-        public void setData1(Calendar data1) {
-            this.data1 = data1;
-        }
-
-        public Calendar getData2() {
-            return data2;
-        }
-
-        public void setData2(Calendar data2) {
-            this.data2 = data2;
-        }
-
-        public int getQtdeConcursos() {
-            return qtdeConcursos;
-        }
-
-        public void setQtdeConcursos(int qtdeConcursos) {
-            this.qtdeConcursos = qtdeConcursos;
-        }
-    }
-
     private void listarMaisSorteadas(final Param param) {
 
         progressDialog = ProgressDialog.show(this, "", getResources().getString(R.string.calculando), true, false);
@@ -171,7 +151,7 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
         new Thread() {
 
             public void run() {
-                SorteioDAO sorteioDAO = SorteioDAO.getDAO(DezenasMaisSorteadasActivity.this, typeSorteio);
+                SorteioDAO sorteioDAO = SorteioDAOFactory.getInstance(DezenasMaisSorteadasActivity.this, typeSorteio);
                 List<Sorteio> listSorteio;
 
                 if(param == null) {
@@ -196,51 +176,6 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
             }
         }.start();
 
-    }
-
-    private Handler handlerListSorteio = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 100) {
-                DezenasMaisSorteadasAdapter adapter = new DezenasMaisSorteadasAdapter(DezenasMaisSorteadasActivity.this, listMaisSorteadas, DezenasMaisSorteadasActivity.this);
-                listViewDezenasMaisSorteadas.setAdapter(adapter);
-                String label = String.format(getResources().getString(R.string.dezenas_selecionadas), 0);
-                textViewQtdeSelecionada.setText(label);
-            }
-            progressDialog.dismiss();
-        }
-    };
-
-    private class OnClickListenerGerarJogos implements View.OnClickListener {
-        private TypeSorteio typeSorteio;
-
-        public OnClickListenerGerarJogos(TypeSorteio typeSorteio) {
-            this.typeSorteio = typeSorteio;
-        }
-
-        @Override
-        public void onClick(View v) {
-            if (qtdeDezenasSelecionadas < qtdeMinimaDezenasSelecionadas) {
-                String msg = String.format(getResources().getString(R.string.selecione_minimo),qtdeMinimaDezenasSelecionadas);
-                Toast.makeText(DezenasMaisSorteadasActivity.this, msg, Toast.LENGTH_SHORT).show();
-                return;
-            }
-
-            /*
-            if (qtdeDezenasSelecionadas > qtdeMaximaDezenasSelecionadas) {
-                String msg = String.format(getResources().getString(R.string.selecione_maximo),qtdeMaximaDezenasSelecionadas);
-                Toast.makeText(DezenasMaisSorteadasActivity.this, msg, Toast.LENGTH_SHORT).show();
-                return;
-            }
-            */
-
-            Intent intent = new Intent(DezenasMaisSorteadasActivity.this, JogosGeradosActivity.class);
-            intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
-            intent.putExtra(Constantes.DEZENAS_SELECIONADAS, getDezenasSelecionads());
-            intent.putExtra(Constantes.QTDE_MIN_DEZENAS_JOGO, qtdeMinimaDezenasSelecionadas);
-            intent.putExtra(Constantes.QTDE_MAX_DEZENAS_JOGO, qtdeMaximaDezenasPorJogo);
-            startActivity(intent);
-        }
     }
 
     @Override
@@ -352,6 +287,71 @@ public class DezenasMaisSorteadasActivity extends AppCompatActivity implements D
 
         }
 
+    }
+
+    private class Param {
+        private Calendar data1;
+        private Calendar data2;
+        private int qtdeConcursos;
+
+        public Param() {
+        }
+
+        public Calendar getData1() {
+            return data1;
+        }
+
+        public void setData1(Calendar data1) {
+            this.data1 = data1;
+        }
+
+        public Calendar getData2() {
+            return data2;
+        }
+
+        public void setData2(Calendar data2) {
+            this.data2 = data2;
+        }
+
+        public int getQtdeConcursos() {
+            return qtdeConcursos;
+        }
+
+        public void setQtdeConcursos(int qtdeConcursos) {
+            this.qtdeConcursos = qtdeConcursos;
+        }
+    }
+
+    private class OnClickListenerGerarJogos implements View.OnClickListener {
+        private TypeSorteio typeSorteio;
+
+        public OnClickListenerGerarJogos(TypeSorteio typeSorteio) {
+            this.typeSorteio = typeSorteio;
+        }
+
+        @Override
+        public void onClick(View v) {
+            if (qtdeDezenasSelecionadas < qtdeMinimaDezenasSelecionadas) {
+                String msg = String.format(getResources().getString(R.string.selecione_minimo), qtdeMinimaDezenasSelecionadas);
+                Toast.makeText(DezenasMaisSorteadasActivity.this, msg, Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            /*
+            if (qtdeDezenasSelecionadas > qtdeMaximaDezenasSelecionadas) {
+                String msg = String.format(getResources().getString(R.string.selecione_maximo),qtdeMaximaDezenasSelecionadas);
+                Toast.makeText(DezenasMaisSorteadasActivity.this, msg, Toast.LENGTH_SHORT).show();
+                return;
+            }
+            */
+
+            Intent intent = new Intent(DezenasMaisSorteadasActivity.this, JogosGeradosActivity.class);
+            intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
+            intent.putExtra(Constantes.DEZENAS_SELECIONADAS, getDezenasSelecionads());
+            intent.putExtra(Constantes.QTDE_MIN_DEZENAS_JOGO, qtdeMinimaDezenasSelecionadas);
+            intent.putExtra(Constantes.QTDE_MAX_DEZENAS_JOGO, qtdeMaximaDezenasPorJogo);
+            startActivity(intent);
+        }
     }
 
 }

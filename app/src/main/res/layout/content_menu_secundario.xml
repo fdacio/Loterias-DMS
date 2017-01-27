@@ -15,9 +15,9 @@
     <include layout="@layout/header_type_sorteio" />
 
     <ListView
+        android:id="@+id/listViewMenuSecundario"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewMenuSecundario"
         android:layout_below="@+id/linearLayouLogoLabel"
         android:headerDividersEnabled="true" />
 </RelativeLayout>

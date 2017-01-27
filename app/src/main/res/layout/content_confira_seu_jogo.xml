@@ -21,10 +21,10 @@
         android:id="@+id/tableLayoutHeader"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:stretchColumns="0,1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/linearLayouLogoLabel">
+        android:layout_below="@+id/linearLayouLogoLabel"
+        android:stretchColumns="0,1">
 
         <TableRow
             android:layout_width="match_parent"
@@ -47,11 +47,11 @@
             android:layout_marginTop="5dp">
 
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_column="0"
-                android:layout_span="2">
+                android:layout_span="2"
+                android:orientation="horizontal">
 
                 <TextView
                     android:id="@+id/textView13"
@@ -63,8 +63,8 @@
                     android:id="@+id/editTextNumeroConcurso"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="number"
-                    android:ems="4"/>
+                    android:ems="4"
+                    android:inputType="number" />
             </LinearLayout>
         </TableRow>
 
@@ -96,11 +96,11 @@
     </TableLayout>
 
     <ScrollView
+        android:id="@+id/scrollEdits"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/scrollEdits"
-        android:layout_below="@+id/tableLayoutHeader"
-        android:layout_above="@+id/buttonConferir">
+        android:layout_above="@+id/buttonConferir"
+        android:layout_below="@+id/tableLayoutHeader">
 
         <TableLayout
             android:id="@+id/tableLayoutDezenas"
@@ -111,32 +111,32 @@
             <TableRow
                 android:id="@+id/trow1"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableRow>
+                android:layout_height="match_parent" />
 
             <TableRow
                 android:id="@+id/trow2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableRow>
+                android:layout_height="match_parent" />
 
             <TableRow
                 android:id="@+id/trow3"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableRow>
+                android:layout_height="match_parent" />
 
             <TableRow
                 android:id="@+id/trow4"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableRow>
+                android:layout_height="match_parent" />
 
             <TableRow
                 android:id="@+id/trow5"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableRow>
+                android:layout_height="match_parent" />
 
             <TableRow
                 android:id="@+id/trow6"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></TableRow>
+                android:layout_height="match_parent" />
         </TableLayout>
 
     </ScrollView>
@@ -145,11 +145,11 @@
         android:id="@+id/buttonConferir"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_gravity="bottom"
         android:layout_marginTop="20dp"
         android:background="@drawable/bg_button_paused"
         android:text="@string/label_confirir"
-        android:textColor="@color/colorWhite"
-        android:layout_alignParentBottom="true" />
+        android:textColor="@color/colorWhite" />
 
 </RelativeLayout>

@@ -3,13 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/save"
-        android:title="@string/salvar"
         android:icon="@drawable/ic_save_white_24dp"
-        app:showAsAction="always"></item>
+        android:title="@string/salvar"
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/desfazer"
-        android:title="@string/desfazer"
         android:icon="@drawable/ic_redo_white_24dp"
-        app:showAsAction="always"></item>
+        android:title="@string/desfazer"
+        app:showAsAction="ifRoom" />
 
 </menu>

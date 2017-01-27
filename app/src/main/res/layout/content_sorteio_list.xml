@@ -13,23 +13,23 @@
     tools:showIn="@layout/activity_sorteio_list">
 
     <include
-        layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel" />
+        android:id="@+id/linearLayouLogoLabel"
+        layout="@layout/header_type_sorteio" />
 
     <ListView
+        android:id="@+id/listViewSorteio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewSorteio"
-        android:layout_below="@+id/linearLayouLogoLabel"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/linearLayouLogoLabel" />
 
     <TextView
+        android:id="@+id/emptyElement"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/nao_ha_dados"
-        android:id="@+id/emptyElement"
+        android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:text="@string/nao_ha_dados" />
 
 </RelativeLayout>

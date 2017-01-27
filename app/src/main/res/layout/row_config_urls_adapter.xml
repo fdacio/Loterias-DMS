@@ -1,109 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
-
-    <TableLayout
+    <TextView
+        android:id="@+id/textViewLabel"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:stretchColumns="0,1">
+        android:layout_height="wrap_content"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
+        android:text="@string/label_jogo"
+        android:textColor="#000000"
+        android:textSize="16sp" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/label_jogo"
-                android:id="@+id/textViewHeaderJogo"
-                android:textStyle="bold|italic"
-                android:textSize="26sp"
-                android:layout_column="0"
-                android:layout_span="2" />
+        <TextView
+            android:id="@+id/textViewSublabel"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="8"
+            android:text="@string/label_url_arquivo_resultados"
+            android:textAppearance="?android:attr/textAppearanceSmall" />
 
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageButtonEdit"
-                android:src="@drawable/ic_edit_gray_24dp"
-                android:background="@drawable/selector_button_context"
-                android:contentDescription="@string/alterar"
-                android:padding="8dp"
-                android:focusable="false"
-                android:clickable="true" />
-        </TableRow>
+        <TextView
+            android:id="@+id/textViewEdit"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:clickable="true"
+            android:gravity="end|right"
+            android:text="@string/label_editar"
+            android:textColor="@color/colorButtonPaused" />
 
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="@string/label_url_resultados"
-                android:id="@+id/textView8"
-                android:layout_column="0"
-                android:layout_span="2" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/label_url_resultados"
-                android:id="@+id/textViewUrlResultado"
-                android:maxLines="1"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textColor="@color/colorBlack" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_url_arquivo_resultados"
-                android:id="@+id/textView9"
-                android:layout_column="0"
-                android:layout_span="2" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/label_url_arquivo_resultados"
-                android:id="@+id/textViewUrlArquivo"
-                android:maxLines="1"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:singleLine="true"
-                android:ellipsize="end"
-                android:textColor="@color/colorBlack" />
-
-        </TableRow>
-
-    </TableLayout>
+    </LinearLayout>
 
 </LinearLayout>

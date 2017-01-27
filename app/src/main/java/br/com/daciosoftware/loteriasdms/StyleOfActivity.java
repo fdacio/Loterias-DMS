@@ -26,6 +26,50 @@ public class StyleOfActivity {
         this.layoutActivity = layoutActivity;
     }
 
+    private static void findButtons(ViewGroup viewGroup, ArrayList<Button> buttons) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findButtons((ViewGroup) child, buttons);
+            } else if (child instanceof Button) {
+                buttons.add((Button) child);
+            }
+        }
+    }
+
+    private static void findImageButtons(ViewGroup viewGroup, ArrayList<ImageButton> imageButtons) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findImageButtons((ViewGroup) child, imageButtons);
+            } else if (child instanceof ImageButton) {
+                imageButtons.add((ImageButton) child);
+            }
+        }
+    }
+
+    private static void findFloatingActionButton(ViewGroup viewGroup, ArrayList<FloatingActionButton> buttons) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findFloatingActionButton((ViewGroup) child, buttons);
+            } else if (child instanceof FloatingActionButton) {
+                buttons.add((FloatingActionButton) child);
+            }
+        }
+    }
+
+    private static void findToolbars(ViewGroup viewGroup, ArrayList<Toolbar> toolbars) {
+        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
+            View child = viewGroup.getChildAt(i);
+            if (child instanceof ViewGroup) {
+                findToolbars((ViewGroup) child, toolbars);
+            } else if (child instanceof Toolbar) {
+                toolbars.add((Toolbar) child);
+            }
+        }
+    }
+
     /**
      * Estiliza um active conforme Tipo de Jogo
      *
@@ -56,7 +100,6 @@ public class StyleOfActivity {
             textViewLabelMenu.setTextColor(ColorStateList.valueOf(getColorRgb(typeSorteio)));
         }
     }
-
 
     private int getIcon(TypeSorteio typeSorteio) {
         switch (typeSorteio) {
@@ -153,7 +196,6 @@ public class StyleOfActivity {
         }
     }
 
-
     private int getBackgroundButton(TypeSorteio typeSorteio) {
         switch (typeSorteio) {
             case MEGASENA:
@@ -195,7 +237,6 @@ public class StyleOfActivity {
         }
     }
 
-
     private void setStyleImageButton(TypeSorteio typeSorteio) {
         ArrayList<ImageButton> imageButtons = getImageButtons();
         for (ImageButton imageButton : imageButtons) {
@@ -217,24 +258,11 @@ public class StyleOfActivity {
         }
     }
 
-
     private ArrayList<Button> getButtons() {
         ArrayList<Button> buttons = new ArrayList<>();
         ViewGroup viewGroup = (ViewGroup) layoutActivity.getParent();
         findButtons(viewGroup, buttons);
         return buttons;
-    }
-
-
-    private static void findButtons(ViewGroup viewGroup, ArrayList<Button> buttons) {
-        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                findButtons((ViewGroup) child, buttons);
-            } else if (child instanceof Button) {
-                buttons.add((Button) child);
-            }
-        }
     }
 
     private ArrayList<ImageButton> getImageButtons() {
@@ -244,19 +272,6 @@ public class StyleOfActivity {
         return imageButtons;
     }
 
-
-    private static void findImageButtons(ViewGroup viewGroup, ArrayList<ImageButton> imageButtons) {
-        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                findImageButtons((ViewGroup) child, imageButtons);
-            } else if (child instanceof ImageButton) {
-                imageButtons.add((ImageButton) child);
-            }
-        }
-    }
-
-
     private ArrayList<FloatingActionButton> getFloatingActionButton() {
         ArrayList<FloatingActionButton> floatinbActionsButtons = new ArrayList<>();
         ViewGroup viewGroup = (ViewGroup) layoutActivity.getParent();
@@ -264,33 +279,11 @@ public class StyleOfActivity {
         return floatinbActionsButtons;
     }
 
-    private static void findFloatingActionButton(ViewGroup viewGroup, ArrayList<FloatingActionButton> buttons) {
-        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                findFloatingActionButton((ViewGroup) child, buttons);
-            } else if (child instanceof FloatingActionButton) {
-                buttons.add((FloatingActionButton) child);
-            }
-        }
-    }
-
     private ArrayList<Toolbar> getToolbars() {
         ArrayList<Toolbar> toolbars = new ArrayList<>();
         ViewGroup viewGroup = (ViewGroup) layoutActivity.getParent();
         findToolbars(viewGroup, toolbars);
         return toolbars;
-    }
-
-    private static void findToolbars(ViewGroup viewGroup, ArrayList<Toolbar> toolbars) {
-        for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
-            View child = viewGroup.getChildAt(i);
-            if (child instanceof ViewGroup) {
-                findToolbars((ViewGroup) child, toolbars);
-            } else if (child instanceof Toolbar) {
-                toolbars.add((Toolbar) child);
-            }
-        }
     }
 
 

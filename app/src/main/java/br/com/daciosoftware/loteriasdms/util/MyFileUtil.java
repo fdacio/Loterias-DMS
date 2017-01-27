@@ -19,7 +19,7 @@ public class MyFileUtil {
     /**
      * @param context contexto da aplicação
      * @param file    arquivo para obter o MimeType
-     * @return
+     * @return String tipo do arquivo
      */
     public static String getMimeType(Context context, File file) {
         Uri uri = Uri.fromFile(file);

@@ -20,6 +20,7 @@ import br.com.daciosoftware.loteriasdms.menuadapter.MainMenuAdapter;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
+import br.com.daciosoftware.loteriasdms.webservice.AtualizaSorteiosTask;
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
@@ -64,7 +65,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 @Override
                 public void onClick(View view) {
                     if (DeviceInformation.isNetwork(MainActivity.this)) {
-                        new AtualizaUltimoSorteioTask(MainActivity.this).execute();
+                        new AtualizaSorteiosTask(MainActivity.this, null).execute();
+
                     } else {
                         new DialogBox(MainActivity.this,
                                 DialogBox.DialogBoxType.INFORMATION, "Error",
@@ -102,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        TypeSorteio typeSorteio;
+        TypeSorteio typeSorteio = null;
         switch (position) {
             case 0:
                 typeSorteio = TypeSorteio.MEGASENA;
@@ -113,14 +115,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             case 2:
                 typeSorteio = TypeSorteio.QUINA;
                 break;
-            default:
-                typeSorteio = TypeSorteio.MEGASENA;
-        }
 
+        }
         Intent intent = new Intent(MainActivity.this, SecundaryMenuActivity.class);
         intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
         startActivity(intent);
-
     }
 
     @Override
@@ -154,43 +153,5 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         Database.encerrarSessao();
         System.exit(0);
     }
-
-/*
-    private String getLinkSorteios(TypeSorteio typeSorteio) {
-        SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF, MODE_PRIVATE);
-
-        switch (typeSorteio) {
-            case MEGASENA:
-                return sharedPreferences.getString(Constantes.URL_RESULTADOS_MEGASENA, Constantes.URL_RESULTADOS_MEGASENA_DEFAULT);
-
-            case LOTOFACIL:
-                return sharedPreferences.getString(Constantes.URL_RESULTADOS_LOTOFACIL, Constantes.URL_RESULTADOS_LOTOFACIL_DEFAULT);
-
-            case QUINA:
-                return sharedPreferences.getString(Constantes.URL_RESULTADOS_QUINA, Constantes.URL_RESULTADOS_QUINA_DEFAULT);
-
-            default:
-                return "www.cef.gov.br/loterias";
-        }
-    }
-
-
-    public int getNumeroUltimoSorteio(TypeSorteio typeSorteio) throws NumberFormatException, IOException {
-
-        String url = getLinkSorteios(typeSorteio);
-        String html = HttpConnection.getContentHTML(url);
-
-        Element divResultados = Jsoup.parse(html).select("div#resultados").first();
-
-        Element spanNumeroData = divResultados.select("span").first();
-
-        String numerodata = spanNumeroData.text();
-
-        String numero = numerodata.split(" ")[1];
-
-        return Integer.parseInt(numero);
-
-    }
-*/
 
 }

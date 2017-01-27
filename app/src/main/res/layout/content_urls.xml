@@ -9,12 +9,12 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".configuracoes.urls.UrlsActivity"
+    tools:context=".configuracoes.arquivosresultados.ArquivoResultadoUrlListActivity"
     tools:showIn="@layout/activity_urls">
 
     <ListView
+        android:id="@+id/listViewUrls"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewUrls"
         android:focusable="false" />
 </RelativeLayout>

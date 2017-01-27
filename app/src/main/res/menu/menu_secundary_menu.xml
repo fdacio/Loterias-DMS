@@ -3,22 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/irMenuMegasena"
-        android:title="@string/mega_sena"
         android:icon="@drawable/ic_mega_sena_24"
+        android:title="@string/mega_sena"
         app:showAsAction="always">
 
     </item>
     <item
         android:id="@+id/irMenuLotofacil"
-        android:title="@string/lotofacil"
         android:icon="@drawable/ic_lotofacil_24"
+        android:title="@string/lotofacil"
         app:showAsAction="always">
 
     </item>
     <item
         android:id="@+id/irMenuQuina"
-        android:title="@string/quina"
         android:icon="@drawable/ic_quina_24"
+        android:title="@string/quina"
         app:showAsAction="always">
 
     </item>

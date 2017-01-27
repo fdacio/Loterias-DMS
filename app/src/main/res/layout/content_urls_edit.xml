@@ -9,7 +9,7 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".configuracoes.urls.UrlsEditActivity"
+    tools:context=".configuracoes.UrlEditActivity"
     tools:showIn="@layout/activity_urls_edit">
 
     <TableLayout
@@ -22,16 +22,16 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textViewHeader"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_column="0"
+                android:layout_span="2"
+                android:gravity="center_horizontal"
                 android:text="@string/label_jogo"
-                android:id="@+id/textViewHeaderJogo"
-                android:textStyle="bold|italic"
+                android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="26sp"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:gravity="center_horizontal" />
+                android:textStyle="bold|italic" />
 
         </TableRow>
 
@@ -40,13 +40,13 @@
             android:layout_height="match_parent">
 
             <TextView
+                android:id="@+id/textViewLabel"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_column="0"
+                android:layout_span="2"
                 android:text="@string/label_url_resultados"
-                android:id="@+id/textView8"
-                android:layout_column="0"
-                android:layout_span="2" />
+                android:textAppearance="?android:attr/textAppearanceSmall" />
 
         </TableRow>
 
@@ -55,45 +55,12 @@
             android:layout_height="match_parent">
 
             <EditText
+                android:id="@+id/editTextUrl"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/editTextUrlResultado"
                 android:layout_column="0"
                 android:layout_span="2"
-                android:maxLines="1"
-                android:singleLine="true"
                 android:inputType="textUri" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/label_url_arquivo_resultados"
-                android:id="@+id/textView9"
-                android:layout_column="0"
-                android:layout_span="2" />
-
-        </TableRow>
-
-        <TableRow
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/editTextUrlArquivo"
-                android:layout_column="0"
-                android:layout_span="2"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:inputType="textUri" />
-
 
         </TableRow>
 

@@ -21,6 +21,44 @@ public class MyHtmlParse {
     }
 
     /**
+     * @param trow - Uma linha de uma tabela html
+     * @return lista com todas as colunas dessa tabela
+     */
+    public static List<String> getTdsInTrow(String trow) {
+        List<String> listTds = new ArrayList<>();
+        String tagBegin = "<td";
+        String tagEnd = "</td>";
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < trow.length(); i++) {
+            sb.append(trow.charAt(i));
+
+            String textoTag = sb.toString();
+            boolean containsBegin = textoTag.contains(tagBegin);
+            boolean containsEnd = textoTag.contains(tagEnd);
+            if (containsBegin && containsEnd) {
+                int indiceStart = textoTag.indexOf(tagBegin);
+                int indiceEnd = textoTag.indexOf(tagEnd);
+                String td = textoTag.substring(indiceStart, indiceEnd + tagEnd.length());
+                listTds.add(td);
+                sb = new StringBuffer();
+            }
+        }
+        return listTds;
+    }
+
+    /**
+     * @param tag - Tag html ex: <td>TextoAqui</td>
+     * @return Conteúdo da tag: TextoAqui
+     */
+    public static String getTextTag(String tag) {
+        String tagBegin = ">";
+        String tagEnd = "</";
+        int indiceStart = tag.indexOf(tagBegin);
+        int indiceEnd = tag.indexOf(tagEnd);
+        return tag.substring(indiceStart + 1, indiceEnd).replace("&nbsp", "");
+    }
+
+    /**
      * @return a List from string with content html file
      * @throws IOException
      */
@@ -104,45 +142,6 @@ public class MyHtmlParse {
         }
 
         return listTableRow;
-    }
-
-    /**
-     * @param trow - Uma linha de uma tabela html
-     * @return lista com todas as colunas dessa tabela
-     */
-    public static List<String> getTdsInTrow(String trow) {
-        List<String> listTds = new ArrayList<>();
-        String tagBegin = "<td";
-        String tagEnd = "</td>";
-        StringBuffer sb = new StringBuffer();
-        for (int i = 0; i < trow.length(); i++) {
-            sb.append(trow.charAt(i));
-
-            String textoTag = sb.toString();
-            boolean containsBegin = textoTag.contains(tagBegin);
-            boolean containsEnd = textoTag.contains(tagEnd);
-            if (containsBegin && containsEnd) {
-                int indiceStart = textoTag.indexOf(tagBegin);
-                int indiceEnd = textoTag.indexOf(tagEnd);
-                String td = textoTag.substring(indiceStart, indiceEnd + tagEnd.length());
-                listTds.add(td);
-                sb = new StringBuffer();
-            }
-        }
-        return listTds;
-    }
-
-
-    /**
-     * @param tag - Tag html ex: <td>TextoAqui</td>
-     * @return Conteúdo da tag: TextoAqui
-     */
-    public static String getTextTag(String tag) {
-        String tagBegin = ">";
-        String tagEnd = "</";
-        int indiceStart = tag.indexOf(tagBegin);
-        int indiceEnd = tag.indexOf(tagEnd);
-        return tag.substring(indiceStart + 1, indiceEnd).replace("&nbsp","");
     }
 
 }

@@ -14,12 +14,12 @@
 
 
     <ListView
+        android:id="@+id/listViewMenuMain"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/listViewMenuMain"
-        android:headerDividersEnabled="false"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentTop="true"
+        android:headerDividersEnabled="false" />
 
 </RelativeLayout>

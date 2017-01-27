@@ -8,19 +8,23 @@ import android.database.sqlite.SQLiteException;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.db.Database;
-import br.com.daciosoftware.loteriasdms.db.InterfaceContractDatabase;
+import br.com.daciosoftware.loteriasdms.db.contract.InterfaceContractDatabase;
+import br.com.daciosoftware.loteriasdms.pojo.Sorteio;
+import br.com.daciosoftware.loteriasdms.pojo.SorteioFactory;
+import br.com.daciosoftware.loteriasdms.processaarquivo.MyHtmlParse;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
  * Created by Dácio Braga on 19/07/2016.
  */
-public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
+public abstract class SorteioDAO {
 
     private SQLiteDatabase db;
     private String tableName;
@@ -42,47 +46,16 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         return this.db;
     }
 
-    /**
-     * Padrão Factory
-     * @param context - Contexto da Aplicação
-     * @param typeSorteio - Tipo de Sorteio
-     * @return DAO para o sorteio do tipo typeSorteio
-     */
-    public static SorteioDAO getDAO(Context context, TypeSorteio typeSorteio) {
-        switch (typeSorteio) {
-            case MEGASENA:
-                return new MegasenaDAO(context, new MegasenaContract());
-
-            case LOTOFACIL:
-                return new LotofacilDAO(context, new LotofacilContract());
-
-            case QUINA:
-                return new QuinaDAO(context, new QuinaContract());
-
-            default:
-                return null;
-        }
-
-    }
-
-    public abstract Sorteio getInstanciaEntity();
-
     public abstract Long save(Sorteio sorteio) throws SQLiteException;
 
     public abstract Sorteio getEntity(Cursor c);
 
-    public abstract Sorteio sortDezenasCrescente(Sorteio sorteio);
-
-    public abstract Long insertSorteioFromTrow(List<String> tds) throws ParseException;
-
-    @Override
     public int delete(Sorteio sorteio) throws SQLiteException {
         String where = this.colunaID + "=?";
         String[] whereArgs = new String[]{String.valueOf(sorteio.getId())};
         return db.delete(this.tableName, where, whereArgs);
     }
 
-    @Override
     public int deleteAll() throws SQLiteException {
         String where = this.colunaID + ">?";
         String[] whereArgs = new String[]{String.valueOf(0)};
@@ -90,7 +63,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     }
 
-    @Override
     public List<Sorteio> listAll() {
         List<Sorteio> listSorteio = new ArrayList<>();
         try {
@@ -109,14 +81,12 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         return listSorteio;
     }
 
-    @Override
     public List<Sorteio> listAllDecrescente() {
         List<Sorteio> list = listAll();
         Collections.reverse(list);
         return list;
     }
 
-    @Override
     public List<Sorteio> sortListDezenasCrescente(List<Sorteio> list) {
         List<Sorteio> listDezenasCrescente = new ArrayList<>();
         for(Sorteio sorteio: list){
@@ -127,7 +97,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     }
 
-    @Override
     public Sorteio findById(Long id) {
         String where = this.colunaID + "=?";
         String[] whereArgs = new String[]{String.valueOf(id)};
@@ -140,7 +109,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         }
     }
 
-    @Override
     public Sorteio findByNumber(Integer number) {
         String where = this.colunaNumero + "=?";
         String[] whereArgs = new String[]{String.valueOf(number)};
@@ -153,7 +121,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         }
     }
 
-    @Override
     public Sorteio findFirst() {
         String[] columns = new String[]{"min(" + this.colunaNumero + ")"};
         Cursor cursor = getCursor(columns, null, null);
@@ -165,7 +132,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         }
     }
 
-    @Override
     public Sorteio findLast() {
         String[] columns = new String[]{"max(" + this.colunaNumero + ")"};
         Cursor cursor = getCursor(columns, null, null);
@@ -177,7 +143,6 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
         }
     }
 
-    @Override
     public Sorteio findByDate(Calendar date) {
         String where = this.colunaData + "=?";
         String[] whereArgs = new String[]{MyDateUtil.calendarToDateUS(date)};
@@ -192,17 +157,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
     }
 
-    @Override
-    public List<Sorteio> findByDezenas(int... dezenas) {
-        return null;
-    }
-
-    @Override
-    public int count() {
-        return listAll().size();
-    }
-
-    public Cursor getCursor(String where, String[] whereArgs) {
+    private Cursor getCursor(String where, String[] whereArgs) {
         return db.query(this.tableName,
                 this.allColumns,
                 where,
@@ -212,7 +167,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
                 null);
     }
 
-    public Cursor getCursor(String where, String[] whereArgs, String orderBy) {
+    private Cursor getCursor(String where, String[] whereArgs, String orderBy) {
         return db.query(this.tableName,
                 this.allColumns,
                 where,
@@ -222,7 +177,7 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
                 orderBy);
     }
 
-    public Cursor getCursor(String[] columns, String where, String[] whereArgs) {
+    private Cursor getCursor(String[] columns, String where, String[] whereArgs) {
         return db.query(this.tableName,
                 columns,
                 where,
@@ -264,5 +219,34 @@ public abstract class SorteioDAO implements InterfaceDAO<Sorteio, Long> {
 
         return list;
     }
+
+    public Long insertSorteioFromTrow(List<String> tds, TypeSorteio typeSorteio) throws NumberFormatException, ParseException {
+        Sorteio sorteio = SorteioFactory.getInstance(typeSorteio);
+        int numero = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(0)));
+        if (findByNumber(numero) == null) {
+            Calendar data = MyDateUtil.dateBrToCalendar(MyHtmlParse.getTextTag(tds.get(1)));
+            int[] dezenas = new int[sorteio.getTotalDezenas()];
+            for (int i = 0; i < dezenas.length; i++) {
+                dezenas[i] = Integer.parseInt(MyHtmlParse.getTextTag(tds.get(i + 2)));
+            }
+            String local = MyHtmlParse.getTextTag(tds.get(19)) + " " + MyHtmlParse.getTextTag(tds.get(20));
+
+            sorteio.setNumero(numero);
+            sorteio.setData(data);
+            sorteio.setLocal(local);
+            sorteio.setDezenas(dezenas);
+            return save(sorteio);
+        } else {
+            return null;
+        }
+    }
+
+    public Sorteio sortDezenasCrescente(Sorteio sorteio) {
+        int[] arrayDezenas = sorteio.getDezenas();
+        Arrays.sort(arrayDezenas);
+        sorteio.setDezenas(arrayDezenas);
+        return sorteio;
+    }
+
 
 }

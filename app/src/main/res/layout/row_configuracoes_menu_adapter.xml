@@ -1,29 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
-
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageViewIcon"
-        android:src="@drawable/ic_coin_grey_36dp"
-        android:contentDescription="@string/app_name"
-        android:paddingTop="32dp"
-        android:paddingBottom="32dp"
-        android:layout_marginRight="16dp" />
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
     <TextView
+        android:id="@+id/textViewLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:paddingBottom="8dp"
+        android:paddingTop="8dp"
         android:text="@string/valores_aposta"
-        android:id="@+id/textViewLabel"
-        android:textStyle="bold|italic"
-        android:textSize="26sp"
-        android:paddingTop="32dp"
-        android:paddingBottom="32dp" />
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/textViewSublabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/sublabel"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
 
 
 </LinearLayout>

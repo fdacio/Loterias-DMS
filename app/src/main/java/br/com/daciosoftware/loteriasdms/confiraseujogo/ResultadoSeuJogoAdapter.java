@@ -44,6 +44,55 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         return position;
     }
 
+    public int getLayoutRow(TypeSorteio typeSorteio) {
+        switch (typeSorteio) {
+            case MEGASENA:
+                return R.layout.row_resultado_seu_jogo_megasena_adapter;
+            case LOTOFACIL:
+                return R.layout.row_resultado_seu_jogo_lotofacil_adapter;
+            case QUINA:
+                return R.layout.row_resultado_seu_jogo_quina_adapter;
+            default:
+                return 0;
+        }
+    }
+
+    public ViewHolder getViewHolder(TypeSorteio typeSorteio, View view) {
+        switch (typeSorteio) {
+            case MEGASENA:
+                return new ViewHolderMegasena(view);
+            case LOTOFACIL:
+                return new ViewHolderLotofacil(view);
+            case QUINA:
+                return new ViewHolderQuina(view);
+            default:
+                return null;
+        }
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View view = convertView;
+        ViewHolder holder;
+        if (view == null) {
+            view = inflater.inflate(getLayoutRow(typeSorteio), parent, false);
+            holder = getViewHolder(typeSorteio, view);
+            view.setTag(holder);
+        } else {
+            holder = (ViewHolder) view.getTag();
+        }
+
+        SorteioAcerto sorteioacerto = getItem(position);
+
+        holder.setValue(sorteioacerto);
+
+        holder.setBackgroundMarcacao(sorteioacerto, typeSorteio);
+
+        return view;
+
+    }
+
     private abstract static class ViewHolder {
         protected TextView textViewNumero;
         protected TextView textViewData;
@@ -54,7 +103,7 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
             this.view = view;
             textViewNumero = (TextView) view.findViewById(R.id.textViewNumero);
             textViewData = (TextView) view.findViewById(R.id.textViewData);
-            textViewQtdeAcertos = (TextView) view.findViewById(R.id.textViewQtdeAcertos);
+            textViewQtdeAcertos = (TextView) view.findViewById(R.id.textViewNome);
         }
 
         private static void findTextViews(ViewGroup viewGroup, ArrayList<TextView> textViews) {
@@ -133,12 +182,12 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         public void setValue(SorteioAcerto sorteioacerto) {
             textViewNumero.setText(String.valueOf(sorteioacerto.getSorteio().getNumero()));
             textViewData.setText(MyDateUtil.calendarToDateBr(sorteioacerto.getSorteio().getData()));
-            textViewD1.setText(String.format("%02d",sorteioacerto.getSorteio().getD1()));
-            textViewD2.setText(String.format("%02d",sorteioacerto.getSorteio().getD2()));
-            textViewD3.setText(String.format("%02d",sorteioacerto.getSorteio().getD3()));
-            textViewD4.setText(String.format("%02d",sorteioacerto.getSorteio().getD4()));
-            textViewD5.setText(String.format("%02d",sorteioacerto.getSorteio().getD5()));
-            textViewD6.setText(String.format("%02d",sorteioacerto.getSorteio().getD6()));
+            textViewD1.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[0]));
+            textViewD2.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[1]));
+            textViewD3.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[2]));
+            textViewD4.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[3]));
+            textViewD5.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[4]));
+            textViewD6.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[5]));
             textViewQtdeAcertos.setText(String.format("%d Acerto(s)",sorteioacerto.getQtdeAcertos()));
 
         }
@@ -165,11 +214,11 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         public void setValue(SorteioAcerto sorteioacerto) {
             textViewNumero.setText(String.valueOf(sorteioacerto.getSorteio().getNumero()));
             textViewData.setText(MyDateUtil.calendarToDateBr(sorteioacerto.getSorteio().getData()));
-            textViewD1.setText(String.format("%02d",sorteioacerto.getSorteio().getD1()));
-            textViewD2.setText(String.format("%02d",sorteioacerto.getSorteio().getD2()));
-            textViewD3.setText(String.format("%02d",sorteioacerto.getSorteio().getD3()));
-            textViewD4.setText(String.format("%02d",sorteioacerto.getSorteio().getD4()));
-            textViewD5.setText(String.format("%02d",sorteioacerto.getSorteio().getD5()));
+            textViewD1.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[0]));
+            textViewD2.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[1]));
+            textViewD3.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[2]));
+            textViewD4.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[3]));
+            textViewD5.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[4]));
             textViewQtdeAcertos.setText(String.format("%d Acerto(s)",sorteioacerto.getQtdeAcertos()));
         }
 
@@ -205,72 +254,23 @@ public class ResultadoSeuJogoAdapter extends BaseAdapter {
         public void setValue(SorteioAcerto sorteioacerto) {
             textViewNumero.setText(String.valueOf(sorteioacerto.getSorteio().getNumero()));
             textViewData.setText(MyDateUtil.calendarToDateBr(sorteioacerto.getSorteio().getData()));
-            textViewD1.setText(String.format("%02d",sorteioacerto.getSorteio().getD1()));
-            textViewD2.setText(String.format("%02d",sorteioacerto.getSorteio().getD2()));
-            textViewD3.setText(String.format("%02d",sorteioacerto.getSorteio().getD3()));
-            textViewD4.setText(String.format("%02d",sorteioacerto.getSorteio().getD4()));
-            textViewD5.setText(String.format("%02d",sorteioacerto.getSorteio().getD5()));
-            textViewD6.setText(String.format("%02d",sorteioacerto.getSorteio().getD6()));
-            textViewD7.setText(String.format("%02d",sorteioacerto.getSorteio().getD7()));
-            textViewD8.setText(String.format("%02d",sorteioacerto.getSorteio().getD8()));
-            textViewD9.setText(String.format("%02d",sorteioacerto.getSorteio().getD9()));
-            textViewD10.setText(String.format("%02d",sorteioacerto.getSorteio().getD10()));
-            textViewD11.setText(String.format("%02d",sorteioacerto.getSorteio().getD11()));
-            textViewD12.setText(String.format("%02d",sorteioacerto.getSorteio().getD12()));
-            textViewD13.setText(String.format("%02d",sorteioacerto.getSorteio().getD13()));
-            textViewD14.setText(String.format("%02d",sorteioacerto.getSorteio().getD14()));
-            textViewD15.setText(String.format("%02d",sorteioacerto.getSorteio().getD15()));
+            textViewD1.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[0]));
+            textViewD2.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[1]));
+            textViewD3.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[2]));
+            textViewD4.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[3]));
+            textViewD5.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[4]));
+            textViewD6.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[5]));
+            textViewD7.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[6]));
+            textViewD8.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[7]));
+            textViewD9.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[8]));
+            textViewD10.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[9]));
+            textViewD11.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[10]));
+            textViewD12.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[11]));
+            textViewD13.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[12]));
+            textViewD14.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[13]));
+            textViewD15.setText(String.format("%02d", sorteioacerto.getSorteio().getDezenas()[14]));
             textViewQtdeAcertos.setText(String.format("%d Acerto(s)",sorteioacerto.getQtdeAcertos()));
         }
-
-    }
-
-    public int getLayoutRow(TypeSorteio typeSorteio) {
-        switch (typeSorteio) {
-            case MEGASENA:
-                return R.layout.row_resultado_seu_jogo_megasena_adapter;
-            case LOTOFACIL:
-                return R.layout.row_resultado_seu_jogo_lotofacil_adapter;
-            case QUINA:
-                return R.layout.row_resultado_seu_jogo_quina_adapter;
-            default:
-                return 0;
-        }
-    }
-
-    public ViewHolder getViewHolder(TypeSorteio typeSorteio, View view) {
-        switch (typeSorteio) {
-            case MEGASENA:
-                return new ViewHolderMegasena(view);
-            case LOTOFACIL:
-                return new ViewHolderLotofacil(view);
-            case QUINA:
-                return new ViewHolderQuina(view);
-            default:
-                return null;
-        }
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = convertView;
-        ViewHolder holder;
-        if (view == null) {
-            view = inflater.inflate(getLayoutRow(typeSorteio), parent, false);
-            holder = getViewHolder(typeSorteio, view);
-            view.setTag(holder);
-        } else {
-            holder = (ViewHolder) view.getTag();
-        }
-
-        SorteioAcerto sorteioacerto = getItem(position);
-
-        holder.setValue(sorteioacerto);
-
-        holder.setBackgroundMarcacao(sorteioacerto, typeSorteio);
-
-        return view;
 
     }
 

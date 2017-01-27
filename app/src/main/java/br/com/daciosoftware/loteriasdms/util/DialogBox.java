@@ -13,21 +13,16 @@ import br.com.daciosoftware.loteriasdms.R;
  */
 public class DialogBox {
 
-    private AlertDialog.Builder dialogBox;
-
-    public enum DialogBoxType {INFORMATION, QUESTION}
-
     private static final String TEXTO_BUTTON_OK = "OK";
     private static final String TEXTO_BUTTON_YES = "SIM";
     private static final String TEXTO_BUTTON_NO = "NÃO";
     private static final boolean CANCELABLE = false;
-
+    private AlertDialog.Builder dialogBox;
     private DialogInterface.OnClickListener onClickListenerOK;
     private DialogInterface.OnClickListener onClickListenerYES;
     private DialogInterface.OnClickListener onClickListenerNO;
     private Context context;
     private boolean finishActivity = false;
-
     /**
      *
      * @param context - Contexto da App
@@ -108,4 +103,6 @@ public class DialogBox {
         dialogBox.create();
         dialogBox.show();
     }
+
+    public enum DialogBoxType {INFORMATION, QUESTION}
 }

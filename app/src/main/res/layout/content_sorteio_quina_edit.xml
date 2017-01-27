@@ -13,8 +13,8 @@
     tools:showIn="@layout/activity_sorteio_quina_edit">
 
     <include
-        layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel" />
+        android:id="@+id/linearLayouLogoLabel"
+        layout="@layout/header_type_sorteio" />
 
 
 </RelativeLayout>

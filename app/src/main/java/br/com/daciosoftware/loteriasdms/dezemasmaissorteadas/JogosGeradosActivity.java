@@ -101,94 +101,6 @@ public class JogosGeradosActivity extends AppCompatActivity {
 
     }
 
-    private class GeraJogosTask extends AsyncTask<Integer, String, Void> {
-
-        private List<JogoGerado> listJogoGerado = new ArrayList<>();
-        @Override
-        protected Void doInBackground(Integer... params) {
-
-            int qtdeDezenasPorJogo = params[0];
-            long qtdeJogosPossiveis = getQtdeJogosPossiveis(qtdeDezenasPorJogo, dezenasSelecionadas.length);
-
-            while (listJogoGerado.size() < qtdeJogosPossiveis) {
-                JogoGerado jogoGerado = new JogoGerado(getArrayCandidato(qtdeDezenasPorJogo));
-                if (!inList(listJogoGerado, jogoGerado)) {
-                    listJogoGerado.add(jogoGerado);
-                    String msg = getResources().getString(R.string.calculando_jogo);
-                    publishProgress(String.format(msg, listJogoGerado.size(), qtdeJogosPossiveis));
-                }
-                if (isCancelled()) break;
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            progressDialog = new ProgressDialog(JogosGeradosActivity.this);
-            progressDialog.setMessage(getResources().getString(R.string.calculando));
-            progressDialog.setCancelable(true);
-            progressDialog.setIndeterminate(true);
-            progressDialog.setOnCancelListener(new cancelTaskGeraJogos(this));
-            progressDialog.show();
-        }
-
-        @Override
-        protected void onPostExecute(Void retorno) {
-            progressDialog.dismiss();
-            Collections.sort(listJogoGerado);
-            JogosGeradosAdapter adapter = new JogosGeradosAdapter(JogosGeradosActivity.this, listJogoGerado);
-            listViewGeraJogos.setAdapter(adapter);
-            String label = getResources().getString(R.string.label_total_jogos);
-            textViewTotalJogos.setText(String.format(label, listJogoGerado.size()));
-        }
-
-        @Override
-        protected void onCancelled() {
-            super.onCancelled();
-        }
-
-        @Override
-        protected void onProgressUpdate(String... msgs) {
-            String newMsg = msgs[0];
-            progressDialog.setMessage(newMsg);
-        }
-
-    }
-
-    private class cancelTaskGeraJogos implements DialogInterface.OnCancelListener {
-
-        private AsyncTask task;
-
-        public cancelTaskGeraJogos(AsyncTask task) {
-            this.task = task;
-        }
-
-        @Override
-        public void onCancel(DialogInterface dialog) {
-            new DialogBox(JogosGeradosActivity.this,
-                    DialogBox.DialogBoxType.QUESTION,
-                    getResources().getString(R.string.label_gerar_jogos),
-                    getResources().getString(R.string.deseja_cancelar_processo),
-                    new DialogInterface.OnClickListener() {//Resposta SIM do DialogBox Question
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            task.cancel(true);
-                        }
-                    },
-                    new DialogInterface.OnClickListener() {//Resposta NÃO do DialogBox Question
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                            progressDialog.show();
-                        }
-                    }
-
-            ).show();
-        }
-
-    }
-
     /*
     Método para obter o fatorial
     */
@@ -305,29 +217,6 @@ public class JogosGeradosActivity extends AppCompatActivity {
         return arrayDezenasJogoGerado;
     }
 
-
-    /**
-     * Classe interna para implementar o retorno do DialogNumber
-     */
-    private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
-        private TextView textView;
-
-        public OnNumberSetListener(TextView textView) {
-            this.textView = textView;
-
-        }
-
-        @Override
-        public void onNumberSet(int number) {
-            if (number <= dezenasSelecionadas.length) {
-                qtdeDezenasPorJogo = number;
-                String label = String.format(getResources().getString(R.string.label_dezenas_por_jogo), qtdeDezenasPorJogo);
-                textView.setText(label);
-                listarJogosGerados(qtdeDezenasPorJogo);
-            }
-        }
-    }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -380,5 +269,116 @@ public class JogosGeradosActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class GeraJogosTask extends AsyncTask<Integer, String, Void> {
+
+        private List<JogoGerado> listJogoGerado = new ArrayList<>();
+
+        @Override
+        protected Void doInBackground(Integer... params) {
+
+            int qtdeDezenasPorJogo = params[0];
+            long qtdeJogosPossiveis = getQtdeJogosPossiveis(qtdeDezenasPorJogo, dezenasSelecionadas.length);
+
+            while (listJogoGerado.size() < qtdeJogosPossiveis) {
+                JogoGerado jogoGerado = new JogoGerado(getArrayCandidato(qtdeDezenasPorJogo));
+                if (!inList(listJogoGerado, jogoGerado)) {
+                    listJogoGerado.add(jogoGerado);
+                    String msg = getResources().getString(R.string.calculando_jogo);
+                    publishProgress(String.format(msg, listJogoGerado.size(), qtdeJogosPossiveis));
+                }
+                if (isCancelled()) break;
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog = new ProgressDialog(JogosGeradosActivity.this);
+            progressDialog.setMessage(getResources().getString(R.string.calculando));
+            progressDialog.setCancelable(true);
+            progressDialog.setIndeterminate(true);
+            progressDialog.setOnCancelListener(new cancelTaskGeraJogos(this));
+            progressDialog.show();
+        }
+
+        @Override
+        protected void onPostExecute(Void retorno) {
+            progressDialog.dismiss();
+            Collections.sort(listJogoGerado);
+            JogosGeradosAdapter adapter = new JogosGeradosAdapter(JogosGeradosActivity.this, listJogoGerado);
+            listViewGeraJogos.setAdapter(adapter);
+            String label = getResources().getString(R.string.label_total_jogos);
+            textViewTotalJogos.setText(String.format(label, listJogoGerado.size()));
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+        }
+
+        @Override
+        protected void onProgressUpdate(String... msgs) {
+            String newMsg = msgs[0];
+            progressDialog.setMessage(newMsg);
+        }
+
+    }
+
+    private class cancelTaskGeraJogos implements DialogInterface.OnCancelListener {
+
+        private AsyncTask task;
+
+        public cancelTaskGeraJogos(AsyncTask task) {
+            this.task = task;
+        }
+
+        @Override
+        public void onCancel(DialogInterface dialog) {
+            new DialogBox(JogosGeradosActivity.this,
+                    DialogBox.DialogBoxType.QUESTION,
+                    getResources().getString(R.string.label_gerar_jogos),
+                    getResources().getString(R.string.deseja_cancelar_processo),
+                    new DialogInterface.OnClickListener() {//Resposta SIM do DialogBox Question
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            task.cancel(true);
+                        }
+                    },
+                    new DialogInterface.OnClickListener() {//Resposta NÃO do DialogBox Question
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            progressDialog.show();
+                        }
+                    }
+
+            ).show();
+        }
+
+    }
+
+    /**
+     * Classe interna para implementar o retorno do DialogNumber
+     */
+    private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
+        private TextView textView;
+
+        public OnNumberSetListener(TextView textView) {
+            this.textView = textView;
+
+        }
+
+        @Override
+        public void onNumberSet(int number) {
+            if (number <= dezenasSelecionadas.length) {
+                qtdeDezenasPorJogo = number;
+                String label = String.format(getResources().getString(R.string.label_dezenas_por_jogo), qtdeDezenasPorJogo);
+                textView.setText(label);
+                listarJogosGerados(qtdeDezenasPorJogo);
+            }
+        }
     }
 }

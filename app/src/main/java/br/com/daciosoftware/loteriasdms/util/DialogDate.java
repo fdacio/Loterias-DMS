@@ -81,8 +81,7 @@ public class DialogDate {
                                         || "mDaySpinner".equals(datePickerField
                                         .getName())) {
                                     datePickerField.setAccessible(true);
-                                    Object dayPicker = new Object();
-                                    dayPicker = datePickerField.get(datePicker);
+                                    Object dayPicker = datePickerField.get(datePicker);
                                     ((View) dayPicker).setVisibility(View.GONE);
                                 }
                             }
@@ -90,27 +89,15 @@ public class DialogDate {
 
                     }
 
-                }catch (Exception e){}
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
 
 
             }
             datePickerDialog.show();
         }
     }
-
-    private class OnDateSetInTextViewListener implements DatePickerDialog.OnDateSetListener {
-        @Override
-        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(year, monthOfYear, dayOfMonth);
-            if(onlyMonthAndYear) {
-                textView.setText(calendarToShortDateBr(calendar));
-            }else {
-                textView.setText(calendarToDateBr(calendar));
-            }
-        }
-    }
-
 
     private Calendar dateBrToCalendar(String data) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -119,7 +106,6 @@ public class DialogDate {
         calendar.setTime(date);
         return calendar;
     }
-
 
     private String calendarToDateBr(Calendar data) {
         SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
@@ -130,12 +116,26 @@ public class DialogDate {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy", Locale.getDefault());
         return sdf.format(data.getTime());
     }
+
     private Calendar dateShortBrToCalendar(String data) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("MMM/yyyy", Locale.getDefault());
         Date date = sdf.parse(data);
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         return calendar;
+    }
+
+    private class OnDateSetInTextViewListener implements DatePickerDialog.OnDateSetListener {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(year, monthOfYear, dayOfMonth);
+            if (onlyMonthAndYear) {
+                textView.setText(calendarToShortDateBr(calendar));
+            } else {
+                textView.setText(calendarToDateBr(calendar));
+            }
+        }
     }
 
 }

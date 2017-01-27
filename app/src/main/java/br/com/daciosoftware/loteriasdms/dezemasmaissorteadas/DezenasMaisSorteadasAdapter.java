@@ -41,13 +41,6 @@ public class DezenasMaisSorteadasAdapter extends BaseAdapter {
         return position;
     }
 
-
-    private static class ViewHolder {
-        TextView textViewDezena;
-        TextView textViewQtdeVezes;
-        CheckBox checkBoxSelecionada;
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view = convertView;
@@ -93,5 +86,11 @@ public class DezenasMaisSorteadasAdapter extends BaseAdapter {
 
         return view;
 
+    }
+
+    private static class ViewHolder {
+        TextView textViewDezena;
+        TextView textViewQtdeVezes;
+        CheckBox checkBoxSelecionada;
     }
 }

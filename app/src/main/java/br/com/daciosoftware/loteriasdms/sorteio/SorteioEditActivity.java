@@ -22,8 +22,10 @@ import java.util.List;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
-import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAOFactory;
+import br.com.daciosoftware.loteriasdms.pojo.Sorteio;
+import br.com.daciosoftware.loteriasdms.pojo.SorteioFactory;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogDate;
@@ -52,7 +54,7 @@ public class SorteioEditActivity extends AppCompatActivity {
         }
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
-        sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
+        sorteioDAO = SorteioDAOFactory.getInstance(getApplicationContext(), typeSorteio);
 
         editTextNumero = (EditText) findViewById(R.id.editTextNumero);
         buttonData = (Button) findViewById(R.id.buttonData);
@@ -142,7 +144,7 @@ public class SorteioEditActivity extends AppCompatActivity {
 
     private void setSorteioFromForm() throws ParseException {
         if (this.sorteio == null) {
-            this.sorteio = sorteioDAO.getInstanciaEntity();
+            this.sorteio = SorteioFactory.getInstance(typeSorteio);
         }
         int numero = Integer.parseInt(editTextNumero.getText().toString());
         Calendar data = MyDateUtil.dateBrToCalendar(buttonData.getText().toString());

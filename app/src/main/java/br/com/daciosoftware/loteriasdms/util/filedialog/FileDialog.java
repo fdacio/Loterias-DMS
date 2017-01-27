@@ -14,9 +14,6 @@ import java.io.Serializable;
  */
 public class FileDialog {
 
-    public enum FileDialogType implements Serializable{
-        OPEN_FILE, SAVE_FILE, SELECT_DIR
-    }
     public static final int FILE_DIALOG = 100;
     public static final String RESULT_PATH = "RESULT_PATH";
     public static final String TYPE_DIALOG = "TYPE_DIALOG";
@@ -27,16 +24,11 @@ public class FileDialog {
     public static final String ITEM_KEY = "key";
     public static final String ITEM_IMAGE = "image";
     public static final String ROOT = "/";
-
-
     private Context context;
     private FileDialogType fileDialogType;
     private String fileName;
-
-
     private String startPath;
     private String[] formaterFilter;
-
     public FileDialog(Context context, FileDialogType fileDialogType){
         this.context = context;
         this.fileDialogType = fileDialogType;
@@ -71,7 +63,6 @@ public class FileDialog {
         activity.startActivityForResult(intent,FILE_DIALOG);
     }
 
-
     /**
      *
      * @param fileName Nome padrao
@@ -86,6 +77,10 @@ public class FileDialog {
 
     public void setStartPath(String startPath) {
         this.startPath = startPath;
+    }
+
+    public enum FileDialogType implements Serializable {
+        OPEN_FILE, SAVE_FILE, SELECT_DIR
     }
 
 }

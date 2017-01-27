@@ -29,22 +29,35 @@ import java.util.List;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
-import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAOFactory;
+import br.com.daciosoftware.loteriasdms.pojo.Sorteio;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
+import br.com.daciosoftware.loteriasdms.webservice.AtualizaSorteiosTask;
 
-public class SorteioListActivity extends AppCompatActivity implements AtualizaSorteiosInterface {
+public class SorteioListActivity extends AppCompatActivity implements SorteioListListener {
 
-    private enum TipoListagem {CRESCENTE, DECRESCENTE, ORDENAR_DEZENAS, POR_NUMERO, POR_DATA}
 
     private SorteioDAO sorteioDAO;
     private List<Sorteio> listSorteio;
     private ListView listViewSorteio;
     private TypeSorteio typeSorteio;
     private ProgressDialog progressDialog;
+    private Handler handlerListSorteio = new Handler() {
+
+        @Override
+        public void handleMessage(Message msg) {
+
+            if (msg.what == 100) {
+                listViewSorteio.setAdapter(new SorteioListAdapter(SorteioListActivity.this, listSorteio, typeSorteio));
+            }
+
+            progressDialog.dismiss();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +68,7 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
-        sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
+        sorteioDAO = SorteioDAOFactory.getInstance(getApplicationContext(), typeSorteio);
 
         listViewSorteio = (ListView) findViewById(R.id.listViewSorteio);
         listViewSorteio.setEmptyView(findViewById(R.id.emptyElement));
@@ -72,7 +85,8 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
                         new AtualizaSorteiosTask(SorteioListActivity.this, typeSorteio, SorteioListActivity.this).execute();
                     } else {
                         new DialogBox(SorteioListActivity.this,
-                                DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error),
+                                DialogBox.DialogBoxType.INFORMATION,
+                                getResources().getString(R.string.error),
                                 getResources().getString(R.string.error_conexao)
                         ).show();
                     }
@@ -82,35 +96,6 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
         }
 
         new StyleOfActivity(this, findViewById(R.id.layout_sorteio_list)).setStyleInViews(typeSorteio);
-    }
-
-    /**
-     * Classe interna utilizada para
-     * passagem de parâmetros das consultas
-     */
-    private class Param {
-        private int numero;
-        private Calendar data;
-
-        public Param() {
-        }
-
-        public int getNumero() {
-            return numero;
-        }
-
-        public void setNumero(int numero) {
-            this.numero = numero;
-        }
-
-        public Calendar getData() {
-            return data;
-        }
-
-        public void setData(Calendar data) {
-            this.data = data;
-        }
-
     }
 
     private void listarSorteios(final TipoListagem tipoListagem, final Param param) {
@@ -149,19 +134,6 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
 
     }
 
-    private Handler handlerListSorteio = new Handler() {
-
-        @Override
-        public void handleMessage(Message msg) {
-
-            if (msg.what == 100) {
-                listViewSorteio.setAdapter(new SorteioListAdapter(SorteioListActivity.this, listSorteio, typeSorteio));
-            }
-
-            progressDialog.dismiss();
-        }
-    };
-
     private List<Sorteio> listarPorNumero(SorteioDAO sorteioDAO, Param param) {
         List<Sorteio> list = new ArrayList<>();
         Sorteio sorteio = sorteioDAO.findByNumber(param.getNumero());
@@ -178,11 +150,6 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
             list.add(sorteio);
         }
         return list;
-    }
-
-    @Override
-    public void executarAposAtualizacao() {
-        listarSorteios(TipoListagem.DECRESCENTE, null);
     }
 
     @Override
@@ -236,7 +203,6 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
                 return false;
             }
         });
-
 
         return true;
     }
@@ -336,6 +302,50 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
         dialogBox.show();
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+        super.onActivityResult(requestCode, resultCode, intent);
+        if (requestCode == Constantes.INSERT_UPDATE && resultCode == RESULT_OK) {
+            listarSorteios(TipoListagem.DECRESCENTE, null);
+        }
+    }
+
+    @Override
+    public void executarAposAtualizacao() {
+        listarSorteios(TipoListagem.DECRESCENTE, null);
+    }
+
+    private enum TipoListagem {CRESCENTE, DECRESCENTE, ORDENAR_DEZENAS, POR_NUMERO, POR_DATA}
+
+    /**
+     * Classe interna utilizada para
+     * passagem de parâmetros das consultas
+     */
+    private class Param {
+        private int numero;
+        private Calendar data;
+
+        public Param() {
+        }
+
+        public int getNumero() {
+            return numero;
+        }
+
+        public void setNumero(int numero) {
+            this.numero = numero;
+        }
+
+        public Calendar getData() {
+            return data;
+        }
+
+        public void setData(Calendar data) {
+            this.data = data;
+        }
+
+    }
+
     private class OnClickYesDialog implements DialogInterface.OnClickListener {
         private Sorteio sorteio;
 
@@ -361,11 +371,4 @@ public class SorteioListActivity extends AppCompatActivity implements AtualizaSo
         }
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        super.onActivityResult(requestCode, resultCode, intent);
-        if (requestCode == Constantes.INSERT_UPDATE && resultCode == RESULT_OK) {
-            listarSorteios(TipoListagem.DECRESCENTE, null);
-        }
-    }
 }

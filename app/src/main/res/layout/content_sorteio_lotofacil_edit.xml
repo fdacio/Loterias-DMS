@@ -13,7 +13,7 @@
     tools:showIn="@layout/activity_sorteio_lotofacil_edit">
 
     <include
-        layout="@layout/header_type_sorteio"
-        android:id="@+id/linearLayouLogoLabel" />
+        android:id="@+id/linearLayouLogoLabel"
+        layout="@layout/header_type_sorteio" />
 
 </RelativeLayout>

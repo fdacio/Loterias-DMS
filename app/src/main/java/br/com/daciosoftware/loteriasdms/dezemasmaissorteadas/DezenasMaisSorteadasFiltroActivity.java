@@ -18,6 +18,7 @@ import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAOFactory;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogDate;
 import br.com.daciosoftware.loteriasdms.util.DialogNumber;
@@ -133,9 +134,11 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
         TypeSorteio typeSorteio = (TypeSorteio) getIntent().getSerializableExtra(Constantes.TYPE_SORTEIO);
         new StyleOfActivity(this, findViewById(R.id.layout_dezenas_mais_sorteadas_filtro)).setStyleInViews(typeSorteio);
 
-        SorteioDAO sorteioDAO = SorteioDAO.getDAO(DezenasMaisSorteadasFiltroActivity.this, typeSorteio);
+        SorteioDAO sorteioDAO = SorteioDAOFactory.getInstance(DezenasMaisSorteadasFiltroActivity.this, typeSorteio);
 
-        maxValue = (sorteioDAO.findLast()!= null)?sorteioDAO.findLast().getNumero():2;
+        if (sorteioDAO != null) {
+            maxValue = (sorteioDAO.findLast() != null) ? sorteioDAO.findLast().getNumero() : 2;
+        }
 
     }
 
@@ -189,26 +192,6 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
 
     }
 
-     /**
-     * Classe interna para implementar o retorno do DialogNumber
-      *
-     */
-     private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
-
-         private TextView textView;
-         public OnNumberSetListener(TextView textView){
-             this.textView = textView;
-
-         }
-
-         @Override
-         public void onNumberSet(int number) {
-             String label = String.format(getResources().getString(R.string.ultimos_concursos),number);
-             textView.setText(label);
-             numeroConcursos = number;
-         }
-     }
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -238,6 +221,26 @@ public class DezenasMaisSorteadasFiltroActivity extends AppCompatActivity {
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * Classe interna para implementar o retorno do DialogNumber
+     */
+    private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
+
+        private TextView textView;
+
+        public OnNumberSetListener(TextView textView) {
+            this.textView = textView;
+
+        }
+
+        @Override
+        public void onNumberSet(int number) {
+            String label = String.format(getResources().getString(R.string.ultimos_concursos), number);
+            textView.setText(label);
+            numeroConcursos = number;
+        }
     }
 
 }

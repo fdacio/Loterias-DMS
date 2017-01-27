@@ -67,7 +67,7 @@
     <string name="btn_ok">OK</string>
     <string name="btn_cancel">Cancelar</string>
     <string name="valores_aposta">Valores de Aposta</string>
-    <string name="urls">URLs</string>
+    <string name="arquivoResultadoUrl">URLs</string>
     <string name="web_service">Web Service</string>
     <string name="folder">pasta_arquivo</string>
     <string name="title_save_file">Salvar Arquivo</string>
@@ -141,13 +141,13 @@
     <string name="calculando_jogo">"Calculando Jogo: %1$d de %2$d \nAguarde..."</string>
     <string name="error_arquivo_outro_jogo">Arquivo de outro Jogo: </string>
     <string name="error">Erro</string>
-    <string name="atualizando_sorteio">Atualizando Sorteios\nAguarde...</string>
+    <string name="atualizando_sorteio">Atualizando Sorteio\nAguarde...</string>
     <string name="concurso_nao_encontrado">Concurso %d não encontrado</string>
-    <string name="atualizando_sorteio_concurso">Atualizando Sorteios\n %1$s Concurso: %2$d \nAguarde...</string>
+    <string name="atualizando_sorteio_concurso">Atualizando Sorteio \n%1$s \nConcurso: %2$d \nAguarde...</string>
     <string name="atualizacao_cancelado">Atualização cancelada</string>
-    <string name="atualizacao_sorteios">Atualização de Sorteios</string>
+    <string name="atualizacao_sorteios">Atualização de Sorteio</string>
     <string name="atualizacao_concluido">Atualização concluída com sucesso</string>
-    <string name="erro_web_service">Erro ao obter dados do Web Service: </string>
+    <string name="erro_web_service">Erro ao obter sorteios. Verifique sua conexão! \nErro: </string>
     <string name="erro_gerar_sorteio">Erro ao gerar o sorteio: </string>
     <string name="label_dezenas_por_jogo">%d Dezenas por Jogo</string>
     <string name="label_ordem">%dº</string>
@@ -156,10 +156,17 @@
     <string name="erro_numero_invalido">Erro: Número inválido</string>
     <string name="erro_data_invalida">Erro: Data inválida</string>
     <string name="title_activity_valores_aposta">Valores de Aposta</string>
-    <string name="title_activity_urls">URLs</string>
+    <string name="title_activity_urls">Arquivos de Todos Resultados</string>
     <string name="label_jogo">Jogo</string>
     <string name="title_activity_urls_edit">Editar URL</string>
     <string name="title_activity_web_service_edit">Editar URL</string>
     <string name="title_activity_web_service">Web Service</string>
+    <string name="sublabel">Sublabel</string>
+    <string name="title_activity_notificacao_edit">Notificações</string>
+    <string name="label_notificacao_edit">Notificações de Sorteios</string>
+    <string name="notificacao_switch_on">Sim</string>
+    <string name="notificacao_switch_off">Não</string>
+    <string name="label_editar">EDITAR</string>
+    <string name="title_activity_atualiza_sorteio">Atualizar Sorteios</string>
 
 </resources>

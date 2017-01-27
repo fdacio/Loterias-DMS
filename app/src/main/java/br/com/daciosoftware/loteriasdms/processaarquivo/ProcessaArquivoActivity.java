@@ -24,6 +24,7 @@ import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAOFactory;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DecompressFile;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
@@ -75,66 +76,6 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
         new StyleOfActivity(this, findViewById(R.id.layout_processar_arquivo)).setStyleInViews(typeSorteio);
     }
-
-    /**
-     * Subclasse privada que implementar o OnClickListener do Botao com lupa.
-     * Esse botão abri um FileDialog para seleção de um arquivo HTML para
-     * o processamento dos sorteios
-     */
-    private class OnClickListenerButtonArquivo implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            FileDialog fileDialog = new FileDialog(ProcessaArquivoActivity.this, FileDialog.FileDialogType.OPEN_FILE);
-            fileDialog.setStartPath(MyFileUtil.getDefaultDirectoryApp());
-            fileDialog.setFormaterFilter(new String[]{"html", "htm"});
-            fileDialog.show();
-        }
-    }
-
-
-    private class OnClickListenerBaixaArquivo implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-
-            if (DeviceInformation.isNetwork(ProcessaArquivoActivity.this)) {
-                String defaulDirectory = MyFileUtil.getDefaultDirectoryApp();
-                String outFile = defaulDirectory + "/" + getNomeArquivoZip(typeSorteio);
-                downloadFile = new DownloadFile();
-                decompressFile = new DecompressFile();
-                new BaixarArquivoZipTask().execute(getLinkBaixar(typeSorteio), outFile);
-            } else {
-                new DialogBox(ProcessaArquivoActivity.this,
-                        DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error),
-                        getResources().getString(R.string.error_conexao)
-                ).show();
-            }
-        }
-    }
-
-    /**
-     * Processamento do Arquivo
-     */
-    private class OnClickListenerButtonProcessarArquivo implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-
-            String filePath = editTextArquivo.getText().toString();
-            if (filePath.equals("")) {
-                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error), getResources().getString(R.string.error_informe_arquivo)).show();
-                return;
-            }
-
-            File file = new File(filePath);
-            if (!file.exists()) {
-                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error), getResources().getString(R.string.error_arquivo_invalido)).show();
-                return;
-            }
-
-            new ProcessarArquivoHtml().execute(filePath);
-            //Aqui executar AsyncTask para processar o arquivo
-        }
-    }
-
 
     private String getLinkBaixar(TypeSorteio typeSorteio) {
         SharedPreferences sharedPreferences = getSharedPreferences(Constantes.SHARED_PREF, MODE_PRIVATE);
@@ -230,6 +171,72 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         }
     }
 
+    private boolean isRowValid(String col) {
+        try {
+            Integer.parseInt(col);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Subclasse privada que implementar o OnClickListener do Botao com lupa.
+     * Esse botão abri um FileDialog para seleção de um arquivo HTML para
+     * o processamento dos sorteios
+     */
+    private class OnClickListenerButtonArquivo implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            FileDialog fileDialog = new FileDialog(ProcessaArquivoActivity.this, FileDialog.FileDialogType.OPEN_FILE);
+            fileDialog.setStartPath(MyFileUtil.getDefaultDirectoryApp());
+            fileDialog.setFormaterFilter(new String[]{"html", "htm"});
+            fileDialog.show();
+        }
+    }
+
+    private class OnClickListenerBaixaArquivo implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+
+            if (DeviceInformation.isNetwork(ProcessaArquivoActivity.this)) {
+                String defaulDirectory = MyFileUtil.getDefaultDirectoryApp();
+                String outFile = defaulDirectory + "/" + getNomeArquivoZip(typeSorteio);
+                downloadFile = new DownloadFile();
+                decompressFile = new DecompressFile();
+                new BaixarArquivoZipTask().execute(getLinkBaixar(typeSorteio), outFile);
+            } else {
+                new DialogBox(ProcessaArquivoActivity.this,
+                        DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error),
+                        getResources().getString(R.string.error_conexao)
+                ).show();
+            }
+        }
+    }
+
+    /**
+     * Processamento do Arquivo
+     */
+    private class OnClickListenerButtonProcessarArquivo implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+
+            String filePath = editTextArquivo.getText().toString();
+            if (filePath.equals("")) {
+                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error), getResources().getString(R.string.error_informe_arquivo)).show();
+                return;
+            }
+
+            File file = new File(filePath);
+            if (!file.exists()) {
+                new DialogBox(ProcessaArquivoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.error), getResources().getString(R.string.error_arquivo_invalido)).show();
+                return;
+            }
+
+            new ProcessarArquivoHtml().execute(filePath);
+            //Aqui executar AsyncTask para processar o arquivo
+        }
+    }
 
     /**
      * Subclasse privada que implementa o processo de baixa e descopressão do
@@ -312,7 +319,6 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
 
     }
 
-
     /**
      * Subclasse privada que implementa o cancelamento do processo de download
      * e descompressão do arquivo
@@ -359,21 +365,12 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isRowValid(String col) {
-        try {
-            Integer.parseInt(col);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
     private class ProcessarArquivoHtml extends AsyncTask<String, String, String> {
 
         @Override
         protected String doInBackground(String... params) {
             String pathFileHtml = params[0];
-            SorteioDAO sorteioDAO = SorteioDAO.getDAO(getApplicationContext(), typeSorteio);
+            SorteioDAO sorteioDAO = SorteioDAOFactory.getInstance(getApplicationContext(), typeSorteio);
 
             try {
 
@@ -396,7 +393,7 @@ public class ProcessaArquivoActivity extends AppCompatActivity {
                         try {
                             publishProgress(String.format(msg,Integer.parseInt(valueTd)));
                             if (sorteioDAO != null) {
-                                sorteioDAO.insertSorteioFromTrow(tds);
+                                sorteioDAO.insertSorteioFromTrow(tds, typeSorteio);
                             }
                         } catch (ParseException e) {
                             LogProcessamento.registraLog(trow + ":" + e.getMessage());

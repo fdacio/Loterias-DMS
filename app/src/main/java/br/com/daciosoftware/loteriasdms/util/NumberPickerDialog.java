@@ -19,10 +19,6 @@ public class NumberPickerDialog extends AlertDialog implements DialogInterface.O
     private final OnNumberSetListener mNumberSetListener;
 
 
-    public interface OnNumberSetListener {
-        void onNumberSet(int number);
-    }
-
     /**
      *
      * @param context - Contexto da Aplicação
@@ -37,23 +33,12 @@ public class NumberPickerDialog extends AlertDialog implements DialogInterface.O
         this(context, layoutInflater, 0, callBack, title, startValue, mimValue, maxValue);
     }
 
-
-    static int resolveDialogTheme(Context context, int resid) {
-        if (resid == 0) {
-            final TypedValue outValue = new TypedValue();
-            context.getTheme().resolveAttribute(android.R.style.Theme_Holo, outValue, true);
-            return outValue.resourceId;
-        } else {
-            return resid;
-        }
-    }
-
     /**
      *
      * @param context - Contexto da Aplicação
      * @param layoutInflater - Layout contendo um widget numberpicker
-     * @param theme - tema para oa alertdialog - Padrão Theme.HOLO
-     * @param listener - implementaccao que registrar o retorno do numberpiker
+     * @param theme - tema para o alertdialog - Padrão Theme.HOLO
+     * @param listener - implementacao que registrar o retorno do numberpiker
      * @param title - Título para o AlertDialog
      * @param startValue - valor inicial para o numberpicker
      * @param mimValue - menor valor possivel para o numberpicker
@@ -82,6 +67,16 @@ public class NumberPickerDialog extends AlertDialog implements DialogInterface.O
          }
     }
 
+    static int resolveDialogTheme(Context context, int resid) {
+        if (resid == 0) {
+            final TypedValue outValue = new TypedValue();
+            context.getTheme().resolveAttribute(android.R.style.Theme_Holo, outValue, true);
+            return outValue.resourceId;
+        } else {
+            return resid;
+        }
+    }
+
     private NumberPicker getNumberPickerInViewGroup(ViewGroup viewGroup){
         for (int i = 0, N = viewGroup.getChildCount(); i < N; i++) {
             View child = viewGroup.getChildAt(i);
@@ -108,6 +103,10 @@ public class NumberPickerDialog extends AlertDialog implements DialogInterface.O
         }
 
 
+    }
+
+    public interface OnNumberSetListener {
+        void onNumberSet(int number);
     }
 
 }

@@ -3,32 +3,32 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/searchMenu"
-        android:title="@string/pesquisar_data_numero"
         android:icon="@drawable/ic_search_white_24dp"
-        app:showAsAction="collapseActionView|ifRoom"
-        app:actionViewClass="android.support.v7.widget.SearchView"></item>
+        android:title="@string/pesquisar_data_numero"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="collapseActionView|ifRoom" />
 
     <item
         android:id="@+id/porOrdemCrescenteMenu"
         android:title="@string/listar_crescente"
-        app:showAsAction="never"></item>
+        app:showAsAction="never" />
     <item
         android:id="@+id/porOrdemDecrescenteMenu"
         android:title="@string/listar_decrescente"
-        app:showAsAction="never"></item>
+        app:showAsAction="never" />
     <item
         android:id="@+id/ordenarDezanas"
         android:title="@string/ordenar_dezenas"
-        app:showAsAction="never"></item>
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/addMenu"
         android:title="@string/adicionar_sorteio"
-        app:showAsAction="never"></item>
+        app:showAsAction="never" />
 
     <item
         android:id="@+id/deleteAllMenu"
         android:title="@string/delete_all"
-        app:showAsAction="never"></item>
+        app:showAsAction="never" />
 
 </menu>

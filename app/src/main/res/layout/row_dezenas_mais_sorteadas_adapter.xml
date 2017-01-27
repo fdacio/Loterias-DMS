@@ -3,42 +3,42 @@
     android:layout_width="match_parent" android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/textViewDezena"
         android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/label_00"
-        android:id="@+id/textViewDezena"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:textSize="32sp"
-        android:paddingTop="10dp"
+        android:layout_alignParentTop="true"
+        android:gravity="right"
         android:paddingBottom="10dp"
-        android:gravity="right" />
+        android:paddingTop="10dp"
+        android:text="@string/label_00"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textSize="32sp" />
 
     <TextView
+        android:id="@+id/textViewQtdeVezes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/label_0vezes"
-        android:id="@+id/textViewQtdeVezes"
         android:layout_alignBottom="@+id/textViewDezena"
-        android:layout_toRightOf="@+id/textViewDezena"
+        android:layout_marginLeft="20dp"
         android:layout_toEndOf="@+id/textViewDezena"
-        android:textSize="22sp"
-        android:paddingTop="10dp"
+        android:layout_toRightOf="@+id/textViewDezena"
         android:paddingBottom="10dp"
-        android:layout_marginLeft="20dp" />
+        android:paddingTop="10dp"
+        android:text="@string/label_0vezes"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textSize="22sp" />
 
     <CheckBox
+        android:id="@+id/checkBoxSelecionada"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/checkBoxSelecionada"
         android:layout_alignBaseline="@+id/textViewQtdeVezes"
         android:layout_alignBottom="@+id/textViewQtdeVezes"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:paddingTop="10dp"
+        android:layout_alignParentRight="true"
+        android:focusable="false"
         android:paddingBottom="10dp"
-        android:focusable="false" />
+        android:paddingTop="10dp" />
 </RelativeLayout>

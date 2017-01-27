@@ -11,7 +11,7 @@ import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
-import br.com.daciosoftware.loteriasdms.dao.Sorteio;
+import br.com.daciosoftware.loteriasdms.pojo.Sorteio;
 import br.com.daciosoftware.loteriasdms.util.MyDateUtil;
 
 /**
@@ -44,15 +44,6 @@ public class SorteioListAdapter extends BaseAdapter {
         return position;
     }
 
-    private static class ViewHolder {
-        TextView textViewNumero;
-        TextView textViewData;
-        TextView textViewLocal;
-        TextView textViewD1, textViewD2, textViewD3, textViewD4, textViewD5,
-                textViewD6, textViewD7, textViewD8, textViewD9, textViewD10,
-                textViewD11, textViewD12, textViewD13, textViewD14, textViewD15;
-    }
-
     public int getLayoutRow(TypeSorteio typeSorteio){
         switch (typeSorteio){
             case MEGASENA: return R.layout.row_sorteio_megasena_adapter;
@@ -60,6 +51,77 @@ public class SorteioListAdapter extends BaseAdapter {
             case QUINA: return R.layout.row_sorteio_quina_adapter;
             default: return 0;
         }
+    }
+
+    public void getInstanceTextViewMegasena(View view, ViewHolder holder) {
+        holder.textViewD1 = (TextView) view.findViewById(R.id.textViewD1);
+        holder.textViewD2 = (TextView) view.findViewById(R.id.textViewD2);
+        holder.textViewD3 = (TextView) view.findViewById(R.id.textViewD3);
+        holder.textViewD4 = (TextView) view.findViewById(R.id.textViewD4);
+        holder.textViewD5 = (TextView) view.findViewById(R.id.textViewD5);
+        holder.textViewD6 = (TextView) view.findViewById(R.id.textViewD6);
+    }
+
+    public void setValueTextViewMegasena(ViewHolder holder, Sorteio sorteio) {
+        holder.textViewD1.setText(String.valueOf(sorteio.getDezenas()[0]));
+        holder.textViewD2.setText(String.valueOf(sorteio.getDezenas()[1]));
+        holder.textViewD3.setText(String.valueOf(sorteio.getDezenas()[2]));
+        holder.textViewD4.setText(String.valueOf(sorteio.getDezenas()[3]));
+        holder.textViewD5.setText(String.valueOf(sorteio.getDezenas()[4]));
+        holder.textViewD6.setText(String.valueOf(sorteio.getDezenas()[5]));
+    }
+
+    public void getInstanceTextViewQuina(View view, ViewHolder holder) {
+        holder.textViewD1 = (TextView) view.findViewById(R.id.textViewD1);
+        holder.textViewD2 = (TextView) view.findViewById(R.id.textViewD2);
+        holder.textViewD3 = (TextView) view.findViewById(R.id.textViewD3);
+        holder.textViewD4 = (TextView) view.findViewById(R.id.textViewD4);
+        holder.textViewD5 = (TextView) view.findViewById(R.id.textViewD5);
+    }
+
+    public void setValueTextViewQuina(ViewHolder holder, Sorteio sorteio) {
+        holder.textViewD1.setText(String.valueOf(sorteio.getDezenas()[0]));
+        holder.textViewD2.setText(String.valueOf(sorteio.getDezenas()[1]));
+        holder.textViewD3.setText(String.valueOf(sorteio.getDezenas()[2]));
+        holder.textViewD4.setText(String.valueOf(sorteio.getDezenas()[3]));
+        holder.textViewD5.setText(String.valueOf(sorteio.getDezenas()[4]));
+    }
+
+    public void getInstanceTextViewLotofacil(View view, ViewHolder holder) {
+        holder.textViewD1 = (TextView) view.findViewById(R.id.textViewD1);
+        holder.textViewD2 = (TextView) view.findViewById(R.id.textViewD2);
+        holder.textViewD3 = (TextView) view.findViewById(R.id.textViewD3);
+        holder.textViewD4 = (TextView) view.findViewById(R.id.textViewD4);
+        holder.textViewD5 = (TextView) view.findViewById(R.id.textViewD5);
+        holder.textViewD6 = (TextView) view.findViewById(R.id.textViewD6);
+        holder.textViewD7 = (TextView) view.findViewById(R.id.textViewD7);
+        holder.textViewD8 = (TextView) view.findViewById(R.id.textViewD7);
+        holder.textViewD9 = (TextView) view.findViewById(R.id.textViewD9);
+        holder.textViewD10 = (TextView) view.findViewById(R.id.textViewD10);
+        holder.textViewD11 = (TextView) view.findViewById(R.id.textViewD11);
+        holder.textViewD12 = (TextView) view.findViewById(R.id.textViewD12);
+        holder.textViewD13 = (TextView) view.findViewById(R.id.textViewD13);
+        holder.textViewD14 = (TextView) view.findViewById(R.id.textViewD14);
+        holder.textViewD15 = (TextView) view.findViewById(R.id.textViewD15);
+
+    }
+
+    public void setValueTextViewLotofacil(ViewHolder holder, Sorteio sorteio) {
+        holder.textViewD1.setText(String.valueOf(sorteio.getDezenas()[0]));
+        holder.textViewD2.setText(String.valueOf(sorteio.getDezenas()[1]));
+        holder.textViewD3.setText(String.valueOf(sorteio.getDezenas()[2]));
+        holder.textViewD4.setText(String.valueOf(sorteio.getDezenas()[3]));
+        holder.textViewD5.setText(String.valueOf(sorteio.getDezenas()[4]));
+        holder.textViewD6.setText(String.valueOf(sorteio.getDezenas()[5]));
+        holder.textViewD7.setText(String.valueOf(sorteio.getDezenas()[6]));
+        holder.textViewD8.setText(String.valueOf(sorteio.getDezenas()[7]));
+        holder.textViewD9.setText(String.valueOf(sorteio.getDezenas()[8]));
+        holder.textViewD10.setText(String.valueOf(sorteio.getDezenas()[9]));
+        holder.textViewD11.setText(String.valueOf(sorteio.getDezenas()[10]));
+        holder.textViewD12.setText(String.valueOf(sorteio.getDezenas()[11]));
+        holder.textViewD13.setText(String.valueOf(sorteio.getDezenas()[12]));
+        holder.textViewD14.setText(String.valueOf(sorteio.getDezenas()[13]));
+        holder.textViewD15.setText(String.valueOf(sorteio.getDezenas()[14]));
     }
 
     @Override
@@ -73,24 +135,12 @@ public class SorteioListAdapter extends BaseAdapter {
             holder.textViewNumero = (TextView) view.findViewById(R.id.textViewNumero);
             holder.textViewData = (TextView) view.findViewById(R.id.textViewData);
             holder.textViewLocal = (TextView) view.findViewById(R.id.textViewLocal);
-            holder.textViewD1 = (TextView) view.findViewById(R.id.textViewD1);
-            holder.textViewD2 = (TextView) view.findViewById(R.id.textViewD2);
-            holder.textViewD3 = (TextView) view.findViewById(R.id.textViewD3);
-            holder.textViewD4 = (TextView) view.findViewById(R.id.textViewD4);
-            holder.textViewD5 = (TextView) view.findViewById(R.id.textViewD5);
-            if(view.findViewById(R.id.textViewD6) != null) {
-                holder.textViewD6 = (TextView) view.findViewById(R.id.textViewD6);
-            }
-            if(view.findViewById(R.id.textViewD7) != null) {
-                holder.textViewD7  = (TextView) view.findViewById(R.id.textViewD7);
-                holder.textViewD8  = (TextView) view.findViewById(R.id.textViewD8);
-                holder.textViewD9  = (TextView) view.findViewById(R.id.textViewD9);
-                holder.textViewD10 = (TextView) view.findViewById(R.id.textViewD10);
-                holder.textViewD11 = (TextView) view.findViewById(R.id.textViewD11);
-                holder.textViewD12 = (TextView) view.findViewById(R.id.textViewD12);
-                holder.textViewD13 = (TextView) view.findViewById(R.id.textViewD13);
-                holder.textViewD14 = (TextView) view.findViewById(R.id.textViewD14);
-                holder.textViewD15 = (TextView) view.findViewById(R.id.textViewD15);
+            if (typeSorteio == TypeSorteio.MEGASENA) {
+                getInstanceTextViewMegasena(view, holder);
+            } else if (typeSorteio == TypeSorteio.QUINA) {
+                getInstanceTextViewQuina(view, holder);
+            } else if (typeSorteio == TypeSorteio.LOTOFACIL) {
+                getInstanceTextViewLotofacil(view, holder);
             }
 
             view.setTag(holder);
@@ -104,28 +154,23 @@ public class SorteioListAdapter extends BaseAdapter {
         holder.textViewData.setText(MyDateUtil.calendarToDateBr(sorteio.getData()));
         holder.textViewLocal.setText(sorteio.getLocal());
 
-        holder.textViewD1.setText(String.valueOf(sorteio.getD1()));
-        holder.textViewD2.setText(String.valueOf(sorteio.getD2()));
-        holder.textViewD3.setText(String.valueOf(sorteio.getD3()));
-        holder.textViewD4.setText(String.valueOf(sorteio.getD4()));
-        holder.textViewD5.setText(String.valueOf(sorteio.getD5()));
-        if(holder.textViewD6 != null){
-            holder.textViewD6.setText(String.valueOf(sorteio.getD6()));
+        if (typeSorteio == TypeSorteio.MEGASENA) {
+            setValueTextViewMegasena(holder, sorteio);
+        } else if (typeSorteio == TypeSorteio.QUINA) {
+            setValueTextViewQuina(holder, sorteio);
+        } else if (typeSorteio == TypeSorteio.LOTOFACIL) {
+            setValueTextViewLotofacil(holder, sorteio);
         }
-        if(holder.textViewD7 != null){
-            holder.textViewD7.setText(String.valueOf(sorteio.getD7()));
-            holder.textViewD8.setText(String.valueOf(sorteio.getD8()));
-            holder.textViewD9.setText(String.valueOf(sorteio.getD9()));
-            holder.textViewD10.setText(String.valueOf(sorteio.getD10()));
-            holder.textViewD11.setText(String.valueOf(sorteio.getD11()));
-            holder.textViewD12.setText(String.valueOf(sorteio.getD12()));
-            holder.textViewD13.setText(String.valueOf(sorteio.getD13()));
-            holder.textViewD14.setText(String.valueOf(sorteio.getD14()));
-            holder.textViewD15.setText(String.valueOf(sorteio.getD15()));
-        }
-
-
         return view;
 
+    }
+
+    private static class ViewHolder {
+        TextView textViewNumero;
+        TextView textViewData;
+        TextView textViewLocal;
+        TextView textViewD1, textViewD2, textViewD3, textViewD4, textViewD5,
+                textViewD6, textViewD7, textViewD8, textViewD9, textViewD10,
+                textViewD11, textViewD12, textViewD13, textViewD14, textViewD15;
     }
 }

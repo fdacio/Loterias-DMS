@@ -23,8 +23,9 @@ import java.util.List;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
-import br.com.daciosoftware.loteriasdms.dao.Sorteio;
 import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAOFactory;
+import br.com.daciosoftware.loteriasdms.pojo.Sorteio;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.ViewIdGenerator;
 
@@ -35,6 +36,15 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
     private SeuJogo seuJogo;
     private List<SorteioAcerto> listSorteioAcerto;
     private ListView listViewResultadoSeuJogo;
+    private Handler handlerListSorteio = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            if (msg.what == 100) {
+                listViewResultadoSeuJogo.setAdapter(new ResultadoSeuJogoAdapter(ResultadoSeuJogoActivity.this, listSorteioAcerto, typeSorteio));
+            }
+            progressDialog.dismiss();
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +79,6 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         listarResultado(false);
     }
 
-
     private void listarResultado(final boolean todoSorteio) {
 
         progressDialog = ProgressDialog.show(this, "", "Aguarde...", true, false);
@@ -77,7 +86,7 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         new Thread() {
 
             public void run() {
-                SorteioDAO sorteioDAO = SorteioDAO.getDAO(ResultadoSeuJogoActivity.this, typeSorteio);
+                SorteioDAO sorteioDAO = SorteioDAOFactory.getInstance(ResultadoSeuJogoActivity.this, typeSorteio);
                 Sorteio sorteioAtual = sorteioDAO.findByNumber(seuJogo.getNumeroConcurso());
                 if (todoSorteio) {
                     listSorteioAcerto = getListSorteioAcertos(seuJogo, sorteioAtual, sorteioDAO.sortListDezenasCrescente(sorteioDAO.listAll()));
@@ -94,16 +103,6 @@ public class ResultadoSeuJogoActivity extends AppCompatActivity {
         }.start();
 
     }
-
-    private Handler handlerListSorteio = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            if (msg.what == 100) {
-                listViewResultadoSeuJogo.setAdapter(new ResultadoSeuJogoAdapter(ResultadoSeuJogoActivity.this, listSorteioAcerto, typeSorteio));
-            }
-            progressDialog.dismiss();
-        }
-    };
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

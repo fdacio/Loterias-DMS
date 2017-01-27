@@ -42,5 +42,7 @@ public abstract class Constantes {
     public static final String URL_WEB_SERVICE = "URL_WEB_SERVICE";
     public static final String URL_WEB_SERVICE_DEFAULT = "http://wsloterias.azurewebsites.net/api/sorteio/getresultado/";
 
+    public static final String NOTIFICAR_SORTEIO = "NOTIFICAR_SORTEIO";
+    public static final boolean NOTIFICAR_SORTEIO_DEFAULT = false;
 
 }

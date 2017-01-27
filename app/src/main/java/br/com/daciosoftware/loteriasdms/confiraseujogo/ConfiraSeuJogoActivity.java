@@ -21,7 +21,7 @@ import java.util.List;
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.StyleOfActivity;
 import br.com.daciosoftware.loteriasdms.TypeSorteio;
-import br.com.daciosoftware.loteriasdms.dao.SorteioDAO;
+import br.com.daciosoftware.loteriasdms.dao.SorteioDAOFactory;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.util.DialogNumber;
@@ -78,65 +78,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         buildEdits(qtdeEdit);
 
         new StyleOfActivity(this, findViewById(R.id.layout_confira_seu_jogo)).setStyleInViews(typeSorteio);
-    }
-
-    private class DialogNumberPickerOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View view) {
-            DialogNumber dialogNumber = new DialogNumber((Button) view,
-                    R.layout.dialog_number_picker,
-                    new OnNumberSetListener((Button) view)
-            );
-            dialogNumber.setTitle(getResources().getString(R.string.quantidade_dezenas));
-            dialogNumber.setStartValue(qtdeEdit);
-            dialogNumber.setMinValue(qtdeMin);
-            dialogNumber.setMaxValue(30);
-            dialogNumber.show();
-        }
-    }
-
-    /**
-     * Classe interna para implementar o retorno do DialogNumber
-     */
-    private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
-
-        private TextView textView;
-
-        public OnNumberSetListener(TextView textView) {
-            this.textView = textView;
-
-        }
-
-        @Override
-        public void onNumberSet(int number) {
-            String label = String.format(getResources().getString(R.string.qtde_dezenas), number);
-            textView.setText(label);
-            qtdeEdit = number;
-            buildEdits(number);
-        }
-    }
-
-    private class ConferirOnClickListener implements View.OnClickListener {
-        @Override
-        public void onClick(View v) {
-            if (validateForm()) {
-                int numero = Integer.valueOf(editTextNumeroConcurso.getText().toString());
-                if (SorteioDAO.getDAO(ConfiraSeuJogoActivity.this, typeSorteio).findByNumber(Integer.valueOf(numero)) == null) {
-                    new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.title_activity_confira_seu_jogo), String.format(getResources().getString(R.string.concurso_nao_encontrado), numero)).show();
-                    return;
-                }
-
-                Intent intent = new Intent(ConfiraSeuJogoActivity.this, ResultadoSeuJogoActivity.class);
-                intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
-                intent.putExtra(Constantes.SEU_JOGO, getSeuJogoFromForm());
-
-                startActivity(intent);
-
-            } else {
-                new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.msg_validade_form), fieldsValidate.toString()).show();
-            }
-
-        }
     }
 
     private void buildEdits(int qtdeEdit) {
@@ -197,30 +138,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         }
     }
 
-    private class EditDezenaNextFocus implements TextWatcher {
-
-        private EditText nextEdit;
-
-        private EditDezenaNextFocus(EditText nextEdit) {
-            this.nextEdit = nextEdit;
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            if (s.length() == 2) {
-                this.nextEdit.requestFocus();
-            }
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    }
-
     private SeuJogo getSeuJogoFromForm() {
         SeuJogo seuJogo = new SeuJogo();
         seuJogo.setNumeroConcurso(Integer.valueOf(editTextNumeroConcurso.getText().toString()));
@@ -255,7 +172,6 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
         return fieldsValidate.size() <= 0;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -266,6 +182,89 @@ public class ConfiraSeuJogoActivity extends AppCompatActivity {
 
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private class DialogNumberPickerOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            DialogNumber dialogNumber = new DialogNumber((Button) view,
+                    R.layout.dialog_number_picker,
+                    new OnNumberSetListener((Button) view)
+            );
+            dialogNumber.setTitle(getResources().getString(R.string.quantidade_dezenas));
+            dialogNumber.setStartValue(qtdeEdit);
+            dialogNumber.setMinValue(qtdeMin);
+            dialogNumber.setMaxValue(30);
+            dialogNumber.show();
+        }
+    }
+
+    /**
+     * Classe interna para implementar o retorno do DialogNumber
+     */
+    private class OnNumberSetListener implements NumberPickerDialog.OnNumberSetListener {
+
+        private TextView textView;
+
+        public OnNumberSetListener(TextView textView) {
+            this.textView = textView;
+
+        }
+
+        @Override
+        public void onNumberSet(int number) {
+            String label = String.format(getResources().getString(R.string.qtde_dezenas), number);
+            textView.setText(label);
+            qtdeEdit = number;
+            buildEdits(number);
+        }
+    }
+
+    private class ConferirOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View v) {
+            if (validateForm()) {
+                int numero = Integer.valueOf(editTextNumeroConcurso.getText().toString());
+                if (SorteioDAOFactory.getInstance(ConfiraSeuJogoActivity.this, typeSorteio).findByNumber(Integer.valueOf(numero)) == null) {
+                    new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.title_activity_confira_seu_jogo), String.format(getResources().getString(R.string.concurso_nao_encontrado), numero)).show();
+                    return;
+                }
+
+                Intent intent = new Intent(ConfiraSeuJogoActivity.this, ResultadoSeuJogoActivity.class);
+                intent.putExtra(Constantes.TYPE_SORTEIO, typeSorteio);
+                intent.putExtra(Constantes.SEU_JOGO, getSeuJogoFromForm());
+
+                startActivity(intent);
+
+            } else {
+                new DialogBox(ConfiraSeuJogoActivity.this, DialogBox.DialogBoxType.INFORMATION, getResources().getString(R.string.msg_validade_form), fieldsValidate.toString()).show();
+            }
+
+        }
+    }
+
+    private class EditDezenaNextFocus implements TextWatcher {
+
+        private EditText nextEdit;
+
+        private EditDezenaNextFocus(EditText nextEdit) {
+            this.nextEdit = nextEdit;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            if (s.length() == 2) {
+                this.nextEdit.requestFocus();
+            }
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
     }
 
 
