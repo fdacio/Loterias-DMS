@@ -98,12 +98,11 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
 
                 }
 
-
             } catch (Exception e) {
                 return context.getResources().getString(R.string.erro_web_service) + e.getMessage();
             }
-
         }
+
         return "OK";
     }
 
@@ -122,6 +121,7 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
     protected void onPostExecute(String retorno) {
         progressDialog.dismiss();
         if (retorno.equals("OK")) {
+
             new DialogBox(context, DialogBox.DialogBoxType.INFORMATION, context.getResources().getString(R.string.atualizacao_sorteios), context.getResources().getString(R.string.atualizacao_concluido)).show();
 
             if (this.sorteioListListener != null) {
@@ -136,11 +136,6 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
     @Override
     protected void onCancelled() {
         super.onCancelled();
-
-        if (this.sorteioListListener != null) {
-            this.sorteioListListener.executarAposAtualizacao();
-        }
-
     }
 
     @Override
@@ -152,9 +147,9 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
 
     private class cancelTaskAtualizarSorteio implements DialogInterface.OnCancelListener {
 
-        private AsyncTask task;
+        private AtualizaSorteiosTask task;
 
-        public cancelTaskAtualizarSorteio(AsyncTask task) {
+        public cancelTaskAtualizarSorteio(AtualizaSorteiosTask task) {
             this.task = task;
         }
 
@@ -169,6 +164,11 @@ public class AtualizaSorteiosTask extends AsyncTask<Void, String, String> {
                         public void onClick(DialogInterface dialog, int which) {
 
                             task.cancel(true);
+
+                            if (task.sorteioListListener != null) {
+                                task.sorteioListListener.executarAposAtualizacao();
+                            }
+
                         }
                     },
                     new DialogInterface.OnClickListener() {//Resposta NÃO do DialogBox Question

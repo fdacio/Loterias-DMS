@@ -26,6 +26,6 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/nao_ha_dados" />
+        android:text="@string/nao_ha_sorteio" />
 
 </RelativeLayout>

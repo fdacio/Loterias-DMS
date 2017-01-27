@@ -23,12 +23,12 @@ public class DialogBox {
     private DialogInterface.OnClickListener onClickListenerNO;
     private Context context;
     private boolean finishActivity = false;
+
     /**
-     *
-     * @param context - Contexto da App
+     * @param context       - Contexto da App
      * @param dialogBoxType INFORMATION ou QUESTION
-     * @param title Titulo do diálogo
-     * @param message Mensagem do fiálogo
+     * @param title         Titulo do diálogo
+     * @param message       Mensagem do fiálogo
      */
     public DialogBox(Context context, DialogBoxType dialogBoxType, String title, String message) {
         this.context = context;
@@ -59,7 +59,7 @@ public class DialogBox {
      * @param onClickListenerYES
      * @param onClickListenerNO
      */
-    public DialogBox(Context context, DialogBoxType dialogBoxType, String title, String message, DialogInterface.OnClickListener onClickListenerYES, DialogInterface.OnClickListener onClickListenerNO ) {
+    public DialogBox(Context context, DialogBoxType dialogBoxType, String title, String message, DialogInterface.OnClickListener onClickListenerYES, DialogInterface.OnClickListener onClickListenerNO) {
         this(context, dialogBoxType, title, message);
         dialogBox.setPositiveButton(TEXTO_BUTTON_YES, onClickListenerYES);
         dialogBox.setNegativeButton(TEXTO_BUTTON_NO, onClickListenerNO);
@@ -105,4 +105,6 @@ public class DialogBox {
     }
 
     public enum DialogBoxType {INFORMATION, QUESTION}
+
+
 }

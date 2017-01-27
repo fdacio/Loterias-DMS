@@ -47,7 +47,9 @@ public class SorteioNotificacao {
 
     private NotificationCompat.Builder getNotificationBuilder(NotificationCompat.InboxStyle inboxStyle) {
 
-        return getNotificacaoPadrao().setStyle(inboxStyle);
+        return getNotificacaoPadrao()
+                .setTicker(context.getResources().getString(R.string.app_name))
+                .setStyle(inboxStyle);
     }
 
     private NotificationCompat.Builder getNotificationBuilder(String mensagemBarraStatus, String titulo, String subtexto) {

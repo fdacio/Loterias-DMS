@@ -17,12 +17,13 @@ import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.pojo.Sorteio;
+import br.com.daciosoftware.loteriasdms.sorteio.SorteioListListener;
 import br.com.daciosoftware.loteriasdms.util.DeviceInformation;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
 import br.com.daciosoftware.loteriasdms.webservice.AtualizaSorteiosTask;
 import br.com.daciosoftware.loteriasdms.webservice.SorteioWebService;
 
-public class AtualizaSorteioListActivity extends AppCompatActivity {
+public class AtualizaSorteioListActivity extends AppCompatActivity implements SorteioListListener {
 
     private List<Sorteio> listSorteio;
     private ListView listViewSorteio;
@@ -50,14 +51,16 @@ public class AtualizaSorteioListActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (DeviceInformation.isNetwork(AtualizaSorteioListActivity.this)) {
-                    new AtualizaSorteiosTask(AtualizaSorteioListActivity.this, null).execute();
+                if (listSorteio.size() > 0) {
+                    if (DeviceInformation.isNetwork(AtualizaSorteioListActivity.this)) {
+                        new AtualizaSorteiosTask(AtualizaSorteioListActivity.this, null, AtualizaSorteioListActivity.this).execute();
 
-                } else {
-                    new DialogBox(AtualizaSorteioListActivity.this,
-                            DialogBox.DialogBoxType.INFORMATION, "Error",
-                            getResources().getString(R.string.error_conexao)
-                    ).show();
+                    } else {
+                        new DialogBox(AtualizaSorteioListActivity.this,
+                                DialogBox.DialogBoxType.INFORMATION, "Error",
+                                getResources().getString(R.string.error_conexao)
+                        ).show();
+                    }
                 }
 
             }
@@ -84,6 +87,11 @@ public class AtualizaSorteioListActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void executarAposAtualizacao() {
+        new ListaSorteiosTask(this).execute();
     }
 
     private class ListaSorteiosTask extends AsyncTask<Void, String, String> {

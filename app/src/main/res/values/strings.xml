@@ -21,6 +21,7 @@
     <string name="title_submenu">Menu</string>
     <string name="action_exit">SAIR</string>
     <string name="nao_ha_dados">NÃO HÁ DADOS</string>
+    <string name="nao_ha_sorteio">NÃO HÁ SORTEIOS A ATUALIZAR</string>
     <string name="nao_ha_jogos">JOGOS</string>
     <string name="title_activity_menu_secundario">Menu</string>
     <string name="label_instrucoes">Instruções</string>
