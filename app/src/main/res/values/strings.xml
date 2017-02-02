@@ -169,5 +169,8 @@
     <string name="notificacao_switch_off">Não</string>
     <string name="label_editar">EDITAR</string>
     <string name="title_activity_atualiza_sorteio">Atualizar Sorteios</string>
+    <string name="label_valor_aposta">Valor da aposta</string>
+    <string name="label_valor_aposta_dezenas">Valor da aposta para %1$d dezenas: R$ %2$d</string>
+    <string name="title_activity_valor_aposta_edit">Editar Valor</string>
 
 </resources>

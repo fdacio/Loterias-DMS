@@ -9,7 +9,14 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".configuracoes.valoraposta.ValorApostaActivity"
+    tools:context=".configuracoes.valoraposta.ValorApostaListActivity"
     tools:showIn="@layout/activity_valores_aposta">
 
+    <ListView
+        android:id="@+id/listViewValorAposta"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 </RelativeLayout>

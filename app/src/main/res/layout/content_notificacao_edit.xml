@@ -29,7 +29,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_below="@+id/textView10"
+        android:layout_alignParentTop="true"
         android:checked="false"
         android:clickable="true"
         android:text=""

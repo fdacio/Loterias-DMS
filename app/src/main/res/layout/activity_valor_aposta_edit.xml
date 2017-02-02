@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".configuracoes.valoraposta.ValorApostaListActivity">
+    tools:context="br.com.daciosoftware.loteriasdms.configuracoes.valoraposta.ValorApostaEditActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -21,6 +21,7 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_valores_aposta" />
+    <include layout="@layout/content_valor_aposta_edit" />
+
 
 </android.support.design.widget.CoordinatorLayout>

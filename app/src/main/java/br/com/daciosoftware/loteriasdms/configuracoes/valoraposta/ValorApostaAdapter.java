@@ -1,4 +1,4 @@
-package br.com.daciosoftware.loteriasdms.configuracoes.arquivosresultados;
+package br.com.daciosoftware.loteriasdms.configuracoes.valoraposta;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,29 +14,28 @@ import br.com.daciosoftware.loteriasdms.configuracoes.ItemConfiguracao;
 import br.com.daciosoftware.loteriasdms.configuracoes.ItemConfiguracaoEditListener;
 
 /**
- * Created by fdacio on 28/08/16.
+ * Created by fdacio on 01/02/17.
  */
-public class ArquivoResultadoUrlAdapter extends BaseAdapter {
+public class ValorApostaAdapter extends BaseAdapter {
 
     private Context context;
-    private List<ItemConfiguracao> list;
+    private List<ItemConfiguracao> lista;
     private ItemConfiguracaoEditListener itemConfiguracaoEditListener;
 
-    public ArquivoResultadoUrlAdapter(Context context, List<ItemConfiguracao> list,
-                                      ItemConfiguracaoEditListener itemConfiguracaoEditListener) {
+    public ValorApostaAdapter(Context context, List<ItemConfiguracao> lista, ItemConfiguracaoEditListener itemConfiguracaoEditListener) {
         this.context = context;
-        this.list = list;
+        this.lista = lista;
         this.itemConfiguracaoEditListener = itemConfiguracaoEditListener;
     }
 
     @Override
     public int getCount() {
-        return list.size();
+        return lista.size();
     }
 
     @Override
     public ItemConfiguracao getItem(int position) {
-        return list.get(position);
+        return lista.get(position);
     }
 
     @Override
@@ -73,6 +72,7 @@ public class ArquivoResultadoUrlAdapter extends BaseAdapter {
         });
 
         return view;
+
     }
 
     private static class ViewHolder {
@@ -80,6 +80,4 @@ public class ArquivoResultadoUrlAdapter extends BaseAdapter {
         TextView textViewSublabel;
         TextView textViewEdit;
     }
-
-
 }

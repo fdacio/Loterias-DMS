@@ -85,7 +85,7 @@
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".configuracoes.valoraposta.ValorApostaActivity"
+            android:name=".configuracoes.valoraposta.ValorApostaListActivity"
             android:label="@string/title_activity_valores_aposta"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
@@ -120,11 +120,10 @@
             android:name=".configuracoes.notificacao.NotificacaoEditActivity"
             android:label="@string/title_activity_notificacao_edit"
             android:theme="@style/AppTheme.NoActionBar" />
-
         <activity
             android:name=".notificacao.AtualizaSorteioListActivity"
             android:label="@string/title_activity_atualiza_sorteio"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <!--
  ATTENTION: This was auto-generated to add Google Play services to your project for
@@ -134,7 +133,10 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-
+        <activity
+            android:name=".configuracoes.valoraposta.ValorApostaEditActivity"
+            android:label="@string/title_activity_valor_aposta_edit"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

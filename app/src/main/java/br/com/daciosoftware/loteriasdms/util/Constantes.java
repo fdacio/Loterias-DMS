@@ -30,6 +30,9 @@ public abstract class Constantes {
     public static final String URL_RESULTADOS_LOTOFACIL = "URL_RESULTADOS_LOTOFACIL";
     public static final String URL_ARQUIVO_RESULTADOS_QUINA = "URL_ARQUIVO_RESULTADOS_QUINA";
     public static final String URL_RESULTADOS_QUINA = "URL_RESULTADOS_QUINA";
+    public static final String VALOR_APOSTA_MEGASENA = "VALOR_APOSTA_MEGASENA";
+    public static final String VALOR_APOSTA_QUINA = "VALOR_APOSTA_QUINA";
+    public static final String VALOR_APOSTA_LOTOFACIL = "VALOR_APOSTA_LOTOFACIL";
 
 
     public static final String URL_ARQUIVO_RESULTADOS_MEGASENA_DEFAULT = "http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_mgsasc.zip";
@@ -38,6 +41,10 @@ public abstract class Constantes {
     public static final String URL_RESULTADOS_LOTOFACIL_DEFAULT = "http://loterias.caixa.gov.br/wps/portal/loterias/landing/lotofacil/";
     public static final String URL_ARQUIVO_RESULTADOS_QUINA_DEFAULT = "http://www1.caixa.gov.br/loterias/_arquivos/loterias/D_quina.zip";
     public static final String URL_RESULTADOS_QUINA_DEFAULT = "http://loterias.caixa.gov.br/wps/portal/loterias/landing/quina/";
+    public static final float VALOR_APOSTA_MEGASENA_DEFAULT = 3.5f;
+    public static final float VALOR_APOSTA_QUINA_DEFAULT = 1.5f;
+    public static final float VALOR_APOSTA_LOTOFACIL_DEFAULT = 2.0f;
+
 
     public static final String URL_WEB_SERVICE = "URL_WEB_SERVICE";
     public static final String URL_WEB_SERVICE_DEFAULT = "http://wsloterias.azurewebsites.net/api/sorteio/getresultado/";

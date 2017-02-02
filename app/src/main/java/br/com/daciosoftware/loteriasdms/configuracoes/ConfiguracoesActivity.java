@@ -20,7 +20,7 @@ import br.com.daciosoftware.loteriasdms.configuracoes.arquivosresultados.Arquivo
 import br.com.daciosoftware.loteriasdms.configuracoes.arquivosresultados.ArquivoResultadoUrlQuinaDAO;
 import br.com.daciosoftware.loteriasdms.configuracoes.notificacao.NotificacaoDAO;
 import br.com.daciosoftware.loteriasdms.configuracoes.notificacao.NotificacaoEditActivity;
-import br.com.daciosoftware.loteriasdms.configuracoes.valoraposta.ValorApostaActivity;
+import br.com.daciosoftware.loteriasdms.configuracoes.valoraposta.ValorApostaListActivity;
 import br.com.daciosoftware.loteriasdms.configuracoes.webservice.WebServiceDAO;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 import br.com.daciosoftware.loteriasdms.util.DialogBox;
@@ -96,7 +96,7 @@ public class ConfiguracoesActivity extends AppCompatActivity implements AdapterV
                 intent = new Intent(this, NotificacaoEditActivity.class);
                 break;
             case 1:
-                intent = new Intent(this, ValorApostaActivity.class);
+                intent = new Intent(this, ValorApostaListActivity.class);
                 break;
             case 2:
                 intent = new Intent(this, ArquivoResultadoUrlListActivity.class);

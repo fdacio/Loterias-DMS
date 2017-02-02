@@ -9,10 +9,6 @@
         <item name="alertDialogTheme">@style/dialog</item>
     </style>
 
-    <style name="dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorAccent</item>
-    </style>
-
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
@@ -35,6 +31,10 @@
         <item name="android:singleLine">true</item>
         <item name="android:clickable">true</item>
 
+    </style>
+
+    <style name="dialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="numberpicker" parent="android:Theme.Holo" />

@@ -12,11 +12,12 @@ import java.util.List;
 
 import br.com.daciosoftware.loteriasdms.R;
 import br.com.daciosoftware.loteriasdms.configuracoes.ItemConfiguracao;
+import br.com.daciosoftware.loteriasdms.configuracoes.ItemConfiguracaoEditListener;
 import br.com.daciosoftware.loteriasdms.configuracoes.TypeUrl;
 import br.com.daciosoftware.loteriasdms.configuracoes.UrlEditActivity;
 import br.com.daciosoftware.loteriasdms.util.Constantes;
 
-public class ArquivoResultadoUrlListActivity extends AppCompatActivity implements ArquivoResultadoUrlListener {
+public class ArquivoResultadoUrlListActivity extends AppCompatActivity implements ItemConfiguracaoEditListener {
 
     private List<ItemConfiguracao> listUrls;
 
